@@ -54,8 +54,9 @@
                         <p class="text-muted">{{ Str::title($faculty->name) }}</p>
                       </td>
                       <td class="btn-group">
-                        <a href="#" class="btn btn-secondary"><i class="fas fa-user"></i></a>
-                        <a href="#" class="btn btn-primary"><i class="fas fa-edit"></i></a>
+                        <a href="{{ route('admin.show.faculty', $faculty->slug) }}" class="btn btn-secondary"><i class="fas fa-user"></i></a>
+
+                        <a href="{{ route('admin.edit.faculty', $faculty->slug) }}" class="btn btn-primary"><i class="fas fa-edit"></i></a>
 
                         <a data-toggle="modal" data-target="#exampleModal" data-faculty-slug="{{ $faculty->slug }}"
                           href="#" class="btn btn-danger"><i class="fas fa-trash"></i></a>

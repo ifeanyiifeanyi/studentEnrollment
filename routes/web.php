@@ -45,6 +45,9 @@ Route::prefix('admin')->middleware(['auth', 'verified', 'role:admin'])->group(fu
         Route::get('create-faculty', 'create')->name('admin.create.faculty');
         Route::post('store-faculty', 'store')->name('admin.store.faculty');
         Route::get('delete-faculty/{slug}', 'destroy')->name('admin.destroy.faculty');
+        Route::get('edit-faculty/{slug}', 'edit')->name('admin.edit.faculty');
+        Route::get('view-faculty/{slug}', 'show')->name('admin.show.faculty');
+        Route::patch('update-faculty/{slug}', 'update')->name('admin.update.faculty');
     });
      
 

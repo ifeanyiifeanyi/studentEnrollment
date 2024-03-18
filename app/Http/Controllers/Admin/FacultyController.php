@@ -42,6 +42,35 @@ class FacultyController extends Controller
         return redirect()->route('admin.manage.faculty')->with($notification);
     }
 
+    public function edit($slug){
+        $faculty = Faculty::where('slug', $slug)->first();
+        return view('admin.faculty.edit', compact('faculty'));
+    }
+
+    public function update(Request $request, $slug){
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string'
+        ]);
+        $faculty = Faculty::where('slug', $slug)->first();
+        $faculty->update([
+            'name' => $request->name,
+            'slug' => Str::slug($request->name),
+            'description' => $request->description
+        ]);
+        $notification = [
+            'message' => 'Faculty Details Updated!',
+              'alert-type' => 'success'
+          ];
+  
+          return redirect()->route('admin.manage.faculty')->with($notification);
+    }
+
+    public function show($slug){
+        $faculty = Faculty::where('slug', $slug)->first();
+        return view('admin.faculty.show', compact('faculty'));
+    }
+
 
 
     public function destroy($slug){
