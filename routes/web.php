@@ -6,6 +6,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Admin\AdminProfileController;
 use League\CommonMark\Extension\SmartPunct\DashParser;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
+use App\Http\Controllers\Admin\FacultyController;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,6 +38,13 @@ Route::prefix('admin')->middleware(['auth', 'verified', 'role:admin'])->group(fu
         Route::get('profile/set-password', 'setPassword')->name('admin.profile.setPassword');
         Route::patch('profile/update-password', 'updatePassword')->name('admin.profile.updatePassword');
         Route::post('profile/update', 'update')->name('admin.profile.update');
+    });
+
+    Route::controller(FacultyController::class)->group(function(){
+        Route::get('faculty-management', 'index')->name('admin.manage.faculty');
+        Route::get('create-faculty', 'create')->name('admin.create.faculty');
+        Route::post('store-faculty', 'store')->name('admin.store.faculty');
+        Route::get('delete-faculty/{slug}', 'destroy')->name('admin.destroy.faculty');
     });
      
 
