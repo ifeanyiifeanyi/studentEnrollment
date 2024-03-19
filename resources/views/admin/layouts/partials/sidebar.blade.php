@@ -12,7 +12,7 @@
           <a href="#" class="nav-link has-dropdown"><i class="fab fa-steam-symbol"></i><span>Manage School</span></a>
           <ul class="dropdown-menu">
             <li><a class="nav-link" href="{{ route('admin.manage.faculty') }}">Manage Faculty</a></li>
-            <li><a class="nav-link" href="index.html">Manage Department</a></li>
+            <li><a class="nav-link" href="{{ route('admin.manage.department') }}">Manage Department</a></li>
           </ul>
         </li>
         <li class="menu-header">Starter</li>

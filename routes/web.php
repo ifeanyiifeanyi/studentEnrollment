@@ -6,6 +6,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Admin\AdminProfileController;
 use League\CommonMark\Extension\SmartPunct\DashParser;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
+use App\Http\Controllers\Admin\DepartmentController;
 use App\Http\Controllers\Admin\FacultyController;
 
 /*
@@ -49,6 +50,17 @@ Route::prefix('admin')->middleware(['auth', 'verified', 'role:admin'])->group(fu
         Route::get('view-faculty/{slug}', 'show')->name('admin.show.faculty');
         Route::patch('update-faculty/{slug}', 'update')->name('admin.update.faculty');
     });
+
+    Route::controller(DepartmentController::class)->group(function(){
+        Route::get('department-management', 'index')->name('admin.manage.department');
+        Route::get('create-department', 'create')->name('admin.create.department');
+        Route::post('store-department','store')->name('admin.store.department');
+        Route::get('delete-department/{slug}', 'destroy')->name('admin.destroy.department');
+        Route::get('edit-department/{slug}', 'edit')->name('admin.edit.department');
+        Route::get('view-department/{slug}','show')->name('admin.show.department');
+        Route::patch('update-department/{slug}', 'update')->name('admin.update.department');
+    });
+    Route::resource("department",DepartmentController::class);
      
 
 });
