@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Student;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Registered;
@@ -45,6 +46,11 @@ class RegisteredUserController extends Controller
             'other_names' => $request->other_names,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+        ]);
+
+        Student::create([
+            'user_id' => $user->id,
+            'phone' => $request->phone,
         ]);
 
         //NOTE::COME BACK FOR STUDENT REGISTRATION TABLE::NOTE
