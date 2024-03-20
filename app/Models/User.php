@@ -23,6 +23,10 @@ class User extends Authenticatable
         return $this->hasOne(Admin::class);
     }
 
+    public function student(){
+        return $this->hasOne(Student::class);
+    }
+
     /**
      * The attributes that should be hidden for serialization.
      *
