@@ -40,10 +40,13 @@ class RegisteredUserController extends Controller
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
+        $username = $this->generateUsername($request->first_name);
+
         $user = User::create([
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
             'other_names' => $request->other_names,
+            'nameSlug' => $username,
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
@@ -53,12 +56,43 @@ class RegisteredUserController extends Controller
             'phone' => $request->phone,
         ]);
 
-        //NOTE::COME BACK FOR STUDENT REGISTRATION TABLE::NOTE
+
+        // $user->sendEmailVerificationNotification();
 
         event(new Registered($user));
 
         Auth::login($user);
 
         return redirect(RouteServiceProvider::HOME);
+    }
+
+
+    // Function to generate username from first name and last name
+    private function generateUsername(string $firstName): string
+    {
+        // Concatenate first name and last name
+        $username = $firstName;
+
+        // Remove spaces and special characters
+        $username = preg_replace('/[^A-Za-z0-9]/', '', $username);
+
+        $characters = str_split($username);
+
+        // Shuffle the characters randomly
+        shuffle($characters);
+
+        // Generate the username by joining shuffled characters
+        $username = implode('', $characters);
+
+        // Check if username already exists
+        $count = User::where('nameSlug', $username)->count();
+
+        // If username exists, add a suffix
+        if ($count > 0) {
+            $username .= $count + 1;
+        }
+
+        return $username;
+
     }
 }

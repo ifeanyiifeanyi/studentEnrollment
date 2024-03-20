@@ -1,13 +1,16 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\Admin\FacultyController;
+use App\Http\Controllers\Admin\DepartmentController;
 use App\Http\Controllers\Admin\AdminProfileController;
 use League\CommonMark\Extension\SmartPunct\DashParser;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
-use App\Http\Controllers\Admin\DepartmentController;
-use App\Http\Controllers\Admin\FacultyController;
+use App\Http\Controllers\Student\StudentDashboardController;
+use App\Http\Controllers\Student\StudentProfileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,6 +26,9 @@ use App\Http\Controllers\Admin\FacultyController;
 Route::get('/', function () {
     return view('welcome');
 });
+
+// Email Verification Routes
+// Auth::routes(['verify' => true]);
 
 Route::get('/dashboard', DashboardController::class)->middleware(['auth', 'verified'])->name('dashboard');
 
@@ -65,4 +71,16 @@ Route::prefix('admin')->middleware(['auth', 'verified', 'role:admin'])->group(fu
 
 });
 
+Route::prefix('student')->middleware('auth', 'verified', 'role:student')->group(function(){
+    Route::controller(StudentDashboardController::class)->group(function(){
+        Route::get('dashboard', 'dashboard')->name('student.dashboard');
+    });
+
+    Route::controller(StudentProfileController::class)->group(function(){
+        Route::get('profile', 'profile')->name('student.profile');
+        Route::get('profile/set-password', '<PASSWORD>')->name('student.profile.setPassword');
+        Route::patch('profile/update-password', '<PASSWORD>')->name('student.profile.updatePassword');
+        Route::post('profile/update', 'update')->name('student.profile.update');
+    });
+});
 require __DIR__ . '/auth.php';
