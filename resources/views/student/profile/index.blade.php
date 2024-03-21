@@ -2,7 +2,12 @@
 
 @section('title', "Profile")
 @section('css')
-
+<style>
+    .text-danger{
+        font-weight: bold !important;
+        font-family: Verdana, Geneva, Tahoma, sans-serif !important;
+    }
+</style>
 @endsection
 
 @section('student')
@@ -112,7 +117,9 @@
                                     <!-- general form elements -->
                                     <div class="card card-primary">
                                         <!-- form start -->
-                                        <form>
+                                        <form method="POST" action="{{ route('student.profile.update') }}">
+                                            @csrf
+                                            @method('patch')
                                             <div class="card-body">
                                                 <div class="row">
                                                     <div class="col-md-6">
@@ -128,7 +135,7 @@
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label for="last_name">Last Name</label>
-                                                            <input type="text" class="form-control" value="{{ old('last_name', $user->last_name) }}"
+                                                            <input type="text" name="last_name" class="form-control" value="{{ old('last_name', $user->last_name) }}"
                                                                 id="last_name" placeholder="Enter last name">
                                                             @error('last_name')
                                                                 <span class="text-danger">{{ $message }}</span>
@@ -150,7 +157,7 @@
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label for="email">Email Address</label>
-                                                            <input type="email" class="form-control" value="{{ old('email', $user->email) }}"
+                                                            <input type="email" name="email" class="form-control" value="{{ old('email', $user->email) }}"
                                                                 id="email" placeholder="Enter last name">
                                                             @error('email')
                                                                 <span class="text-danger">{{ $message }}</span>
@@ -229,26 +236,34 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                
 
-                                                <div class="form-group">
-                                                    <label for="exampleInputFile">File input</label>
-                                                    <div class="input-group">
-                                                        <div class="custom-file">
-                                                            <input type="file" class="custom-file-input"
-                                                                id="exampleInputFile">
-                                                            <label class="custom-file-label"
-                                                                for="exampleInputFile">Choose file</label>
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label for="current_residence_address">Current Residential Address</label>
+                                                            <input name="current_residence_address" type="text" class="form-control" id="current_residence_address" value="{{ old('current_residence_address', $user->student->current_residence_address) }}"
+                                                                placeholder="Secondary school attended">
+                                                            @error('current_residence_address')
+                                                                <span class="text-danger">{{ $message }}</span>
+                                                            @enderror
                                                         </div>
-                                                        <div class="input-group-append">
-                                                            <span class="input-group-text">Upload</span>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label for="permanent_residence_address">Permanent Residential Address</label>
+                                                            <input name="permanent_residence_address" type="text" class="form-control" id="permanent_residence_address" value="{{ old('permanent_residence_address', $user->student->permanent_residence_address) }}"
+                                                                placeholder="Secondary school attended">
+                                                            @error('permanent_residence_address')
+                                                                <span class="text-danger">{{ $message }}</span>
+                                                            @enderror
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="form-check">
                                                     <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                                                    <label class="form-check-label" for="exampleCheck1">Check me
-                                                        out</label>
+                                                    <label class="form-check-label" for="exampleCheck1">I accept, that falsifed information has been added</label>
                                                 </div>
                                             </div>
                                             <!-- /.card-body -->

@@ -80,7 +80,7 @@ Route::prefix('student')->middleware('auth', 'verified', 'role:student')->group(
         Route::get('profile', 'profile')->name('student.profile');
         Route::get('profile/set-password', '<PASSWORD>')->name('student.profile.setPassword');
         Route::patch('profile/update-password', '<PASSWORD>')->name('student.profile.updatePassword');
-        Route::post('profile/update', 'update')->name('student.profile.update');
+        Route::patch('profile/update', 'update')->name('student.profile.update');
     });
 });
 require __DIR__ . '/auth.php';

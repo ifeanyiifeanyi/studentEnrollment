@@ -50,9 +50,23 @@ class StudentProfileController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request)
     {
-        //
+        $user = auth()->user();
+        $request->validate([
+            'first_name' =>'required|string',
+            'last_name' =>'required|string',
+            'other_names' =>'required|string',
+            'email' =>'required|email',
+            'gender' =>'required|string',
+            'religion' =>'required|string',
+            'dob' =>'required|date',
+            'current_residence_address' =>'required|string',
+            'permanent_residence_address' =>'required|string',
+            'secondary_school_attended' =>'required|string',
+            'secondary_school_graduation_year' =>'required|date',
+            'phone' =>'required|string',
+        ]);
     }
 
     /**
