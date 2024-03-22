@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Student;
 
 use App\Models\User;
 use App\Models\Admin;
+use App\Models\Student;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class StudentProfileController extends Controller
 {
@@ -21,17 +23,35 @@ class StudentProfileController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function setPassword()
     {
-        //
+        return view('student.profile.setPassword');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function updatePassword(Request $request)
     {
-        //
+        $request->validate([
+            'current_password' => 'required|current_password',
+            'password' => 'required|different:current_password|min:8|max:10'
+        ]);
+
+        $user = User::find(Auth::user()->id);
+
+        // if (Hash::check($user->password, $request->password)) {
+        //     return redirect()->back()->withErrors('password', 'New password cannot be the same as your current password');
+        // }
+
+        $user->update([
+            'password' => bcrypt($request->password)
+        ]);
+        $notification = [
+            'message' => 'Password Details Updated!',
+            'alert-type' => 'success'
+        ];
+        return redirect()->back()->with($notification);
     }
 
     /**
@@ -56,7 +76,7 @@ class StudentProfileController extends Controller
     public function update(Request $request)
     {
         $user = User::find(Auth::user()->id);
-        $student = Admin::where('user_id', $user->id);
+        $student = Student::where('user_id', $user->id);
 
         $request->validate([
             'first_name' =>'required|string',
@@ -71,6 +91,7 @@ class StudentProfileController extends Controller
             'secondary_school_attended' =>'required|string',
             'secondary_school_graduation_year' =>'required|date',
             'phone' =>'required|string',
+            'agreement' => 'required'
         ]);
 
         $user->update([

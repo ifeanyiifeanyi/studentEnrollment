@@ -3,7 +3,7 @@
 @section('title', "Profile")
 @section('css')
 <style>
-    .text-danger{
+    .text-danger {
         font-weight: bold !important;
         font-family: Verdana, Geneva, Tahoma, sans-serif !important;
     }
@@ -41,11 +41,12 @@
                             </li>
                             <li class="list-group-item">
                                 <b>Last Login</b> <a class="float-right">{{
-                                    $user->student->previous_login_at?->diffForHumans() ?? 'N/A' }}</a>
+                                    $user->previous_login_at?->diffForHumans() ?? 'N/A' }}</a>
                             </li>
                         </ul>
 
-                        <a href="#" class="btn btn-primary btn-block"><b>Update Account Password</b></a>
+                        <a href="{{ route("student.profile.setPassword") }}" class="btn btn-danger btn-block"><b>Update Account Password</b></a>
+                        <a href="#" class="btn btn-primary btn-block"><b>Upload your Passport Photo</b></a>
                     </div>
                     <!-- /.card-body -->
                 </div>
@@ -61,33 +62,36 @@
                         <strong><i class="fas fa-book mr-1"></i> Education</strong>
 
                         <p class="text-muted">
-                            B.S. in Computer Science from the University of Tennessee at Knoxville
+                            {{ Str::title($user->student->secondary_school_attended) ?? 'N/A' }} <br>
+                            <small>{{ $user->student->secondary_school_graduation_year }}</small>
                         </p>
 
                         <hr>
 
                         <strong><i class="fas fa-map-marker-alt mr-1"></i> Location</strong>
 
-                        <p class="text-muted">Malibu, California</p>
-
-                        <hr>
-
-                        <strong><i class="fas fa-pencil-alt mr-1"></i> Skills</strong>
-
                         <p class="text-muted">
-                            <span class="tag tag-danger">UI Design</span>
-                            <span class="tag tag-success">Coding</span>
-                            <span class="tag tag-info">Javascript</span>
-                            <span class="tag tag-warning">PHP</span>
-                            <span class="tag tag-primary">Node.js</span>
+                            {{ Str::title($user->student->current_residence_address) ?? 'N/A' }}
+                        </p>
+                        <p class="text-muted">
+                            {{ Str::title($user->student->permanent_residence_address) ?? 'N/A' }}
                         </p>
 
                         <hr>
 
-                        <strong><i class="far fa-file-alt mr-1"></i> Notes</strong>
+                        <strong><i class="far fa-calendar-alt mr-1"></i> Date of Birth</strong>
 
-                        <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam fermentum
-                            enim neque.</p>
+                        <p class="text-muted">
+                            {{ Str::title($user->student->dob) ?? 'N/A' }}
+                        </p>
+
+                        <hr>
+
+                        <strong><i class="fas fa-university mr-1"></i> Religion</strong>
+
+                        <p class="text-muted">
+                            {{ Str::title($user->student->religion) ?? 'N/A' }}
+                        </p>
                     </div>
                     <!-- /.card-body -->
                 </div>
@@ -114,166 +118,192 @@
                             <!-- /.tab-pane -->
 
                             <div class="active tab-pane" id="settings">
-                                    <!-- general form elements -->
-                                    <div class="card card-primary">
-                                        <!-- form start -->
-                                        <form method="POST" action="{{ route('student.profile.update') }}">
-                                            @csrf
-                                            @method('patch')
-                                            <div class="card-body">
-                                                <div class="row">
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label for="first_name">First Name</label>
-                                                            <input name="first_name" type="text" class="form-control" id="first_name" value="{{ old('first_name', $user->first_name) }}"
-                                                                placeholder="Enter first name">
-                                                            @error('first_name')
-                                                                <span class="text-danger">{{ $message }}</span>
-                                                            @enderror
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label for="last_name">Last Name</label>
-                                                            <input type="text" name="last_name" class="form-control" value="{{ old('last_name', $user->last_name) }}"
-                                                                id="last_name" placeholder="Enter last name">
-                                                            @error('last_name')
-                                                                <span class="text-danger">{{ $message }}</span>
-                                                            @enderror
-                                                        </div>
+                                <!-- general form elements -->
+                                <div class="card card-primary">
+                                    <!-- form start -->
+                                    <form method="POST" action="{{ route('student.profile.update') }}">
+                                        @csrf
+                                        @method('patch')
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="first_name">First Name</label>
+                                                        <input name="first_name" type="text" class="form-control"
+                                                            id="first_name"
+                                                            value="{{ old('first_name', $user->first_name) }}"
+                                                            placeholder="Enter first name">
+                                                        @error('first_name')
+                                                        <span class="text-danger">{{ $message }}</span>
+                                                        @enderror
                                                     </div>
                                                 </div>
-                                                <div class="row">
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label for="other_names">Other Names</label>
-                                                            <input name="other_names" type="text" class="form-control" id="other_names" value="{{ old('other_names', $user->other_names) }}"
-                                                                placeholder="Enter first name">
-                                                            @error('other_names')
-                                                                <span class="text-danger">{{ $message }}</span>
-                                                            @enderror
-                                                        </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="last_name">Last Name</label>
+                                                        <input type="text" name="last_name" class="form-control"
+                                                            value="{{ old('last_name', $user->last_name) }}"
+                                                            id="last_name" placeholder="Enter last name">
+                                                        @error('last_name')
+                                                        <span class="text-danger">{{ $message }}</span>
+                                                        @enderror
                                                     </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label for="email">Email Address</label>
-                                                            <input type="email" name="email" class="form-control" value="{{ old('email', $user->email) }}"
-                                                                id="email" placeholder="Enter last name">
-                                                            @error('email')
-                                                                <span class="text-danger">{{ $message }}</span>
-                                                            @enderror
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label for="phone">Phone Number</label>
-                                                            <input name="phone" type="tel" class="form-control" id="phone" value="{{ old('phone', $user->student->phone) }}"
-                                                                placeholder="Enter first name">
-                                                            @error('phone')
-                                                                <span class="text-danger">{{ $message }}</span>
-                                                            @enderror
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label for="last_name">Gender</label>
-                                                            <select name="gender" class="form-control" id="last_name" >
-                                                                <option disabled selected value="">Select Gender</option>
-                                                                <option value="male">Male</option>
-                                                                <option value="female">Female</option>
-                                                            </select>
-                                                            @error('gender')
-                                                                <span class="text-danger">{{ $message }}</span>
-                                                            @enderror
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="row">
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label for="religion">Religion</label>
-                                                            <input name="religion" type="text" class="form-control" id="religion" value="{{ old('religion', $user->student->religion) }}"
-                                                                placeholder="Enter first name">
-                                                            @error('religion')
-                                                                <span class="text-danger">{{ $message }}</span>
-                                                            @enderror
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label for="dob">Date of Birth</label>
-                                                            <input type="date" class="form-control" value="{{ old('dob', $user->student->dob) }}"
-                                                                id="dob" placeholder="Enter date of birth">
-                                                            @error('dob')
-                                                                <span class="text-danger">{{ $message }}</span>
-                                                            @enderror
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="row">
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label for="secondary_school_attended">Secondary School Attended</label>
-                                                            <input name="secondary_school_attended" type="text" class="form-control" id="secondary_school_attended" value="{{ old('secondary_school_attended', $user->student->secondary_school_attended) }}"
-                                                                placeholder="Secondary school attended">
-                                                            @error('secondary_school_attended')
-                                                                <span class="text-danger">{{ $message }}</span>
-                                                            @enderror
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label for="secondary_school_graduation_year">Year of Graduation</label>
-                                                            <input type="date" class="form-control" value="{{ old('secondary_school_graduation_year', $user->student->secondary_school_graduation_year) }}"
-                                                                id="secondary_school_graduation-year" placeholder="Year of graudation">
-                                                            @error('secondary_school_graduation_year')
-                                                                <span class="text-danger">{{ $message }}</span>
-                                                            @enderror
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="row">
-                                                    <div class="col-md-12">
-                                                        <div class="form-group">
-                                                            <label for="current_residence_address">Current Residential Address</label>
-                                                            <input name="current_residence_address" type="text" class="form-control" id="current_residence_address" value="{{ old('current_residence_address', $user->student->current_residence_address) }}"
-                                                                placeholder="Secondary school attended">
-                                                            @error('current_residence_address')
-                                                                <span class="text-danger">{{ $message }}</span>
-                                                            @enderror
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-md-12">
-                                                        <div class="form-group">
-                                                            <label for="permanent_residence_address">Permanent Residential Address</label>
-                                                            <input name="permanent_residence_address" type="text" class="form-control" id="permanent_residence_address" value="{{ old('permanent_residence_address', $user->student->permanent_residence_address) }}"
-                                                                placeholder="Secondary school attended">
-                                                            @error('permanent_residence_address')
-                                                                <span class="text-danger">{{ $message }}</span>
-                                                            @enderror
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="form-check">
-                                                    <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                                                    <label class="form-check-label" for="exampleCheck1">I accept, that falsifed information has been added</label>
                                                 </div>
                                             </div>
-                                            <!-- /.card-body -->
-
-                                            <div class="card-footer">
-                                                <button type="submit" class="btn btn-primary">Submit</button>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="other_names">Other Names</label>
+                                                        <input name="other_names" type="text" class="form-control"
+                                                            id="other_names"
+                                                            value="{{ old('other_names', $user->other_names) }}"
+                                                            placeholder="Enter first name">
+                                                        @error('other_names')
+                                                        <span class="text-danger">{{ $message }}</span>
+                                                        @enderror
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="email">Email Address</label>
+                                                        <input type="email" name="email" class="form-control"
+                                                            value="{{ old('email', $user->email) }}" id="email"
+                                                            placeholder="Enter last name">
+                                                        @error('email')
+                                                        <span class="text-danger">{{ $message }}</span>
+                                                        @enderror
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </form>
-                                    </div>
-                                    <!-- /.card -->
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="phone">Phone Number</label>
+                                                        <input name="phone" type="tel" class="form-control" id="phone"
+                                                            value="{{ old('phone', $user->student->phone) }}"
+                                                            placeholder="Enter first name">
+                                                        @error('phone')
+                                                        <span class="text-danger">{{ $message }}</span>
+                                                        @enderror
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="gender">Gender</label>
+                                                        <select name="gender" class="form-control" id="gender">
+                                                            <option disabled value="">Select Gender</option>
+                                                            <option value="male">Male</option>
+                                                            <option value="female">Female</option>
+                                                        </select>
+                                                        @error('gender')
+                                                        <span class="text-danger">{{ $message }}</span>
+                                                        @enderror
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="religion">Religion</label>
+                                                        <input name="religion" type="text" class="form-control"
+                                                            id="religion"
+                                                            value="{{ old('religion', $user->student->religion) }}"
+                                                            placeholder="Enter first name">
+                                                        @error('religion')
+                                                        <span class="text-danger">{{ $message }}</span>
+                                                        @enderror
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="dob">Date of Birth</label>
+                                                        <input name="dob" type="date" class="form-control"
+                                                            value="{{ old('dob', $user->student->dob) }}" id="dob"
+                                                            placeholder="Enter date of birth">
+                                                        @error('dob')
+                                                        <span class="text-danger">{{ $message }}</span>
+                                                        @enderror
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="secondary_school_attended">Secondary School
+                                                            Attended</label>
+                                                        <input name="secondary_school_attended" type="text"
+                                                            class="form-control" id="secondary_school_attended"
+                                                            value="{{ old('secondary_school_attended', $user->student->secondary_school_attended) }}"
+                                                            placeholder="Secondary school attended">
+                                                        @error('secondary_school_attended')
+                                                        <span class="text-danger">{{ $message }}</span>
+                                                        @enderror
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="secondary_school_graduation_year">Year of
+                                                            Graduation</label>
+                                                        <input name="secondary_school_graduation_year" type="date" class="form-control" value="{{ old('secondary_school_graduation_year', $user->student->secondary_school_graduation_year) }}"
+                                                            id="secondary_school_graduation-year"
+                                                            placeholder="Year of graudation">
+                                                        @error('secondary_school_graduation_year')
+                                                        <span class="text-danger">{{ $message }}</span>
+                                                        @enderror
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label for="current_residence_address">Current Residential
+                                                            Address</label>
+                                                        <input name="current_residence_address" type="text"
+                                                            class="form-control" id="current_residence_address"
+                                                            value="{{ old('current_residence_address', $user->student->current_residence_address) }}"
+                                                            placeholder="Secondary school attended">
+                                                        @error('current_residence_address')
+                                                        <span class="text-danger">{{ $message }}</span>
+                                                        @enderror
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label for="permanent_residence_address">Permanent Residential
+                                                            Address</label>
+                                                        <input name="permanent_residence_address" type="text"
+                                                            class="form-control" id="permanent_residence_address"
+                                                            value="{{ old('permanent_residence_address', $user->student->permanent_residence_address) }}"
+                                                            placeholder="Secondary school attended">
+                                                        @error('permanent_residence_address')
+                                                        <span class="text-danger">{{ $message }}</span>
+                                                        @enderror
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-check">
+                                                <input type="checkbox" name="agreement" class="form-check-input" id="exampleCheck1">
+                                                <label class="form-check-label" for="exampleCheck1">I accept, that
+                                                    falsifed information has been added</label>
+                                                    <br>
+                                                @error('agreement')
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                        <!-- /.card-body -->
+
+                                        <div class="card-footer">
+                                            <button type="submit" class="btn btn-primary">Submit</button>
+                                        </div>
+                                    </form>
+                                </div>
+                                <!-- /.card -->
                                 <!-- /.tab-pane -->
                             </div>
                             <!-- /.tab-content -->

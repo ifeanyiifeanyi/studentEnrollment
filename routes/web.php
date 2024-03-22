@@ -78,8 +78,8 @@ Route::prefix('student')->middleware('auth', 'verified', 'role:student')->group(
 
     Route::controller(StudentProfileController::class)->group(function(){
         Route::get('profile', 'profile')->name('student.profile');
-        Route::get('profile/set-password', '<PASSWORD>')->name('student.profile.setPassword');
-        Route::patch('profile/update-password', '<PASSWORD>')->name('student.profile.updatePassword');
+        Route::get('profile/set-password', 'setPassword')->name('student.profile.setPassword');
+        Route::patch('profile/update-password', 'updatePassword')->name('student.profile.updatePassword');
         Route::patch('profile/update', 'update')->name('student.profile.update');
     });
 });

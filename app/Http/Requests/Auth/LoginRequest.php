@@ -86,6 +86,7 @@ class LoginRequest extends FormRequest
         
         $user->previous_login_at = empty($user->last_login_at) ? now() : $user->last_login_at;
         $user->last_login_at = now();
+        
         // Store the current last_login_at value in previous_login_at
         $user->save();
 
