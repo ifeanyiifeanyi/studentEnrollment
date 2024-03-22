@@ -11,16 +11,17 @@
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
-        
+
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="{{ asset("") }}student/plugins/fontawesome-free/css/all.min.css">
 
     <!-- overlayScrollbars -->
     <link rel="stylesheet" href="{{ asset("") }}student/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
-    
+
     <!-- Theme style -->
     <link rel="stylesheet" href="{{ asset("") }}student/dist/css/adminlte.min.css">
-    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="{{ asset("") }}admin/assets/img/favicon.ico">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css">
     @yield('css')
 </head>
 
@@ -46,7 +47,7 @@
                         </div><!-- /.col -->
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">
-                                <li class="breadcrumb-item"><a href="{{ route("student.dashboard") }}">Home</a></li>
+                                <li class="breadcrumb-item"><a href="{{ route(" student.dashboard") }}">Home</a></li>
                                 <li class="breadcrumb-item active">@yield("title")</li>
                             </ol>
                         </div><!-- /.col -->
@@ -56,7 +57,7 @@
             <!-- /.content-header -->
 
             <!-- Main content -->
-           @yield("student")
+            @yield("student")
             <!-- /.content -->
         </div>
         <!-- /.content-wrapper -->
@@ -85,7 +86,32 @@
     <script src="{{ asset("") }}student/plugins/jquery-mapael/maps/usa_states.min.js"></script>
     <!-- ChartJS -->
     <script src="{{ asset("") }}student/plugins/chart.js/Chart.min.js"></script>
-@yield('js')
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script>
+        @if(Session::has('message'))
+          var type = "{{ Session::get('alert-type','info') }}"
+      
+          switch(type){
+          case 'info':
+          toastr.info(" {{ Session::get('message') }} ");
+          break;
+      
+          case 'success':
+          toastr.success(" {{ Session::get('message') }} ");
+          break;
+      
+          case 'warning':
+          toastr.warning(" {{ Session::get('message') }} ");
+          break;
+      
+          case 'error':
+          toastr.error(" {{ Session::get('message') }} ");
+          break;
+        }
+      @endif
+    </script>
+
+    @yield('js')
 </body>
 
 </html>

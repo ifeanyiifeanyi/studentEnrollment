@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers\Student;
 
-use App\Http\Controllers\Controller;
+use App\Models\User;
+use App\Models\Admin;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class StudentProfileController extends Controller
 {
@@ -52,7 +55,9 @@ class StudentProfileController extends Controller
      */
     public function update(Request $request)
     {
-        $user = auth()->user();
+        $user = User::find(Auth::user()->id);
+        $student = Admin::where('user_id', $user->id);
+
         $request->validate([
             'first_name' =>'required|string',
             'last_name' =>'required|string',
@@ -67,6 +72,33 @@ class StudentProfileController extends Controller
             'secondary_school_graduation_year' =>'required|date',
             'phone' =>'required|string',
         ]);
+
+        $user->update([
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+            'other_names' => $request->other_names,
+            'email' => $request->email
+        ]);
+
+
+        $student->update([
+            'phone' => $request->phone,
+            'gender' => $request->gender,
+            'religion' => $request->religion,
+            'dob' => $request->dob,
+            'current_residence_address' => $request->current_residence_address,
+            'permanent_residence_address' => $request->permanent_residence_address,
+            'secondary_school_attended' => $request->secondary_school_attended,
+            'secondary_school_graduation_year' => $request->secondary_school_graduation_year
+        ]);
+
+
+
+        $notification = [
+            'message' => 'Profile Details Updated!',
+            'alert-type' => 'success'
+        ];
+        return redirect()->back()->with($notification);
     }
 
     /**

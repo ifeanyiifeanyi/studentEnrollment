@@ -39,7 +39,6 @@
                                 </div>
                                 @enderror
                             </div>
-                            <x-auth-session-status class="mb-4" :status="session('status')" />
 
                             <div class="form-group">
                                 <div class="d-block">
