@@ -4,7 +4,7 @@
 @section('css')
 <style>
     .text-danger {
-        font-weight: bold !important;
+        font-weight: 700 !important;
         font-family: Verdana, Geneva, Tahoma, sans-serif !important;
     }
 </style>
@@ -33,10 +33,10 @@
 
                         <ul class="list-group list-group-unbordered mb-3">
                             <li class="list-group-item">
-                                <b>Phone Number</b> <a class="float-right text-light">{{ $user->student->phone }}</a>
+                                <b>Phone Number</b> <a class="float-right text-muted">{{ $user->student->phone }}</a>
                             </li>
                             <li class="list-group-item">
-                                <b>Email Address</b> <a class="float-right text-light">{{ Str::lower($user->email)
+                                <b>Email Address</b> <a class="float-right text-muted">{{ Str::lower($user->email)
                                     }}</a>
                             </li>
                             <li class="list-group-item">
@@ -191,7 +191,7 @@
                                                     <div class="form-group">
                                                         <label for="gender">Gender</label>
                                                         <select name="gender" class="form-control" id="gender">
-                                                            <option disabled value="">Select Gender</option>
+                                                            <option disabled selected value="">Select Gender</option>
                                                             <option value="male">Male</option>
                                                             <option value="female">Female</option>
                                                         </select>

@@ -35,7 +35,7 @@ class StudentProfileController extends Controller
     {
         $request->validate([
             'current_password' => 'required|current_password',
-            'password' => 'required|different:current_password|min:8|max:10'
+            'password' => 'required|confirmed|different:current_password|min:8|max:10'
         ]);
 
         $user = User::find(Auth::user()->id);

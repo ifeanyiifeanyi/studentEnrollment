@@ -59,10 +59,10 @@
                         </li>
                     </ul>
                 </li>
-                <li class="nav-item">
-                    <a href="iframe.html" class="nav-link">
-                        <i class="nav-icon fas fa-"></i>
-                        <p>Tabbed IFrame Plugin</p>
+                <li class="nav-item bg-danger">
+                    <a href="{{ route('student.logout') }}" class="nav-link">
+                        <i class="nav-icon fas fa-user-lock"></i>
+                        <p>Logout</p>
                     </a>
                 </li>
             </ul>

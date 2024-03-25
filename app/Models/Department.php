@@ -13,4 +13,8 @@ class Department extends Model
     public function faculty(){
         return $this->belongsTo(Faculty::class);
     }
+
+    public function exam_managers(){
+        return $this->hasMany(ExamManager::class);
+    }
 }

@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\DepartmentController;
 use App\Http\Controllers\Admin\AdminProfileController;
 use League\CommonMark\Extension\SmartPunct\DashParser;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
+use App\Http\Controllers\Admin\ExamManagerController;
 use App\Http\Controllers\Student\StudentDashboardController;
 use App\Http\Controllers\Student\StudentProfileController;
 
@@ -24,11 +25,9 @@ use App\Http\Controllers\Student\StudentProfileController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth.login');
 });
 
-// Email Verification Routes
-// Auth::routes(['verify' => true]);
 
 Route::get('/dashboard', DashboardController::class)->middleware(['auth', 'verified'])->name('dashboard');
 
@@ -37,7 +36,6 @@ Route::prefix('admin')->middleware(['auth', 'verified', 'role:admin'])->group(fu
     Route::controller(AdminDashboardController::class)->group(function(){
         Route::get('dashboard', 'index')->name('admin.dashboard');
         Route::get('logout', 'logout')->name('admin.logout');
-        // Route::get('profile', ProfileController::class)->name('admin.profile');
     });
 
     Route::controller(AdminProfileController::class)->group(function(){
@@ -66,14 +64,20 @@ Route::prefix('admin')->middleware(['auth', 'verified', 'role:admin'])->group(fu
         Route::get('view-department/{slug}','show')->name('admin.show.department');
         Route::patch('update-department/{slug}', 'update')->name('admin.update.department');
     });
-    Route::resource("department",DepartmentController::class);
-     
+    // Route::resource("department",DepartmentController::class);
+
+    Route::controller(ExamManagerController::class)->group(function(){
+        Route::get('exam-management', 'index')->name('admin.exam.manager');
+        Route::post('exam-management/store', 'store')->name("admin.exam.store");
+    
+    });
 
 });
 
 Route::prefix('student')->middleware('auth', 'verified', 'role:student')->group(function(){
     Route::controller(StudentDashboardController::class)->group(function(){
         Route::get('dashboard', 'dashboard')->name('student.dashboard');
+        Route::get('logout', 'logout')->name('student.logout');
     });
 
     Route::controller(StudentProfileController::class)->group(function(){
