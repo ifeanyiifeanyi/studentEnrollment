@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\AdminProfileController;
 use League\CommonMark\Extension\SmartPunct\DashParser;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\ExamManagerController;
+use App\Http\Controllers\Admin\StudentManagementController;
 use App\Http\Controllers\Student\StudentDashboardController;
 use App\Http\Controllers\Student\StudentProfileController;
 
@@ -75,6 +76,16 @@ Route::prefix('admin')->middleware(['auth', 'verified', 'role:admin'])->group(fu
         Route::patch('exam-management-details/{id}/update', "update")->name('admin.exam.update');
         Route::get('exam-management-details/del/{id}', "destroy")->name('admin.exam.destroy');
     
+    });
+
+    Route::controller(StudentManagementController::class)->group(function(){
+        Route::get('student-management', 'index')->name('admin.student.management');
+        Route::get('create-student', 'create')->name('admin.create.student');
+        Route::post('store-student','store')->name('admin.store.student');
+        Route::get('delete-student/{slug}', 'destroy')->name('admin.destroy.student');
+        Route::get('edit-student/{slug}', 'edit')->name('admin.edit.student');
+        Route::get('view-student/{slug}','show')->name('admin.show.student');
+        Route::patch('update-student/{slug}', 'update')->name('admin.update.student');
     });
 
 });
