@@ -69,6 +69,11 @@ Route::prefix('admin')->middleware(['auth', 'verified', 'role:admin'])->group(fu
     Route::controller(ExamManagerController::class)->group(function(){
         Route::get('exam-management', 'index')->name('admin.exam.manager');
         Route::post('exam-management/store', 'store')->name("admin.exam.store");
+        Route::get('exam-management-details', "examDetails")->name('admin.exam.details');
+        Route::get('exam-management-details/{id}', "examInformation")->name('admin.exam.information');
+        Route::get('exam-management-details/{id}/edit', "edit")->name('admin.exam.edit');
+        Route::patch('exam-management-details/{id}/update', "update")->name('admin.exam.update');
+        Route::get('exam-management-details/del/{id}', "destroy")->name('admin.exam.destroy');
     
     });
 

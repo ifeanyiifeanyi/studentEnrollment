@@ -19,7 +19,7 @@
           <a href="{{ route('admin.exam.manager') }}" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-columns"></i> <span>Exam/Subject Manager</span></a>
           <ul class="dropdown-menu">
             <li><a class="nav-link" href="{{ route('admin.exam.manager') }}">Exam Manager</a></li>
-            <li><a class="nav-link" href="layout-transparent.html">Transparent Sidebar</a></li>
+            <li><a class="nav-link" href="{{ route('admin.exam.details') }}">Exam Details</a></li>
             <li><a class="nav-link" href="layout-top-navigation.html">Top Navigation</a></li>
           </ul>
         </li>
