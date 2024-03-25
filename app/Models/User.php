@@ -29,6 +29,30 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasOne(Student::class);
     }
 
+    public function getFullNameAttribute()
+    {
+        $fullName = $this->first_name . ' ' . $this->last_name;
+
+        if ($this->other_names) {
+            $fullName .='<br>'. ' (' . $this->other_names . ')';
+        }
+
+        return $fullName;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     // generate random username for users
     public function generateUsername()
     {

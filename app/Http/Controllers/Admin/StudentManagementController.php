@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 class StudentManagementController extends Controller
 {
     public function index(){
-        $students = User::with('student')->latest()->get();
+        $students = User::with('student')->latest()->simplePaginate('2');
         // dd($students);
         return view('admin.studentManagement.index', compact('students'));
     }
