@@ -58,7 +58,7 @@
                                         <th>Name</th>
                                         <th>Phone Number</th>
                                         <th>Email</th>
-                                        <th>Department</th>
+                                        <th>Date Join</th>
                                         <th>Status</th>
                                     </tr>
 
@@ -90,7 +90,7 @@
                                                 </div>
                                             </center>
                                             <div class="table-links mb-3">
-                                                <a href="#">View</a>
+                                                <a href="{{ route('admin.show.student', $student->nameSlug) }}">View</a>
                                                 <div class="bullet"></div>
                                                 <a href="#">Edit</a>
                                                 <div class="bullet"></div>
@@ -108,7 +108,7 @@
                                                 </div>
                                             </a>
                                         </td>
-                                        <td>{{ $student->department->name ?? 'n/a' }}</td>
+                                        <td>{{ \Carbon\Carbon::parse($student->created_at)->format('jS F Y') }}</td>
                                         <td>
                                             @switch($student->student->admission_status)
                                             @case('pending')
