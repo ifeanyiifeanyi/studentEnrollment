@@ -31,14 +31,15 @@
                                 </select>
                             </div>
                             <div class="float-right">
-                                <form>
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" placeholder="Search">
-                                        <div class="input-group-append">
-                                            <button class="btn btn-primary"><i class="fas fa-search"></i></button>
-                                        </div>
-                                    </div>
-                                </form>
+                                <select class="form-control selectric">
+                                    <option disabled selected>Select by Department</option>
+                                    @forelse ($departments as $department)
+                                    <option value="{{ $department->id }}">{{ Str::title($department->name) }}</option>
+                                    @empty
+                                    <option>Not available</option>
+
+                                    @endforelse
+                                </select>
                             </div>
 
                             <div class="clearfix mb-3"></div>
@@ -60,7 +61,13 @@
                                         <th>Department</th>
                                         <th>Status</th>
                                     </tr>
+
+
+
+                                    {{-- @dd($students) --}}
+
                                     @forelse ($students as $student)
+
                                     <tr>
                                         <td>
                                             <div class="custom-checkbox custom-control">
@@ -70,18 +77,19 @@
                                             </div>
                                         </td>
                                         <td>
-                                            <div class="text-center mb-1">
-                                                <img alt="image"
-                                                    src="{{ empty($student->student->photo) ? asset('admin/assets/img/avatar/avatar-5.png') : asset($student->student->photo) }}"
-                                                    class="rounded-circle" width="35" data-toggle="title"
-                                                    title="{{ $student->last_name }}">
-                                            </div>
+                                            <center>
+                                                <div class="text-center mb-1">
+                                                    <img alt="image"
+                                                        src="{{ empty($student->student->photo) ? asset('admin/assets/img/avatar/avatar-5.png') : asset($student->student->photo) }}"
+                                                        class="rounded-circle" width="35" data-toggle="title"
+                                                        title="{{ $student->last_name }}">
+                                                </div>
 
-                                            <div class="d-inline-block">
-                                                {!! Str::title($student->full_name) !!}
-                                            </div>
-
-                                            <div class="table-links">
+                                                <div class="d-inline-block">
+                                                    {!! Str::title($student->full_name) !!}
+                                                </div>
+                                            </center>
+                                            <div class="table-links mb-3">
                                                 <a href="#">View</a>
                                                 <div class="bullet"></div>
                                                 <a href="#">Edit</a>
@@ -96,14 +104,28 @@
                                         <td>
                                             <a href="mailto:{{ $student->email }}">
 
-                                                <div class="d-inline-block ml-1 link">{{ Str::lower($student->email) }}</div>
+                                                <div class="d-inline-block ml-1 link">{{ Str::lower($student->email) }}
+                                                </div>
                                             </a>
                                         </td>
-                                        <td>Department</td>
+                                        <td>{{ $student->department->name ?? 'n/a' }}</td>
                                         <td>
-                                            <div class="badge badge-primary">Published</div>
+                                            @switch($student->student->admission_status)
+                                            @case('pending')
+                                            <span class="badge bg-warning">Pending</span>
+                                            @break
+                                            @case('approved')
+                                            <span class="badge bg-success">Approved</span>
+                                            @break
+                                            @case('denied')
+                                            <span class="badge bg-danger">Denied</span>
+                                            @break
+                                            @default
+                                            <span class="badge bg-secondary">Unknown</span>
+                                            @endswitch
                                         </td>
                                     </tr>
+
                                     @empty
                                     <div class="alert alert-danger text-center"><b>Not available</b></div>
                                     @endforelse
