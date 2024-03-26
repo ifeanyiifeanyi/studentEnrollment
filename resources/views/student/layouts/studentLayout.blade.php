@@ -23,6 +23,7 @@
     <link rel="shortcut icon" href="{{ asset("") }}admin/assets/img/favicon.ico">
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css">
     @yield('css')
+    @livewireStyles
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
@@ -112,6 +113,7 @@
     </script>
 
     @yield('js')
+    @livewireScripts
 </body>
 
 </html>

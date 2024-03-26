@@ -11,6 +11,7 @@ use League\CommonMark\Extension\SmartPunct\DashParser;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\ExamManagerController;
 use App\Http\Controllers\Admin\StudentManagementController;
+use App\Http\Controllers\Student\ApplicationProcessController;
 use App\Http\Controllers\Student\StudentDashboardController;
 use App\Http\Controllers\Student\StudentProfileController;
 
@@ -101,6 +102,10 @@ Route::prefix('student')->middleware('auth', 'verified', 'role:student')->group(
         Route::get('profile/set-password', 'setPassword')->name('student.profile.setPassword');
         Route::patch('profile/update-password', 'updatePassword')->name('student.profile.updatePassword');
         Route::patch('profile/update', 'update')->name('student.profile.update');
+    });
+
+    Route::controller(ApplicationProcessController::class)->group(function(){
+        Route::get('application-process', 'index')->name('student.application.process');
     });
 });
 require __DIR__ . '/auth.php';
