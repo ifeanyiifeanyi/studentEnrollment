@@ -18,6 +18,10 @@
     <!-- overlayScrollbars -->
     <link rel="stylesheet" href="{{ asset("") }}student/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
 
+    <!-- In the <head> section -->
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
+
     <!-- Theme style -->
     <link rel="stylesheet" href="{{ asset("") }}student/dist/css/adminlte.min.css">
     <link rel="shortcut icon" href="{{ asset("") }}admin/assets/img/favicon.ico">
@@ -42,7 +46,7 @@
             <!-- Content Header (Page header) -->
             <div class="content-header">
                 <div class="container-fluid">
-                    <div class="row mb-2">
+                    <div class="mb-2 row">
                         <div class="col-sm-6">
                             <h1 class="m-0">@yield("title")</h1>
                         </div><!-- /.col -->
@@ -78,6 +82,8 @@
     <script src="{{ asset("") }}student/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
     <!-- AdminLTE App -->
     <script src="{{ asset("") }}student/dist/js/adminlte.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
 
     <!-- PAGE {{ asset("") }}student/PLUGINS -->
     <!-- jQuery Mapael -->
@@ -113,6 +119,19 @@
     </script>
 
     @yield('js')
+    <script>
+        $(document).ready(function() {
+            $('#state').select2();
+            $('#localGovernment').select2();
+        });
+    </script>
+    {{-- <script>
+        window.addEventListener('initSelect2', function () {
+            $('#state').select2();
+            $('#localGovernment').select2();
+        });
+    </script> --}}
+    
     @livewireScripts
 </body>
 
