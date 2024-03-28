@@ -3,7 +3,7 @@
     <div class="step-one">
         <div class="shadow card">
             <div class="text-white card-header bg-secondary">
-                STEP 1 OF 4, PERSONAL DETAILS
+                STEP 1 OF 5, PERSONAL DETAILS
             </div>
             <div class="card-body">
                 <div class="row">
@@ -232,27 +232,32 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="guardian_name">Guardian/Parent</label>
-                            <input name="guardian_name" type="text" class="form-control" id="guardian_name" value="{{ old('guardian_name', $user->student->guardian_name ?? "") }}" placeholder="Guardian / Parent Name" />
+                            <input name="guardian_name" type="text" class="form-control" id="guardian_name"
+                                value="{{ old('guardian_name', $user->student->guardian_name ?? "") }}"
+                                placeholder="Guardian / Parent Name" />
                             @error('guardian_name')
-                                <span class="text-danger">{{ $message }}</span>
+                            <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="guardian_phone_number">Guardian/Parent Phone number</label>
-                            <input name="guardian_phone_number" type="text" class="form-control" id="guardian_phone_number" value="{{ old('guardian_phone_number', $user->student->guardian_phone_number ?? "") }}" />
+                            <input name="guardian_phone_number" type="text" class="form-control"
+                                id="guardian_phone_number"
+                                value="{{ old('guardian_phone_number', $user->student->guardian_phone_number ?? "") }}" />
                             @error('guardian_phone_number')
-                                <span class="text-danger">{{ $message }}</span>
+                            <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="guardian_address">Guardian/Parent Address</label>
-                            <input name="guardian_address" type="text" class="form-control" id="guardian_address" value="{{ old('guardian_address', $user->student->guardian_address ?? "") }}" />
+                            <input name="guardian_address" type="text" class="form-control" id="guardian_address"
+                                value="{{ old('guardian_address', $user->student->guardian_address ?? "") }}" />
                             @error('guardian_address')
-                                <span class="text-danger">{{ $message }}</span>
+                            <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
                     </div>
@@ -262,39 +267,48 @@
     </div>
     {{-- step one ends --}}
 
-    {{-- step two starts  --}}
+    {{-- step two starts --}}
     <div class="step-two">
         <div class="shadow card">
             <div class="text-white card-header bg-secondary">
-                STEP 2 OF 4, ACADEMIC DETAILS
+                STEP 2 OF 5, ACADEMIC DETAILS
             </div>
             <div class="card-body">
-                
+
                 <div class="row">
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="secondary_school_attended">Secondary School Attended</label>
-                            <input name="secondary_school_attended" type="text" class="form-control" id="secondary_school_attended" value="{{ old('secondary_school_attended', $user->student->secondary_school_attended ?? "") }}" placeholder="Secondary School Attended" />
+                            <input name="secondary_school_attended" type="text" class="form-control"
+                                id="secondary_school_attended"
+                                value="{{ old('secondary_school_attended', $user->student->secondary_school_attended ?? "") }}"
+                                placeholder="Secondary School Attended" />
                             @error('secondary_school_attended')
-                                <span class="text-danger">{{ $message }}</span>
+                            <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="secondary_school_graduation_year">Graduation Year</label>
-                            <input name="secondary_school_graduation_year" type="date" class="form-control" id="secondary_school_graduation_year" value="{{ old('secondary_school_graduation_year', $user->student->secondary_school_graduation_year ?? "") }}" placeholder="Secondary School Graduation Year" />
+                            <input name="secondary_school_graduation_year" type="date" class="form-control"
+                                id="secondary_school_graduation_year"
+                                value="{{ old('secondary_school_graduation_year', $user->student->secondary_school_graduation_year ?? "") }}"
+                                placeholder="Secondary School Graduation Year" />
                             @error('secondary_school_graduation_year')
-                                <span class="text-danger">{{ $message }}</span>
+                            <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="secondary_school_certificate_type">Certificate Obtained</label>
-                            <input name="secondary_school_certificate_type" type="text" class="form-control" id="secondary_school_certificate_type" value="{{ old('secondary_school_certificate_type', $user->student->secondary_school_certificate_type ?? "") }}" placeholder="Secondary School Certificate obtained" />
+                            <input name="secondary_school_certificate_type" type="text" class="form-control"
+                                id="secondary_school_certificate_type"
+                                value="{{ old('secondary_school_certificate_type', $user->student->secondary_school_certificate_type ?? "") }}"
+                                placeholder="Secondary School Certificate obtained" />
                             @error('secondary_school_certificate_type')
-                                <span class="text-danger">{{ $message }}</span>
+                            <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
                     </div>
@@ -304,9 +318,22 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="jamb_reg_no">Jamb Registration Number</label>
-                            <input name="jamb_reg_no" type="text" class="form-control" id="jamb_reg_no" value="{{ old('jamb_reg_no', $user->student->jamb_reg_no ?? "") }}" placeholder="Secondary School Attended" />
+                            <input name="jamb_reg_no" type="text" class="form-control" id="jamb_reg_no"
+                                value="{{ old('jamb_reg_no', $user->student->jamb_reg_no ?? "") }}"
+                                placeholder="Secondary School Attended" />
                             @error('jamb_reg_no')
-                                <span class="text-danger">{{ $message }}</span>
+                            <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="jamb_score">Jamb Score</label>
+                            <input name="jamb_score" type="text" class="form-control" id="jamb_score"
+                                value="{{ old('jamb_score', $user->student->jamb_score ?? "") }}"
+                                placeholder="Jamb Score" />
+                            @error('jamb_score')
+                            <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
                     </div>
@@ -314,16 +341,16 @@
             </div>
         </div>
     </div>
-    {{-- step two ends  --}}
-    
-    {{-- step three starts  --}}
+    {{-- step two ends --}}
+
+    {{-- step three starts --}}
     <div class="step-three">
         <div class="shadow card">
             <div class="text-white card-header bg-info">
-                STEP 3 OF 4, SELECT DEPARTMENT(PROGRAM OF CHOICE)
+                STEP 3 OF 5, SELECT DEPARTMENT(PROGRAM OF CHOICE)
             </div>
             <div class="card-body">
-                
+
                 <div class="row">
                     <div class="mx-auto mt-5 col-md-6">
                         <div class="form-group">
@@ -331,13 +358,13 @@
                             <select name="department_id" class="form-control" id="department_id">
                                 <option selected disabled>Select Department(Program of choice)</option>
                                 @forelse ($departments as $department)
-                                    <option value="{{ $department->id }}">{{ Str::title($department->name) }}</option>
+                                <option value="{{ $department->id }}">{{ Str::title($department->name) }}</option>
                                 @empty
-                                    
+
                                 @endforelse
                             </select>
                             @error('department_id')
-                                <span class="text-danger">{{ $message }}</span>
+                            <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
                     </div>
@@ -346,24 +373,120 @@
             </div>
         </div>
     </div>
-    {{-- step three ends  --}}
+    {{-- step three ends --}}
 
-
-    {{-- step four starts  --}}
     <div class="step-four">
         <div class="shadow card">
-            <div class="text-white card-header bg-primary">
-                STEP 4 OF 4, SUBMIT COPIES OF ALL REQUIRED DOCUMENTS
+            <div class="text-white card-header bg-info">
+                STEP 3 OF 5, SELECT DEPARTMENT(PROGRAM OF CHOICE)
             </div>
             <div class="card-body">
-                
+                <div class="form-group">
+                    <label>Number of Sittings:</label>
+                    <div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" wire:model="sittings" value="1" wire:click="$set('subjects2', [])">
+                            <label class="form-check-label">One Sitting</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" wire:model="sittings" value="2" wire:click="$set('subjects1', [])">
+                            <label class="form-check-label">Two Sittings</label>
+                        </div>
+                    </div>
+                </div>
+                @if ($sittings === 1)
+                <div class="form-group">
+                    <label>Exam Board:</label>
+                    <select wire:model="examBoard1" class="form-control">
+                        <option value="waec">WAEC</option>
+                        <option value="neco">NECO</option>
+                        <option value="gce">GCE</option>
+                    </select>
+                </div>
+                @else
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Exam Board 1:</label>
+                            <select wire:model="examBoard1" class="form-control">
+                                <option value="waec">WAEC</option>
+                                <option value="neco">NECO</option>
+                                <option value="gce">GCE</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Exam Board 2:</label>
+                            <select wire:model="examBoard2" class="form-control">
+                                <option value="waec">WAEC</option>
+                                <option value="neco">NECO</option>
+                                <option value="gce">GCE</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                @endif
+    
+                <div class="row">
+                    <div class="col-md-6">
+                        <h3>Sitting 1</h3>
+                        @foreach ($subjects1 as $index => $subject)
+                        <div class="row form-group">
+                            <div class="col-md-6">
+                                <input type="text" wire:model="subjects1.{{ $index }}.subject" placeholder="Subject" class="form-control">
+                            </div>
+                            <div class="col-md-4">
+                                <input type="number" wire:model="subjects1.{{ $index }}.score" placeholder="Score" min="0" max="100" class="form-control">
+                            </div>
+                            <div class="col-md-2">
+                                <button type="button" wire:click="removeSubject(1, {{ $index }})" class="btn btn-danger">Remove</button>
+                            </div>
+                        </div>
+                        @endforeach
+                        <button type="button" wire:click="addSubject(1)" class="btn btn-primary">Add Subject</button>
+                    </div>
+    
+                    <div class="col-md-6">
+                        @if ($sittings == 2)
+                        <h3>Sitting 2</h3>
+                        @foreach ($subjects2 as $index => $subject)
+                        <div class="row form-group">
+                            <div class="col-md-6">
+                                <input type="text" wire:model="subjects2.{{ $index }}.subject" placeholder="Subject" class="form-control">
+                            </div>
+                            <div class="col-md-4">
+                                <input type="number" wire:model="subjects2.{{ $index }}.score" placeholder="Score" min="0" max="100" class="form-control">
+                            </div>
+                            <div class="col-md-2">
+                                <button type="button" wire:click="removeSubject(2, {{ $index }})" class="btn btn-danger">Remove</button>
+                            </div>
+                        </div>
+                        @endforeach
+                        <button type="button" wire:click="addSubject(2)" class="btn btn-primary">Add Subject</button>
+                        @endif
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    {{-- step five starts --}}
+    <div class="step-five">
+        <div class="shadow card">
+            <div class="text-white card-header bg-primary">
+                STEP 5 OF 5, SUBMIT COPIES OF ALL REQUIRED DOCUMENTS
+            </div>
+            <div class="card-body">
+
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="department_id">Select Department</label>
                             <input type="file" name="" id="">
                             @error('department_id')
-                                <span class="text-danger">{{ $message }}</span>
+                            <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
                     </div>
@@ -372,5 +495,5 @@
             </div>
         </div>
     </div>
-    {{-- step four ends  --}}
+    {{-- step five ends --}}
 </form>

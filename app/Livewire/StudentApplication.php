@@ -15,10 +15,30 @@ class StudentApplication extends Component
     public $states = [];
     public $localGovernments = [];
 
+
+
+    public $sittings = 1;
+    public $examBoard1 = 'waec';
+    public $examBoard2 = 'waec';
+    public $subjects1 = [];
+    public $subjects2 = [];
+    public $showSecondSitting = false;
+
+
     protected $rules = [
         'country' => 'required',
         'state' => 'required_if:country,Nigeria',
         'localGovernment' => 'required_if:country,Nigeria',
+
+
+        'sittings' => 'required|integer|in:1,2',
+        'examBoard1' => 'required_if:sittings,1|in:waec,neco,gce',
+        'examBoard2' => 'required_if:sittings,2|in:waec,neco,gce',
+        'subjects1.*.subject' => 'required_with:subjects1|distinct|min:8',
+        'subjects1.*.score' => 'required_with:subjects1|numeric|between:0,100',
+        'subjects2.*.subject' => 'required_with:subjects2|distinct|min:8',
+        'subjects2.*.score' => 'required_with:subjects2|numeric|between:0,100',
+
     ];
 
     public function render()
@@ -27,6 +47,50 @@ class StudentApplication extends Component
         $departments = Department::all();
         return view('livewire.student-application', ['user' => $user, 'departments' => $departments]);
     }
+
+    public function updatedSittings($value)
+    {
+        $this->showSecondSitting = $value === 2;
+
+        if ($value === 1) {
+            $this->subjects2 = [];
+        } elseif ($value === 2) {
+            $this->subjects1 = [];
+        }
+    }
+
+
+    public function addSubject($index)
+    {
+        if ($index === 1) {
+            $this->subjects1[] = ['subject' => '', 'score' => ''];
+        } elseif ($index === 2) {
+            $this->subjects2[] = ['subject' => '', 'score' => ''];
+        }
+    }
+
+    public function removeSubject($index, $key)
+    {
+        if ($index === 1) {
+            unset($this->subjects1[$key]);
+            $this->subjects1 = array_values($this->subjects1);
+        } elseif ($index === 2) {
+            unset($this->subjects2[$key]);
+            $this->subjects2 = array_values($this->subjects2);
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
 
     public function updatedCountry($value)
     {
