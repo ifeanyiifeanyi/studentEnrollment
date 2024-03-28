@@ -1,4 +1,4 @@
-<form action="">
+<form wire:submit.prevent='register'>
     {{-- step on starts --}}
     <div class="step-one">
         <div class="shadow card">
@@ -10,7 +10,7 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="first_name">First Name</label>
-                            <input name="first_name" type="text" class="form-control" id="first_name"
+                            <input wire:model="first_name" type="text" class="form-control" id="first_name"
                                 value="{{ old('first_name', $user->first_name ?? '') }}" placeholder="Enter First Name"
                                 required>
                             @error('first_name')
@@ -23,7 +23,7 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="last_name">Last Name</label>
-                            <input name="last_name" type="text" class="form-control" id="last_name"
+                            <input wire:model="last_name" type="text" class="form-control" id="last_name"
                                 value="{{ old('last_name', $user->last_name ?? '') }}" placeholder="Enter Last Name"
                                 required>
                             @error('last_name')
@@ -36,7 +36,7 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="other_names">Other Names</label>
-                            <input name="other_names" type="text" class="form-control" id="other_names"
+                            <input wire:model="other_names" type="text" class="form-control" id="other_names"
                                 value="{{ old('other_names', $user->other_names ?? '') }}" placeholder="Other Names .."
                                 required>
                             @error('other_names')
@@ -51,7 +51,7 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="email">Email</label>
-                            <input name="email" type="email" class="form-control" id="email"
+                            <input wire:model="email" type="email" class="form-control" id="email"
                                 value="{{ old('email', $user->email ?? '') }}" placeholder="Enter Email Address"
                                 required>
                             @error('email')
@@ -64,7 +64,7 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="phone">Phone Number</label>
-                            <input name="phone" type="tel" class="form-control" id="phone"
+                            <input wire:model="phone" type="tel" class="form-control" id="phone"
                                 value="{{ old('phone', $user->student->phone ?? '') }}" placeholder="Enter Phone Number"
                                 required>
                             @error('phone')
@@ -77,7 +77,7 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="gender">Gender</label>
-                            <select name="gender" id="gender" class="form-control">
+                            <select wire:model="gender" id="gender" class="form-control">
                                 <option disabled>Select Gender</option>
 
                                 <option value="male" {{ old('gender')=='male' || (isset($user) && $user->student->gender
@@ -100,7 +100,7 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="religion">Religion</label>
-                            <input name="religion" type="text" class="form-control" id="religion"
+                            <input wire:model="religion" type="text" class="form-control" id="religion"
                                 value="{{ old('religion', $user->student->religion ?? '') }}" placeholder="Religion"
                                 required>
                             @error('religion')
@@ -113,7 +113,7 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="dob">Date of Birth</label>
-                            <input name="dob" type="date" class="form-control" id="dob"
+                            <input wire:model="dob" type="date" class="form-control" id="dob"
                                 value="{{ old('dob', $user->student->dob ?? '') }}" required>
                             @error('dob')
                             <div class="text-danger">
@@ -125,7 +125,7 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="nin">NIN</label>
-                            <input name="nin" type="text" class="form-control" id="nin"
+                            <input wire:model="nin" type="text" class="form-control" id="nin"
                                 value="{{ old('nin', $user->student->nin ?? '') }}"
                                 placeholder="National Identification Number" required>
                             @error('nin')
@@ -215,7 +215,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="permanent_residence_address">Permanent Residence Address</label>
-                            <input name="permanent_residence_address" type="text" class="form-control"
+                            <input wire:model="permanent_residence_address" type="text" class="form-control"
                                 id="permanent_residence_address"
                                 value="{{ old('permanent_residence_address', $user->student->permanent_residence_address ?? '') }}"
                                 placeholder="Enter permanent_residence_address" required>
@@ -232,7 +232,7 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="guardian_name">Guardian/Parent</label>
-                            <input name="guardian_name" type="text" class="form-control" id="guardian_name"
+                            <input wire:model="guardian_name" type="text" class="form-control" id="guardian_name"
                                 value="{{ old('guardian_name', $user->student->guardian_name ?? "") }}"
                                 placeholder="Guardian / Parent Name" />
                             @error('guardian_name')
@@ -243,7 +243,7 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="guardian_phone_number">Guardian/Parent Phone number</label>
-                            <input name="guardian_phone_number" type="text" class="form-control"
+                            <input wire:model="guardian_phone_number" type="text" class="form-control"
                                 id="guardian_phone_number"
                                 value="{{ old('guardian_phone_number', $user->student->guardian_phone_number ?? "") }}" />
                             @error('guardian_phone_number')
@@ -254,7 +254,7 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="guardian_address">Guardian/Parent Address</label>
-                            <input name="guardian_address" type="text" class="form-control" id="guardian_address"
+                            <input wire:model="guardian_address" type="text" class="form-control" id="guardian_address"
                                 value="{{ old('guardian_address', $user->student->guardian_address ?? "") }}" />
                             @error('guardian_address')
                             <span class="text-danger">{{ $message }}</span>
@@ -279,7 +279,7 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="secondary_school_attended">Secondary School Attended</label>
-                            <input name="secondary_school_attended" type="text" class="form-control"
+                            <input wire:model="secondary_school_attended" type="text" class="form-control"
                                 id="secondary_school_attended"
                                 value="{{ old('secondary_school_attended', $user->student->secondary_school_attended ?? "") }}"
                                 placeholder="Secondary School Attended" />
@@ -291,7 +291,7 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="secondary_school_graduation_year">Graduation Year</label>
-                            <input name="secondary_school_graduation_year" type="date" class="form-control"
+                            <input wire:model="secondary_school_graduation_year" type="date" class="form-control"
                                 id="secondary_school_graduation_year"
                                 value="{{ old('secondary_school_graduation_year', $user->student->secondary_school_graduation_year ?? "") }}"
                                 placeholder="Secondary School Graduation Year" />
@@ -303,7 +303,7 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="secondary_school_certificate_type">Certificate Obtained</label>
-                            <input name="secondary_school_certificate_type" type="text" class="form-control"
+                            <input wire:model="secondary_school_certificate_type" type="text" class="form-control"
                                 id="secondary_school_certificate_type"
                                 value="{{ old('secondary_school_certificate_type', $user->student->secondary_school_certificate_type ?? "") }}"
                                 placeholder="Secondary School Certificate obtained" />
@@ -318,7 +318,7 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="jamb_reg_no">Jamb Registration Number</label>
-                            <input name="jamb_reg_no" type="text" class="form-control" id="jamb_reg_no"
+                            <input wire:model="jamb_reg_no" type="text" class="form-control" id="jamb_reg_no"
                                 value="{{ old('jamb_reg_no', $user->student->jamb_reg_no ?? "") }}"
                                 placeholder="Secondary School Attended" />
                             @error('jamb_reg_no')
@@ -329,7 +329,7 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="jamb_score">Jamb Score</label>
-                            <input name="jamb_score" type="text" class="form-control" id="jamb_score"
+                            <input wire:model="jamb_score" type="text" class="form-control" id="jamb_score"
                                 value="{{ old('jamb_score', $user->student->jamb_score ?? "") }}"
                                 placeholder="Jamb Score" />
                             @error('jamb_score')
@@ -355,7 +355,7 @@
                     <div class="mx-auto mt-5 col-md-6">
                         <div class="form-group">
                             <label for="department_id">Select Department</label>
-                            <select name="department_id" class="form-control" id="department_id">
+                            <select wire:model="department_id" class="form-control" id="department_id">
                                 <option selected disabled>Select Department(Program of choice)</option>
                                 @forelse ($departments as $department)
                                 <option value="{{ $department->id }}">{{ Str::title($department->name) }}</option>
@@ -493,7 +493,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="document_medical_report">Submit Medical Report</label>
-                            <input type="file" name="document_medical_report" id="document_medical_report"
+                            <input type="file" wire:model="document_medical_report" id="document_medical_report"
                                 class="form-control">
                             @error('document_medical_report')
                             <span class="text-danger">{{ $message }}</span>
@@ -503,7 +503,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="document_birth_certificate">Birth Certificate</label>
-                            <input type="file" name="document_birth_certificate" id="document_birth_certificate"
+                            <input type="file" wire:model="document_birth_certificate" id="document_birth_certificate"
                                 class="form-control">
                             @error('document_birth_certificate')
                             <span class="text-danger">{{ $message }}</span>
@@ -516,7 +516,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="document_local_government_identification">LGA Identification</label>
-                            <input type="file" name="document_local_government_identification"
+                            <input type="file" wire:model="document_local_government_identification"
                                 id="document_local_government_identification" class="form-control">
                             @error('document_local_government_identification')
                             <span class="text-danger">{{ $message }}</span>
@@ -526,7 +526,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="document_secondary_school_certificate_type">FSLC</label>
-                            <input type="file" name="document_secondary_school_certificate_type"
+                            <input type="file" wire:model="document_secondary_school_certificate_type"
                                 id="document_secondary_school_certificate_type" class="form-control">
                             @error('document_secondary_school_certificate_type')
                             <span class="text-danger">{{ $message }}</span>
@@ -538,9 +538,12 @@
 
                 <div class="form-group mt-5">
                     <label for="terms" class="d-block">
-                        <input type="checkbox" name="" id="terms"> You must agree to our <a href="" class="link">terms
+                        <input type="checkbox" wire:model="terms" id="terms"> You must agree to our <a href="" class="link">terms
                             and conditions.</a>
                     </label>
+                    @error('terms')
+                            <span class="text-danger">{{ $message }}</span>
+                            @enderror
                 </div>
             </div>
         </div>
