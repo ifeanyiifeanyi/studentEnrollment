@@ -378,7 +378,7 @@
     <div class="step-four">
         <div class="shadow card">
             <div class="text-white card-header bg-info">
-                STEP 3 OF 5, SELECT DEPARTMENT(PROGRAM OF CHOICE)
+                STEP  OF 5, ENTER OLEVEL EXAM SUBJECTS AND SCORE <small>Not less than 8 subject for any sitting</small>
             </div>
             <div class="card-body">
                 <div class="form-group">
