@@ -375,21 +375,24 @@
     </div>
     {{-- step three ends --}}
 
+    {{-- step four starts --}}
     <div class="step-four">
         <div class="shadow card">
             <div class="text-white card-header bg-info">
-                STEP  OF 5, ENTER OLEVEL EXAM SUBJECTS AND SCORE <small>Not less than 8 subject for any sitting</small>
+                STEP OF 5, ENTER OLEVEL EXAM SUBJECTS AND SCORE <small>Not less than 8 subject for any sitting</small>
             </div>
             <div class="card-body">
                 <div class="form-group">
                     <label>Number of Sittings:</label>
                     <div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" wire:model="sittings" value="1" wire:click="$set('subjects2', [])">
+                            <input class="form-check-input" type="radio" wire:model="sittings" value="1"
+                                wire:click="$set('subjects2', [])">
                             <label class="form-check-label">One Sitting</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" wire:model="sittings" value="2" wire:click="$set('subjects1', [])">
+                            <input class="form-check-input" type="radio" wire:model="sittings" value="2"
+                                wire:click="$set('subjects1', [])">
                             <label class="form-check-label">Two Sittings</label>
                         </div>
                     </div>
@@ -427,39 +430,45 @@
                     </div>
                 </div>
                 @endif
-    
+
                 <div class="row">
                     <div class="col-md-6">
                         <h3>Sitting 1</h3>
                         @foreach ($subjects1 as $index => $subject)
                         <div class="row form-group">
                             <div class="col-md-6">
-                                <input type="text" wire:model="subjects1.{{ $index }}.subject" placeholder="Subject" class="form-control">
+                                <input type="text" wire:model="subjects1.{{ $index }}.subject" placeholder="Subject"
+                                    class="form-control">
                             </div>
                             <div class="col-md-4">
-                                <input type="number" wire:model="subjects1.{{ $index }}.score" placeholder="Score" min="0" max="100" class="form-control">
+                                <input type="number" wire:model="subjects1.{{ $index }}.score" placeholder="Score"
+                                    min="0" max="100" class="form-control">
                             </div>
                             <div class="col-md-2">
-                                <button type="button" wire:click="removeSubject(1, {{ $index }})" class="btn btn-danger">Remove</button>
+                                <button type="button" wire:click="removeSubject(1, {{ $index }})"
+                                    class="btn btn-danger">Remove</button>
                             </div>
                         </div>
                         @endforeach
                         <button type="button" wire:click="addSubject(1)" class="btn btn-primary">Add Subject</button>
                     </div>
-    
+
                     <div class="col-md-6">
                         @if ($sittings == 2)
                         <h3>Sitting 2</h3>
                         @foreach ($subjects2 as $index => $subject)
                         <div class="row form-group">
                             <div class="col-md-6">
-                                <input type="text" wire:model="subjects2.{{ $index }}.subject" placeholder="Subject" class="form-control">
+                                <input type="text" wire:model="subjects2.{{ $index }}.subject" placeholder="Subject"
+                                    class="form-control">
                             </div>
                             <div class="col-md-4">
-                                <input type="number" wire:model="subjects2.{{ $index }}.score" placeholder="Score" min="0" max="100" class="form-control">
+                                <input type="number" wire:model="subjects2.{{ $index }}.score" placeholder="Score"
+                                    min="0" max="100" class="form-control">
                             </div>
                             <div class="col-md-2">
-                                <button type="button" wire:click="removeSubject(2, {{ $index }})" class="btn btn-danger">Remove</button>
+                                <button type="button" wire:click="removeSubject(2, {{ $index }})"
+                                    class="btn btn-danger">Remove</button>
                             </div>
                         </div>
                         @endforeach
@@ -470,7 +479,7 @@
             </div>
         </div>
     </div>
-
+    {{-- step four ends --}}
 
     {{-- step five starts --}}
     <div class="step-five">
@@ -483,17 +492,68 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="department_id">Select Department</label>
-                            <input type="file" name="" id="">
-                            @error('department_id')
+                            <label for="document_medical_report">Submit Medical Report</label>
+                            <input type="file" name="document_medical_report" id="document_medical_report"
+                                class="form-control">
+                            @error('document_medical_report')
+                            <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="document_birth_certificate">Birth Certificate</label>
+                            <input type="file" name="document_birth_certificate" id="document_birth_certificate"
+                                class="form-control">
+                            @error('document_birth_certificate')
                             <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
                     </div>
                 </div>
                 <hr>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="document_local_government_identification">LGA Identification</label>
+                            <input type="file" name="document_local_government_identification"
+                                id="document_local_government_identification" class="form-control">
+                            @error('document_local_government_identification')
+                            <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="document_secondary_school_certificate_type">FSLC</label>
+                            <input type="file" name="document_secondary_school_certificate_type"
+                                id="document_secondary_school_certificate_type" class="form-control">
+                            @error('document_secondary_school_certificate_type')
+                            <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
+                </div>
+                <hr>
+
+                <div class="form-group mt-5">
+                    <label for="terms" class="d-block">
+                        <input type="checkbox" name="" id="terms"> You must agree to our <a href="" class="link">terms
+                            and conditions.</a>
+                    </label>
+                </div>
             </div>
         </div>
     </div>
     {{-- step five ends --}}
+
+
+    <div class="action-buttons d-flex justify-content-between bg-white p-2 mb-5">
+        <div></div>
+        <button type="button" class="btn btn-secondary">Back</button>
+        <button type="button" class="btn btn-primary">Next</button>
+        <button type="submit" class="btn btn-success">Submit Application</button>
+    </div>
+
+
 </form>

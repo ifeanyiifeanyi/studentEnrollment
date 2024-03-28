@@ -11,7 +11,6 @@ class StudentApplication extends Component
     public $country;
     public $state;
     public $localGovernment;
-
     public $states = [];
     public $localGovernments = [];
 
