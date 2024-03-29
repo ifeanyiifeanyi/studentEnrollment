@@ -10,8 +10,7 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="first_name">First Name</label>
-                            <input wire:model="first_name" type="text" class="form-control" id="first_name"
-                                value="{{ old('first_name', $user->first_name ?? '') }}" placeholder="Enter First Name"
+                            <input wire:model.lazy="first_name" type="text" class="form-control" id="first_name" placeholder="Enter First Name"
                                 required>
                             @error('first_name')
                             <div class="text-danger">
@@ -23,8 +22,7 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="last_name">Last Name</label>
-                            <input wire:model="last_name" type="text" class="form-control" id="last_name"
-                                value="{{ old('last_name', $user->last_name ?? '') }}" placeholder="Enter Last Name"
+                            <input wire:model.lazy="last_name" type="text" class="form-control" id="last_name" placeholder="Enter Last Name"
                                 required>
                             @error('last_name')
                             <div class="text-danger">
@@ -36,8 +34,7 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="other_names">Other Names</label>
-                            <input wire:model="other_names" type="text" class="form-control" id="other_names"
-                                value="{{ old('other_names', $user->other_names ?? '') }}" placeholder="Other Names .."
+                            <input wire:model.lazy="other_names" type="text" class="form-control" id="other_names" placeholder="Other Names .."
                                 required>
                             @error('other_names')
                             <div class="text-danger">
@@ -51,8 +48,8 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="email">Email</label>
-                            <input wire:model="email" type="email" class="form-control" id="email"
-                                value="{{ old('email', $user->email ?? '') }}" placeholder="Enter Email Address"
+                            <input wire:model.lazy="email" type="email" class="form-control" id="email"
+                                 placeholder="Enter Email Address"
                                 required>
                             @error('email')
                             <div class="text-danger">
@@ -64,8 +61,8 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="phone">Phone Number</label>
-                            <input wire:model="phone" type="tel" class="form-control" id="phone"
-                                value="{{ old('phone', $user->student->phone ?? '') }}" placeholder="Enter Phone Number"
+                            <input wire:model.lazy="phone" type="tel" class="form-control" id="phone"
+                                 placeholder="Enter Phone Number"
                                 required>
                             @error('phone')
                             <div class="text-danger">
@@ -76,18 +73,13 @@
                     </div>
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label for="gender">Gender</label>
-                            <select wire:model="gender" id="gender" class="form-control">
-                                <option disabled>Select Gender</option>
-
-                                <option value="male" {{ old('gender')=='male' || (isset($user) && $user->student->gender
-                                    == 'male') ? 'selected' : '' }}>Male</option>
-
-                                <option value="female" {{ old('gender')=='female' || (isset($user) && $user->
-                                    student->gender == 'female') ? 'selected' : '' }}>Female</option>
+                            <label for="gender">Gender:</label>
+                            <select wire:model.lazy="gender" id="gender" class="form-control">
+                                <option value="" disabled>Select Gender</option>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
                             </select>
-
-                            @error('phone')
+                            @error('gender')
                             <div class="text-danger">
                                 {{ $message }}
                             </div>
@@ -100,8 +92,7 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="religion">Religion</label>
-                            <input wire:model="religion" type="text" class="form-control" id="religion"
-                                value="{{ old('religion', $user->student->religion ?? '') }}" placeholder="Religion"
+                            <input wire:model.lazy="religion" type="text" class="form-control" id="religion" placeholder="Religion"
                                 required>
                             @error('religion')
                             <div class="text-danger">
@@ -113,8 +104,7 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="dob">Date of Birth</label>
-                            <input wire:model="dob" type="date" class="form-control" id="dob"
-                                value="{{ old('dob', $user->student->dob ?? '') }}" required>
+                            <input wire:model.lazy="dob" type="date" class="form-control" id="dob" required>
                             @error('dob')
                             <div class="text-danger">
                                 {{ $message }}
@@ -125,8 +115,7 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="nin">NIN</label>
-                            <input wire:model="nin" type="text" class="form-control" id="nin"
-                                value="{{ old('nin', $user->student->nin ?? '') }}"
+                            <input wire:model.lazy="nin" type="text" class="form-control" id="nin" 
                                 placeholder="National Identification Number" required>
                             @error('nin')
                             <div class="text-danger">
@@ -141,7 +130,7 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="country">Country of Origin</label>
-                            <select id="country" class="form-control" wire:model="country"
+                            <select id="country" class="form-control" wire:model.lazy="country"
                                 wire:change="countrySelected">
                                 <option value="">Select Country</option>
                                 <option value="Nigeria">Nigeria</option>
@@ -155,7 +144,7 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="state">State</label>
-                            <select id="state" class="form-control" wire:model="state" wire:change="stateSelected">
+                            <select id="state" class="form-control" wire:model.lazy="state" wire:change="stateSelected">
                                 <option value="">Select State</option>
                                 @foreach ($states as $state)
                                 <option value="{{ $state }}">{{ $state }}</option>
@@ -167,7 +156,7 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="localGovernment">Local Government</label>
-                            <select id="localGovernment" class="form-control" wire:model="localGovernment">
+                            <select id="localGovernment" class="form-control" wire:model.lazy="localGovernment">
                                 <option value="">Select Local Government</option>
                                 @foreach ($localGovernments as $localGovernment)
                                 <option value="{{ $localGovernment }}">{{ $localGovernment }}</option>
@@ -181,7 +170,7 @@
                         <div class="form-group">
                             <label for="state">State/Province</label>
                             <input type="text" placeholder="State/Province" id="state" class="form-control"
-                                wire:model="state">
+                                wire:model.lazy="state">
                             @error('state') <span class="error">{{ $message }}</span> @enderror
                         </div>
                     </div>
@@ -189,7 +178,7 @@
                         <div class="form-group">
                             <label for="localGovernment">City/Local Government</label>
                             <input type="text" placeholder="City/Local Government" id="localGovernment"
-                                class="form-control" wire:model="localGovernment">
+                                class="form-control" wire:model.lazy="localGovernment">
                             @error('localGovernment') <span class="error">{{ $message }}</span> @enderror
                         </div>
                     </div>
@@ -201,9 +190,8 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="current_residence_address">Current Residence Address</label>
-                            <input name="current_residence_address" type="text" class="form-control"
+                            <input wire:model.lazy="current_residence_address" type="text" class="form-control"
                                 id="current_residence_address"
-                                value="{{ old('current_residence_address', $user->student->current_residence_address ?? '') }}"
                                 placeholder="Enter current_residence_address" required>
                             @error('current_residence_address')
                             <div class="text-danger">
@@ -215,9 +203,8 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="permanent_residence_address">Permanent Residence Address</label>
-                            <input wire:model="permanent_residence_address" type="text" class="form-control"
+                            <input wire:model.lazy="permanent_residence_address" type="text" class="form-control"
                                 id="permanent_residence_address"
-                                value="{{ old('permanent_residence_address', $user->student->permanent_residence_address ?? '') }}"
                                 placeholder="Enter permanent_residence_address" required>
                             @error('permanent_residence_address')
                             <div class="text-danger">
@@ -232,8 +219,7 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="guardian_name">Guardian/Parent</label>
-                            <input wire:model="guardian_name" type="text" class="form-control" id="guardian_name"
-                                value="{{ old('guardian_name', $user->student->guardian_name ?? "") }}"
+                            <input wire:model.lazy="guardian_name" type="text" class="form-control" id="guardian_name"
                                 placeholder="Guardian / Parent Name" />
                             @error('guardian_name')
                             <span class="text-danger">{{ $message }}</span>
@@ -243,9 +229,8 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="guardian_phone_number">Guardian/Parent Phone number</label>
-                            <input wire:model="guardian_phone_number" type="text" class="form-control"
-                                id="guardian_phone_number"
-                                value="{{ old('guardian_phone_number', $user->student->guardian_phone_number ?? "") }}" />
+                            <input wire:model.lazy="guardian_phone_number" type="text" class="form-control"
+                                id="guardian_phone_number" />
                             @error('guardian_phone_number')
                             <span class="text-danger">{{ $message }}</span>
                             @enderror
@@ -254,8 +239,7 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="guardian_address">Guardian/Parent Address</label>
-                            <input wire:model="guardian_address" type="text" class="form-control" id="guardian_address"
-                                value="{{ old('guardian_address', $user->student->guardian_address ?? "") }}" />
+                            <input wire:model.lazy="guardian_address" type="text" class="form-control" id="guardian_address" />
                             @error('guardian_address')
                             <span class="text-danger">{{ $message }}</span>
                             @enderror
@@ -279,9 +263,8 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="secondary_school_attended">Secondary School Attended</label>
-                            <input wire:model="secondary_school_attended" type="text" class="form-control"
+                            <input wire:model.lazy="secondary_school_attended" type="text" class="form-control"
                                 id="secondary_school_attended"
-                                value="{{ old('secondary_school_attended', $user->student->secondary_school_attended ?? "") }}"
                                 placeholder="Secondary School Attended" />
                             @error('secondary_school_attended')
                             <span class="text-danger">{{ $message }}</span>
@@ -291,9 +274,8 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="secondary_school_graduation_year">Graduation Year</label>
-                            <input wire:model="secondary_school_graduation_year" type="date" class="form-control"
+                            <input wire:model.lazy="secondary_school_graduation_year" type="date" class="form-control"
                                 id="secondary_school_graduation_year"
-                                value="{{ old('secondary_school_graduation_year', $user->student->secondary_school_graduation_year ?? "") }}"
                                 placeholder="Secondary School Graduation Year" />
                             @error('secondary_school_graduation_year')
                             <span class="text-danger">{{ $message }}</span>
@@ -303,9 +285,8 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="secondary_school_certificate_type">Certificate Obtained</label>
-                            <input wire:model="secondary_school_certificate_type" type="text" class="form-control"
+                            <input wire:model.lazy="secondary_school_certificate_type" type="text" class="form-control"
                                 id="secondary_school_certificate_type"
-                                value="{{ old('secondary_school_certificate_type', $user->student->secondary_school_certificate_type ?? "") }}"
                                 placeholder="Secondary School Certificate obtained" />
                             @error('secondary_school_certificate_type')
                             <span class="text-danger">{{ $message }}</span>
@@ -318,8 +299,7 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="jamb_reg_no">Jamb Registration Number</label>
-                            <input wire:model="jamb_reg_no" type="text" class="form-control" id="jamb_reg_no"
-                                value="{{ old('jamb_reg_no', $user->student->jamb_reg_no ?? "") }}"
+                            <input wire:model.lazy="jamb_reg_no" type="text" class="form-control" id="jamb_reg_no"
                                 placeholder="Secondary School Attended" />
                             @error('jamb_reg_no')
                             <span class="text-danger">{{ $message }}</span>
@@ -329,8 +309,7 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="jamb_score">Jamb Score</label>
-                            <input wire:model="jamb_score" type="text" class="form-control" id="jamb_score"
-                                value="{{ old('jamb_score', $user->student->jamb_score ?? "") }}"
+                            <input wire:model.lazy="jamb_score" type="text" class="form-control" id="jamb_score"
                                 placeholder="Jamb Score" />
                             @error('jamb_score')
                             <span class="text-danger">{{ $message }}</span>
@@ -526,24 +505,44 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="document_secondary_school_certificate_type">FSLC</label>
-                            <input type="file" wire:model="document_secondary_school_certificate_type"
+                            <input type="file"  wire:model="document_secondary_school_certificate_type"
                                 id="document_secondary_school_certificate_type" class="form-control">
                             @error('document_secondary_school_certificate_type')
                             <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
                     </div>
+
+                    <div class="col-md-6">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="passport_photo">Passport Photo</label>
+                                    <input type="file" wire:model="passport_photo" id="passport_photo" class="form-control" capture accept="image/*" onChange="changeImg(this)">
+                                    @error('passport_photo')
+                                    <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <img id="previewImage" src="{{ empty($passport_photo) ? asset('admin/assets/img/avatar/avatar-1.png') : asset($passport_photo) }}" alt="" class="img-fluid img-thumbnail w-50">
+
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
                 <hr>
 
                 <div class="form-group mt-5">
                     <label for="terms" class="d-block">
-                        <input type="checkbox" wire:model="terms" id="terms"> You must agree to our <a href="" class="link">terms
+                        <input type="checkbox" wire:model="terms" id="terms"> You must agree to our <a href=""
+                            class="link">terms
                             and conditions.</a>
                     </label>
                     @error('terms')
-                            <span class="text-danger">{{ $message }}</span>
-                            @enderror
+                    <span class="text-danger">{{ $message }}</span>
+                    @enderror
                 </div>
             </div>
         </div>

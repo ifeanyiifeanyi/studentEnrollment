@@ -5,9 +5,44 @@ namespace App\Livewire;
 use App\Models\Department;
 use App\Models\User;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 
 class StudentApplication extends Component
 {
+    use WithFileUploads;
+
+    public $first_name;
+    public $last_name;
+    public $other_names;
+    public $email;
+    public $phone;
+    public $gender;
+    public $religion;
+    public $dob;
+    public $nin;
+    public $current_residence_address;
+    public $permanent_residence_address;
+    public $guardian_name;
+    public $guardian_phone_number;
+    public $guardian_address;
+    public $secondary_school_attended;
+    public $secondary_school_graduation_year;
+    public $secondary_school_certificate_type;
+    public $jamb_reg_no;
+    public $jamb_score;
+    public $department_id;
+    public $document_medical_report;
+    public $document_birth_certificate;
+    public $document_local_government_identification;
+    public $document_secondary_school_certificate_type;
+    public $passport_photo;
+    public $terms;
+
+
+
+
+
+
     public $country;
     public $state;
     public $localGovernment;
@@ -40,11 +75,68 @@ class StudentApplication extends Component
 
     ];
 
+    public function mount()
+    {
+        $user = User::with('student')->find(auth()->user()->id);
+
+        $this->first_name = old('first_name') ?? ($user ? $user->first_name : null);
+
+        $this->last_name = old('last_name') ?? ($user ? $user->last_name : null);
+
+        $this->other_names = old('other_names') ?? ($user ? $user->other_names : null);
+
+        $this->email = old('email') ?? ($user ? $user->email : null);
+
+        $this->phone = old('phone') ?? ($user->student ? $user->student->phone : null);
+        
+        $this->religion = old('religion') ?? ($user->student ? $user->student->religion : null);
+
+        $this->dob = old('dob') ?? ($user->student ? $user->student->dob : null);
+
+        $this->nin = old('nin') ?? ($user->student ? $user->student->nin : null);
+
+        $this->current_residence_address = old('current_residence_address') ?? ($user->student ? $user->student->current_residence_address : null);
+
+        $this->permanent_residence_address = old('permanent_residence_address') ?? ($user->student ? $user->student->permanent_residence_address : null);
+
+        $this->guardian_name = old('guardian_name') ?? ($user->student ? $user->student->guardian_name : null);
+
+        $this->guardian_phone_number = old('guardian_phone_number') ?? ($user->student ? $user->student->guardian_phone_number : null);
+
+        $this->guardian_address = old('guardian_address') ?? ($user->student ? $user->student->guardian_address : null);
+
+        $this->secondary_school_attended = old('secondary_school_attended') ?? ($user->student ? $user->student->secondary_school_attended : null);
+
+        $this->secondary_school_graduation_year = old('secondary_school_graduation_year') ?? ($user->student ? $user->student->secondary_school_graduation_year : null);
+
+        $this->secondary_school_certificate_type = old('secondary_school_certificate_type') ?? ($user->student ? $user->student->secondary_school_certificate_type : null);
+
+        $this->jamb_reg_no = old('jamb_reg_no') ?? ($user->student ? $user->student->jamb_reg_no : null);
+
+        $this->jamb_score = old('jamb_score') ?? ($user->student ? $user->student->jamb_score : null);
+
+        $this->department_id = old('department_id') ?? ($user->student ? $user->student->department_id : null);
+
+        $this->passport_photo = old('passport_photo') ?? ($user->student ? $user->student->passport_photo : null);
+
+
+        $this->document_birth_certificate = old('document_birth_certificate') ?? ($user->student ? $user->student->document_birth_certificate : null);
+        $this->document_local_government_identification = old('document_local_government_identification') ?? ($user->student ? $user->student->document_local_government_identification : null);
+        $this->document_secondary_school_certificate_type = old('document_secondary_school_certificate_type') ?? ($user->student ? $user->student->document_secondary_school_certificate_type : null);
+
+
+        if (old('gender')) {
+            $this->gender = old('gender');
+        } elseif ($user->student) {
+            $this->gender = $user->student->gender;
+        }
+        $this->religion = $user->student->religion;
+    }
+
     public function render()
     {
-        $user = User::find(auth()->user()->id);
         $departments = Department::all();
-        return view('livewire.student-application', ['user' => $user, 'departments' => $departments]);
+        return view('livewire.student-application', ['departments' => $departments]);
     }
 
     public function updatedSittings($value)
