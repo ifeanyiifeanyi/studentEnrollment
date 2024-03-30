@@ -5,6 +5,7 @@ namespace App\Livewire;
 use App\Models\User;
 use Livewire\Component;
 use App\Models\Department;
+use Illuminate\Support\Str;
 use GuzzleHttp\Psr7\Request;
 use Livewire\WithFileUploads;
 use Illuminate\Validation\Rule;
@@ -131,6 +132,7 @@ class StudentApplication extends Component
         $this->currentStep = 1;
     }
 
+    // validate form data
     public function validateData()
     {
         if ($this->currentStep == 1) {
@@ -189,17 +191,17 @@ class StudentApplication extends Component
                 'subjects1.*.score.required' => 'The score is required.',
                 'subjects2.*.subject.required' => 'The subject is required.',
                 'subjects2.*.score.required' => 'The score is required.',
-                
+
             ], [
                 'subjects1.*.subject' => 'subject',
                 'subjects1.*.score' => 'score',
                 'subjects2.*.subject' => 'subject',
                 'subjects2.*.score' => 'score',
             ]);
-        } 
+        }
     }
 
-    
+
 
     public function decreaseStep()
     {
@@ -429,9 +431,37 @@ class StudentApplication extends Component
     }
 
 
+    // format our subject for oleve exam sitting
+    protected function formatSubjects($subjects)
+    {
+        $formattedSubjects = [];
+
+        foreach ($subjects as $subject) {
+            $formattedSubjects[] = [
+                'subject' => $subject['subject'],
+                'score' => $subject['score'],
+            ];
+        }
+
+        return $formattedSubjects;
+    }
+
+    // prepare for media file submittion
+    protected function storeFile($file, $directory)
+    {
+        if ($file) {
+            $filename = Str::random(20) . '.' . $file->getClientOriginalExtension();
+            $path = $file->storeAs($directory, $filename);
+            return $path;
+        }
+
+        return null;
+    }
+
 
     // here we finally submit the form 
-    public function register(Request $request){
+    public function register(Request $request)
+    {
         $this->resetErrorBag();
 
         if ($this->currentStep == 5) {
@@ -442,6 +472,71 @@ class StudentApplication extends Component
                 'document_secondary_school_certificate_type' => 'file|mimes:pdf,jpg,jpeg,png|max:2048', // Max 2MB
                 'passport_photo' => 'image|mimes:jpeg,jpg,png|max:2048', // Max 2MB, only image files
                 'terms' => 'accepted'
+            ]);
+        }
+
+        // Store files with unique filenames
+        $documentMedicalReportPath = $this->storeFile($this->document_medical_report, 'documents');
+
+        $documentBirthCertificatePath = $this->storeFile($this->document_birth_certificate, 'documents');
+
+        $documentLocalGovIdPath = $this->storeFile($this->document_local_government_identification, 'documents');
+
+        $documentSecondarySchoolCertPath = $this->storeFile($this->document_secondary_school_certificate_type, 'documents');
+
+        $passportPhotoPath = $this->storeFile($this->passport_photo, 'photos');
+
+        $olevelExams = [
+            'sittings' => $this->sittings,
+            'exam_boards' => [
+                'exam_board_1' => $this->examBoard1,
+                'exam_board_2' => $this->examBoard2,
+            ],
+            'subjects' => [
+                'sitting_1' => $this->formatSubjects($this->subjects1),
+                'sitting_2' => $this->formatSubjects($this->subjects2),
+            ],
+        ];
+
+        // Convert to JSON and save to database
+        $olevelExamsJson = json_encode($olevelExams);
+
+
+        // find student data
+        // Fetch the user along with their associated student data
+        $user = User::with('student')->find(auth()->user()->id);
+
+        $uniqueNumber = 'SHN' . Str::random(8) . time();
+
+        // Update student data
+        if ($user->student) {
+            $user->student->update([
+                'application_unique_number' => $uniqueNumber,
+                'document_medical_report' => $documentMedicalReportPath,
+                'document_birth_certificate' => $documentBirthCertificatePath,
+                'document_local_government_identification' => $documentLocalGovIdPath,
+                'document_secondary_school_certificate_type' => $documentSecondarySchoolCertPath,
+                'passport_photo' => $passportPhotoPath,
+                'phone' => $this->phone,
+                'gender' => $this->gender,
+                'dob' => $this->dob,
+                'religion' => $this->religion,
+                'nin' => $this->nin,
+                'country_of_origin' => $this->country,
+                'nationality' => $this->country,
+                'state_of_origin' => $this->state,
+                'lga_origin' => $this->localGovernment,
+                'current_residence_address' => $this->current_residence_address,
+                'permanent_residence_address' => $this->permanent_residence_address,
+                'guardian_name' => $this->guardian_name,
+                'guardian_phone_number' => $this->guardian_phone_number,
+                'guardian_address' => $this->guardian_address,
+                'secondary_school_attended' => $this->secondary_school_attended,
+                'secondary_school_graduation_year' => $this->secondary_school_graduation_year,
+                'secondary_school_certificate_type' => $this->secondary_school_certificate_type,
+                'jamb_reg_no' => $this->jamb_reg_no,
+                'jamb_score' => $this->jamb_score,
+                'olevel_exams' => $olevelExamsJson
             ]);
         }
     }

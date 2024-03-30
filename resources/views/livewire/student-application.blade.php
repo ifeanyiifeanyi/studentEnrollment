@@ -554,7 +554,7 @@
 
                 <div class="form-group mt-5">
                     <label for="terms" class="d-block">
-                        <input type="checkbox" wire:model="terms" id="terms"> You must agree to our <a href=""
+                        <input type="checkbox" class="form-control" wire:model="terms" id="terms"> You must agree to our <a href=""
                             class="link">terms
                             and conditions.</a>
                     </label>
