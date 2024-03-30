@@ -137,7 +137,7 @@
                                 <option value="Nigeria">Nigeria</option>
                                 <option value="Other">Other</option>
                             </select>
-                            @error('country') <span class="error">{{ $message }}</span> @enderror
+                            @error('country') <span class="text-danger">{{ $message }}</span> @enderror
                         </div>
                     </div>
 
@@ -151,7 +151,7 @@
                                 <option value="{{ $state }}">{{ $state }}</option>
                                 @endforeach
                             </select>
-                            @error('state') <span class="error">{{ $message }}</span> @enderror
+                            @error('state') <span class="text-danger">{{ $message }}</span> @enderror
                         </div>
                     </div>
                     <div class="col-md-4">
@@ -163,7 +163,7 @@
                                 <option value="{{ $localGovernment }}">{{ $localGovernment }}</option>
                                 @endforeach
                             </select>
-                            @error('localGovernment') <span class="error">{{ $message }}</span> @enderror
+                            @error('localGovernment') <span class="text-danger">{{ $message }}</span> @enderror
                         </div>
                     </div>
                     @else
@@ -172,7 +172,7 @@
                             <label for="state">State/Province</label>
                             <input type="text" placeholder="State/Province" id="state" class="form-control"
                                 wire:model.lazy="state">
-                            @error('state') <span class="error">{{ $message }}</span> @enderror
+                            @error('state') <span class="text-danger">{{ $message }}</span> @enderror
                         </div>
                     </div>
                     <div class="col-md-4">
@@ -180,7 +180,7 @@
                             <label for="localGovernment">City/Local Government</label>
                             <input type="text" placeholder="City/Local Government" id="localGovernment"
                                 class="form-control" wire:model.lazy="localGovernment">
-                            @error('localGovernment') <span class="error">{{ $message }}</span> @enderror
+                            @error('localGovernment') <span class="text-danger">{{ $message }}</span> @enderror
                         </div>
                     </div>
                     @endif
@@ -303,7 +303,7 @@
                         <div class="form-group">
                             <label for="jamb_reg_no">Jamb Registration Number</label>
                             <input wire:model.lazy="jamb_reg_no" type="text" class="form-control" id="jamb_reg_no"
-                                placeholder="Secondary School Attended" />
+                                placeholder="Jamb registration Number" />
                             @error('jamb_reg_no')
                             <span class="text-danger">{{ $message }}</span>
                             @enderror
@@ -387,6 +387,7 @@
                 <div class="form-group">
                     <label>Exam Board:</label>
                     <select wire:model="examBoard1" class="form-control">
+                        <option disabled selected>Select Exam Board</option>
                         <option value="waec">WAEC</option>
                         <option value="neco">NECO</option>
                         <option value="gce">GCE</option>
@@ -425,10 +426,14 @@
                             <div class="col-md-6">
                                 <input type="text" wire:model="subjects1.{{ $index }}.subject" placeholder="Subject"
                                     class="form-control">
+                                @error('subjects1.'.$index.'.subject') <p class="text-danger">{{ $message }}</p> @enderror
+
                             </div>
                             <div class="col-md-4">
                                 <input type="number" wire:model="subjects1.{{ $index }}.score" placeholder="Score"
                                     min="0" max="100" class="form-control">
+                                @error('subjects1.'.$index.'.score') <p class="text-danger">{{ $message }}</p> @enderror
+
                             </div>
                             <div class="col-md-2">
                                 <button type="button" wire:click="removeSubject(1, {{ $index }})"
@@ -447,10 +452,14 @@
                             <div class="col-md-6">
                                 <input type="text" wire:model="subjects2.{{ $index }}.subject" placeholder="Subject"
                                     class="form-control">
+                                @error('subjects2.'.$index.'.subject') <span class="text-danger">{{ $message }}</span> @enderror
+
                             </div>
                             <div class="col-md-4">
                                 <input type="number" wire:model="subjects2.{{ $index }}.score" placeholder="Score"
                                     min="0" max="100" class="form-control">
+                                @error('subjects2.'.$index.'.score') <span class="text-danger">{{ $message }}</span> @enderror
+
                             </div>
                             <div class="col-md-2">
                                 <button type="button" wire:click="removeSubject(2, {{ $index }})"

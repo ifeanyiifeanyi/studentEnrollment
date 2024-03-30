@@ -2,10 +2,12 @@
 
 namespace App\Livewire;
 
-use App\Models\Department;
 use App\Models\User;
 use Livewire\Component;
+use App\Models\Department;
+use GuzzleHttp\Psr7\Request;
 use Livewire\WithFileUploads;
+use Illuminate\Validation\Rule;
 
 class StudentApplication extends Component
 {
@@ -51,7 +53,7 @@ class StudentApplication extends Component
     public $localGovernment;
     public $states = [];
     public $localGovernments = [];
-
+    public $userId;
 
 
     public $sittings = 1;
@@ -62,26 +64,14 @@ class StudentApplication extends Component
     public $showSecondSitting = false;
 
 
-    protected $rules = [
-        'country' => 'required',
-        'state' => 'required_if:country,Nigeria',
-        'localGovernment' => 'required_if:country,Nigeria',
 
-
-        'sittings' => 'required|integer|in:1,2',
-        'examBoard1' => 'required_if:sittings,1|in:waec,neco,gce',
-        'examBoard2' => 'required_if:sittings,2|in:waec,neco,gce',
-        'subjects1.*.subject' => 'required_with:subjects1|distinct|min:8',
-        'subjects1.*.score' => 'required_with:subjects1|numeric|between:0,100',
-        'subjects2.*.subject' => 'required_with:subjects2|distinct|min:8',
-        'subjects2.*.score' => 'required_with:subjects2|numeric|between:0,100',
-
-    ];
+    protected $rules = [];
 
     public function mount()
     {
-        $user = User::with('student')->find(auth()->user()->id);
 
+        $user = User::with('student')->find(auth()->user()->id);
+        $this->userId = $user->id;
         $this->first_name = old('first_name') ?? ($user ? $user->first_name : null);
 
         $this->last_name = old('last_name') ?? ($user ? $user->last_name : null);
@@ -91,7 +81,7 @@ class StudentApplication extends Component
         $this->email = old('email') ?? ($user ? $user->email : null);
 
         $this->phone = old('phone') ?? ($user->student ? $user->student->phone : null);
-        
+
         $this->religion = old('religion') ?? ($user->student ? $user->student->religion : null);
 
         $this->dob = old('dob') ?? ($user->student ? $user->student->dob : null);
@@ -135,25 +125,101 @@ class StudentApplication extends Component
         } elseif ($user->student) {
             $this->gender = $user->student->gender;
         }
-        
+
         $this->religion =   old('religion') ?? ($user->student ? $user->student->religion : null);
 
         $this->currentStep = 1;
     }
 
-    public function decreaseStep(){
+    public function validateData()
+    {
+        if ($this->currentStep == 1) {
+            $this->validate([
+                'first_name' => 'required|string',
+                'last_name' => 'required|string',
+                'other_names' => 'nullable',
+                'email' => [
+                    'required',
+                    'email',
+                    Rule::unique('users', 'email')->ignore($this->userId, 'id'),
+                ],
+                'phone' => 'required',
+                'gender' => 'required',
+                'religion' => 'required|string',
+                'dob' => 'required|date',
+                'nin' => 'required',
+                'current_residence_address' => 'required|string',
+                'permanent_residence_address' => 'required|string',
+                'guardian_name' => 'required|string',
+                'guardian_phone_number' => 'required|string',
+                'guardian_address' => 'required|string',
+                'country' => 'required',
+                'state' => 'required_if:country,Nigeria',
+                'localGovernment' => 'required_if:country,Nigeria',
+            ]);
+        } elseif ($this->currentStep == 2) {
+            $this->validate([
+                'secondary_school_attended' => 'required|string',
+                'secondary_school_graduation_year' => 'required|date',
+                'secondary_school_certificate_type' => 'required|string',
+                'jamb_reg_no' => 'required|string',
+                'jamb_score' => 'required|string',
+            ]);
+        } elseif ($this->currentStep == 3) {
+            $this->validate([
+                'department_id' => 'required',
+            ], [
+                'department_id.required' => 'Please select a department',
+            ]);
+        } elseif ($this->currentStep == 4) {
+            $this->validate([
+                'sittings' => 'required|integer|in:1,2',
+                'examBoard1' => 'required_if:sittings,1|in:waec,neco,gce',
+                'examBoard2' => 'required_if:sittings,2|in:waec,neco,gce',
+                'subjects1' => 'required|array|min:8',
+                'subjects1.*' => 'required',
+                'subjects1.*.subject' => 'required_with:subjects1|distinct|min:8',
+                'subjects1.*.score' => 'required_with:subjects1|numeric|between:0,100',
+                'subjects2' => 'required|array|min:8',
+                'subjects2.*' => 'required',
+                'subjects2.*.subject' => 'required_with:subjects2|distinct|min:8',
+                'subjects2.*.score' => 'required_with:subjects2|numeric|between:0,100',
+            ], [
+                'subjects1.*.subject.required' => 'The subject is required.',
+                'subjects1.*.score.required' => 'The score is required.',
+                'subjects2.*.subject.required' => 'The subject is required.',
+                'subjects2.*.score.required' => 'The score is required.',
+                
+            ], [
+                'subjects1.*.subject' => 'subject',
+                'subjects1.*.score' => 'score',
+                'subjects2.*.subject' => 'subject',
+                'subjects2.*.score' => 'score',
+            ]);
+        } 
+    }
+
+    
+
+    public function decreaseStep()
+    {
+        $this->resetErrorBag();
         $this->currentStep--;
-        if($this->currentStep < 1){
+        if ($this->currentStep < 1) {
             $this->currentStep = 1;
         }
     }
 
-    public function increaseStep(){
+    public function increaseStep()
+    {
+        $this->resetErrorBag();
+        $this->validateData();
         $this->currentStep++;
         if ($this->currentStep > $this->totalSteps) {
             $this->currentStep = $this->totalSteps;
         }
     }
+
 
     public function render()
     {
@@ -192,16 +258,6 @@ class StudentApplication extends Component
             $this->subjects2 = array_values($this->subjects2);
         }
     }
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -369,6 +425,24 @@ class StudentApplication extends Component
         } else {
             // Clear local governments if no state is selected
             $this->localGovernments = [];
+        }
+    }
+
+
+
+    // here we finally submit the form 
+    public function register(Request $request){
+        $this->resetErrorBag();
+
+        if ($this->currentStep == 5) {
+            $this->validate([
+                'document_medical_report' => 'file|mimes:pdf,jpg,jpeg,png|max:2048', // Max 2MB
+                'document_birth_certificate' => 'file|mimes:pdf,jpg,jpeg,png|max:2048', // Max 2MB
+                'document_local_government_identification' => 'file|mimes:pdf,jpg,jpeg,png|max:2048', // Max 2MB
+                'document_secondary_school_certificate_type' => 'file|mimes:pdf,jpg,jpeg,png|max:2048', // Max 2MB
+                'passport_photo' => 'image|mimes:jpeg,jpg,png|max:2048', // Max 2MB, only image files
+                'terms' => 'accepted'
+            ]);
         }
     }
 }
