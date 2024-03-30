@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\Application;
 use App\Models\User;
 use Livewire\Component;
 use App\Models\Department;
@@ -43,6 +44,8 @@ class StudentApplication extends Component
     public $document_secondary_school_certificate_type;
     public $passport_photo;
     public $terms;
+    public $blood_group;
+    public $genotype;
 
 
 
@@ -74,6 +77,11 @@ class StudentApplication extends Component
         $user = User::with('student')->find(auth()->user()->id);
         $this->userId = $user->id;
         $this->first_name = old('first_name') ?? ($user ? $user->first_name : null);
+
+        $this->blood_group = old('blood_group') ?? ($user ? $user->blood_group : null);
+        $this->genotype = old('genotype') ?? ($user ? $user->genotype : null);
+
+
 
         $this->last_name = old('last_name') ?? ($user ? $user->last_name : null);
 
@@ -138,6 +146,8 @@ class StudentApplication extends Component
         if ($this->currentStep == 1) {
             $this->validate([
                 'first_name' => 'required|string',
+                'blood_group' => 'required|string',
+                'genotype' => 'required|string',
                 'last_name' => 'required|string',
                 'other_names' => 'nullable',
                 'email' => [
@@ -508,6 +518,14 @@ class StudentApplication extends Component
 
         $uniqueNumber = 'SHN' . Str::random(8) . time();
 
+        //update user table data
+        $user->update([
+            'first_name' => $this->first_name,
+            'last_name' => $this->last_name,
+            'other_names' => $this->other_names,
+            'email' => $this->email
+        ]);
+
         // Update student data
         if ($user->student) {
             $user->student->update([
@@ -536,8 +554,17 @@ class StudentApplication extends Component
                 'secondary_school_certificate_type' => $this->secondary_school_certificate_type,
                 'jamb_reg_no' => $this->jamb_reg_no,
                 'jamb_score' => $this->jamb_score,
-                'olevel_exams' => $olevelExamsJson
+                'olevel_exams' => $olevelExamsJson,
+                'blood_group' => $this->blood_group,
+                'genotype' => $this->genotype
             ]);
         }
+
+        // update application data (NOTE remember payment Id for each user)
+        Application::create([
+            'user_id' => $user->id,
+            'department_id' => $this->department_id,
+            'payment_id' => 1 // will change later
+        ]);
     }
 }

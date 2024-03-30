@@ -231,7 +231,7 @@
                         <div class="form-group">
                             <label for="guardian_phone_number">Guardian/Parent Phone number</label>
                             <input wire:model.lazy="guardian_phone_number" type="text" class="form-control"
-                                id="guardian_phone_number" />
+                                id="guardian_phone_number" placeholder="Parent or Guardian Phone Number" />
                             @error('guardian_phone_number')
                             <span class="text-danger">{{ $message }}</span>
                             @enderror
@@ -240,8 +240,31 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="guardian_address">Guardian/Parent Address</label>
-                            <input wire:model.lazy="guardian_address" type="text" class="form-control" id="guardian_address" />
+                            <input wire:model.lazy="guardian_address" type="text" class="form-control" id="guardian_address" placeholder="Parent or Guardian Home Address" />
                             @error('guardian_address')
+                            <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="genotype">Genotype</label>
+                            <input wire:model.lazy="genotype" type="text" class="form-control" id="genotype"
+                                placeholder="Genotype" />
+                            @error('genotype')
+                            <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="blood_group">Blood Group</label>
+                            <input wire:model.lazy="blood_group" type="text" class="form-control"
+                                id="blood_group" placeholder="Blood Group" />
+                            @error('blood_group')
                             <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>

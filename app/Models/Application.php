@@ -12,21 +12,6 @@ class Application extends Model
     protected $guarded = [];
 
 
-    // public function user()
-    // {
-    //     return $this->belongsTo(User::class);
-    // }
-
-    // public function department()
-    // {
-    //     return $this->belongsTo(Department::class);
-    // }
-
-
-    // public function student()
-    // {
-    //     return $this->belongsTo(Student::class, );
-    // }
 
     public function user()
     {
