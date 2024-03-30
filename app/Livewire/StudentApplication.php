@@ -11,6 +11,9 @@ class StudentApplication extends Component
 {
     use WithFileUploads;
 
+    public $totalSteps = 5;
+    public $currentStep = 1;
+
     public $first_name;
     public $last_name;
     public $other_names;
@@ -121,7 +124,9 @@ class StudentApplication extends Component
 
 
         $this->document_birth_certificate = old('document_birth_certificate') ?? ($user->student ? $user->student->document_birth_certificate : null);
+
         $this->document_local_government_identification = old('document_local_government_identification') ?? ($user->student ? $user->student->document_local_government_identification : null);
+
         $this->document_secondary_school_certificate_type = old('document_secondary_school_certificate_type') ?? ($user->student ? $user->student->document_secondary_school_certificate_type : null);
 
 
@@ -130,7 +135,24 @@ class StudentApplication extends Component
         } elseif ($user->student) {
             $this->gender = $user->student->gender;
         }
-        $this->religion = $user->student->religion;
+        
+        $this->religion =   old('religion') ?? ($user->student ? $user->student->religion : null);
+
+        $this->currentStep = 1;
+    }
+
+    public function decreaseStep(){
+        $this->currentStep--;
+        if($this->currentStep < 1){
+            $this->currentStep = 1;
+        }
+    }
+
+    public function increaseStep(){
+        $this->currentStep++;
+        if ($this->currentStep > $this->totalSteps) {
+            $this->currentStep = $this->totalSteps;
+        }
     }
 
     public function render()

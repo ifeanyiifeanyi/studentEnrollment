@@ -1,9 +1,10 @@
 <form wire:submit.prevent='register'>
     {{-- step on starts --}}
+    @if($currentStep == 1)
     <div class="step-one">
         <div class="shadow card">
             <div class="text-white card-header bg-secondary">
-                STEP 1 OF 5, PERSONAL DETAILS
+                STEP <b>{{ $currentStep }}</b> OF {{ $totalSteps }}, PERSONAL DETAILS
             </div>
             <div class="card-body">
                 <div class="row">
@@ -249,13 +250,15 @@
             </div>
         </div>
     </div>
+    @endif
     {{-- step one ends --}}
 
     {{-- step two starts --}}
+    @if($currentStep == 2)
     <div class="step-two">
         <div class="shadow card">
             <div class="text-white card-header bg-secondary">
-                STEP 2 OF 5, ACADEMIC DETAILS
+                STEP <b>{{ $currentStep }}</b> OF {{ $totalSteps }}, ACADEMIC DETAILS
             </div>
             <div class="card-body">
 
@@ -320,13 +323,15 @@
             </div>
         </div>
     </div>
+    @endif
     {{-- step two ends --}}
 
     {{-- step three starts --}}
+    @if($currentStep == 3)
     <div class="step-three">
         <div class="shadow card">
             <div class="text-white card-header bg-info">
-                STEP 3 OF 5, SELECT DEPARTMENT(PROGRAM OF CHOICE)
+                STEP <b>{{ $currentStep }}</b> OF {{ $totalSteps }}, SELECT DEPARTMENT(PROGRAM OF CHOICE)
             </div>
             <div class="card-body">
 
@@ -352,13 +357,15 @@
             </div>
         </div>
     </div>
+    @endif
     {{-- step three ends --}}
 
     {{-- step four starts --}}
+    @if($currentStep == 4)
     <div class="step-four">
         <div class="shadow card">
             <div class="text-white card-header bg-info">
-                STEP OF 5, ENTER OLEVEL EXAM SUBJECTS AND SCORE <small>Not less than 8 subject for any sitting</small>
+               STEP <b>{{ $currentStep }}</b> OF {{ $totalSteps }}, ENTER OLEVEL EXAM SUBJECTS AND SCORE <small>Not less than 8 subject for any sitting</small>
             </div>
             <div class="card-body">
                 <div class="form-group">
@@ -458,13 +465,15 @@
             </div>
         </div>
     </div>
+    @endif
     {{-- step four ends --}}
 
     {{-- step five starts --}}
+    @if($currentStep == 5)
     <div class="step-five">
         <div class="shadow card">
             <div class="text-white card-header bg-primary">
-                STEP 5 OF 5, SUBMIT COPIES OF ALL REQUIRED DOCUMENTS
+                STEP <b>{{ $currentStep }}</b> OF {{ $totalSteps }}, SUBMIT COPIES OF ALL REQUIRED DOCUMENTS
             </div>
             <div class="card-body">
 
@@ -505,7 +514,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="document_secondary_school_certificate_type">FSLC</label>
-                            <input type="file"  wire:model="document_secondary_school_certificate_type"
+                            <input type="file" accept="image/*"  wire:model="document_secondary_school_certificate_type"
                                 id="document_secondary_school_certificate_type" class="form-control">
                             @error('document_secondary_school_certificate_type')
                             <span class="text-danger">{{ $message }}</span>
@@ -547,14 +556,25 @@
             </div>
         </div>
     </div>
+    @endif
     {{-- step five ends --}}
 
 
     <div class="action-buttons d-flex justify-content-between bg-white p-2 mb-5">
-        <div></div>
-        <button type="button" class="btn btn-secondary">Back</button>
-        <button type="button" class="btn btn-primary">Next</button>
+        @if ($currentStep == 1)
+            <div></div>            
+        @endif
+        @if ($currentStep == 2 || $currentStep == 3 || $currentStep == 4 || $currentStep == 5)
+            <button wire:click="decreaseStep()" type="button" class="btn btn-secondary"><i class="fa fa-angle-double-left" aria-hidden="true"></i>
+                 Back</button>            
+        @endif
+        @if ($currentStep == 1 || $currentStep == 2 || $currentStep == 3 || $currentStep == 4)
+            <button wire:click='increaseStep()' type="button" class="btn btn-primary">Next <i class="fa fa-angle-double-right" aria-hidden="true"></i>
+            </button>
+        @endif
+        @if ($currentStep == 5)
         <button type="submit" class="btn btn-success">Submit Application</button>
+        @endif
     </div>
 
 
