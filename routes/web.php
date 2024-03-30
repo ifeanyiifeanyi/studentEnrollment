@@ -30,6 +30,9 @@ Route::get('/', function () {
     return view('auth.login');
 });
 
+Route::get('/payment', function () {
+    return view('student.application.index'); 
+})->name('payment.view');
 
 Route::get('/dashboard', DashboardController::class)->middleware(['auth', 'verified'])->name('dashboard');
 

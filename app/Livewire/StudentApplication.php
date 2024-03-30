@@ -2,14 +2,16 @@
 
 namespace App\Livewire;
 
-use App\Models\Application;
 use App\Models\User;
 use Livewire\Component;
 use App\Models\Department;
+use App\Models\Application;
 use Illuminate\Support\Str;
 use GuzzleHttp\Psr7\Request;
 use Livewire\WithFileUploads;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\RegistrationConfirmationMail;
 
 class StudentApplication extends Component
 {
@@ -188,13 +190,13 @@ class StudentApplication extends Component
                 'sittings' => 'required|integer|in:1,2',
                 'examBoard1' => 'required_if:sittings,1|in:waec,neco,gce',
                 'examBoard2' => 'required_if:sittings,2|in:waec,neco,gce',
-                'subjects1' => 'required|array|min:8',
+                'subjects1' => 'required|array|min:4',
                 'subjects1.*' => 'required',
-                'subjects1.*.subject' => 'required_with:subjects1|distinct|min:8',
+                'subjects1.*.subject' => 'required_with:subjects1|distinct|min:4',
                 'subjects1.*.score' => 'required_with:subjects1|numeric|between:0,100',
-                'subjects2' => 'required|array|min:8',
+                'subjects2' => 'required|array|min:4',
                 'subjects2.*' => 'required',
-                'subjects2.*.subject' => 'required_with:subjects2|distinct|min:8',
+                'subjects2.*.subject' => 'required_with:subjects2|distinct|min:4',
                 'subjects2.*.score' => 'required_with:subjects2|numeric|between:0,100',
             ], [
                 'subjects1.*.subject.required' => 'The subject is required.',
@@ -470,7 +472,7 @@ class StudentApplication extends Component
 
 
     // here we finally submit the form 
-    public function register(Request $request)
+    public function register()
     {
         $this->resetErrorBag();
 
@@ -561,10 +563,22 @@ class StudentApplication extends Component
         }
 
         // update application data (NOTE remember payment Id for each user)
-        Application::create([
+       $application = Application::create([
             'user_id' => $user->id,
             'department_id' => $this->department_id,
-            'payment_id' => 1 // will change later
+            // 'payment_id' => 1 // will change later
         ]);
+        // $this->reset();
+        // $this->currentStep = 1;
+
+        // Send the registration confirmation email
+        Mail::to($user->email)->send(new RegistrationConfirmationMail($user, $application));
+        $notification = [
+            'message' => 'Application Details submitted, proceed to payment to finalize the process, thank you',
+            'alert-type' => 'success'
+        ];
+        return redirect()->route('payment.view')->with($notification);
+
+
     }
 }
