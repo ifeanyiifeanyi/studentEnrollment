@@ -20,8 +20,8 @@
                 <div class="card card-primary card-outline">
                     <div class="card-body box-profile">
                         <div class="text-center">
-                            <img src="{{ empty($user->student->photo) ? " https://placehold.it/150x100" :
-                                asset($user->student->photo) }}" class="profile-user-img img-fluid img-circle"
+                            <img src="{{ empty($user->student->passport_photo) ? " https://placehold.it/150x100" :
+                                Storage::url($user->student->passport_photo) }}" class="profile-user-img img-fluid w-50"
                             alt="User profile picture">
                         </div>
 
@@ -46,7 +46,6 @@
                         </ul>
 
                         <a href="{{ route("student.profile.setPassword") }}" class="btn btn-danger btn-block"><b>Update Account Password</b></a>
-                        <a href="#" class="btn btn-primary btn-block"><b>Upload your Passport Photo</b></a>
                     </div>
                     <!-- /.card-body -->
                 </div>
@@ -82,7 +81,9 @@
                         <strong><i class="far fa-calendar-alt mr-1"></i> Date of Birth</strong>
 
                         <p class="text-muted">
-                            {{ Str::title($user->student->dob) ?? 'N/A' }}
+                            {{ $user->student->dob ? \Carbon\Carbon::parse($user->student->dob)->isoFormat('Do MMM YYYY') . ', ' . \Carbon\Carbon::parse($user->student->dob)->age . ' years old' : 'N/A' }}
+                        
+
                         </p>
 
                         <hr>

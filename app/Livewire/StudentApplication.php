@@ -50,6 +50,8 @@ class StudentApplication extends Component
     public $genotype;
 
 
+    public $department_description;
+
 
 
 
@@ -71,10 +73,9 @@ class StudentApplication extends Component
 
 
 
-    protected $rules = [];
-
     public function mount()
     {
+
 
         $user = User::with('student')->find(auth()->user()->id);
         $this->userId = $user->id;
@@ -92,6 +93,11 @@ class StudentApplication extends Component
         $this->email = old('email') ?? ($user ? $user->email : null);
 
         $this->phone = old('phone') ?? ($user->student ? $user->student->phone : null);
+
+        $this->state = old('state') ?? ($user->student ? $user->student->state_of_origin : null);
+
+        $this->country = old('country') ?? ($user->student ? $user->student->country_of_origin : null);
+        $this->localGovernment = old('localGovernment') ?? ($user->student ? $user->student->lga_origin : null);
 
         $this->religion = old('religion') ?? ($user->student ? $user->student->religion : null);
 
@@ -138,8 +144,20 @@ class StudentApplication extends Component
         }
 
         $this->religion =   old('religion') ?? ($user->student ? $user->student->religion : null);
+        $this->blood_group =   old('blood_group') ?? ($user->student ? $user->student->blood_group : null);
+        $this->genotype =   old('genotype') ?? ($user->student ? $user->student->genotype : null);
+
 
         $this->currentStep = 1;
+    }
+
+
+
+    public function updatedDepartmentId()
+    {
+        // Assuming you have a Department model with a description attribute
+        $department = Department::find($this->department_id);
+        $this->department_description = $department ? $department->description : '';
     }
 
     // validate form data
@@ -177,7 +195,7 @@ class StudentApplication extends Component
                 'secondary_school_graduation_year' => 'required|date',
                 'secondary_school_certificate_type' => 'required|string',
                 'jamb_reg_no' => 'required|string',
-                'jamb_score' => 'required|string',
+                'jamb_score' => 'required|numeric',
             ]);
         } elseif ($this->currentStep == 3) {
             $this->validate([
@@ -186,30 +204,40 @@ class StudentApplication extends Component
                 'department_id.required' => 'Please select a department',
             ]);
         } elseif ($this->currentStep == 4) {
-            $this->validate([
+            $validationRules = [
                 'sittings' => 'required|integer|in:1,2',
                 'examBoard1' => 'required_if:sittings,1|in:waec,neco,gce',
                 'examBoard2' => 'required_if:sittings,2|in:waec,neco,gce',
                 'subjects1' => 'required|array|min:4',
                 'subjects1.*' => 'required',
                 'subjects1.*.subject' => 'required_with:subjects1|distinct|min:4',
-                'subjects1.*.score' => 'required_with:subjects1|numeric|between:0,100',
-                'subjects2' => 'required|array|min:4',
-                'subjects2.*' => 'required',
+                'subjects1.*.score' => 'required_with:subjects1|regex:/^[A-F][1-9]$/',
+                'subjects2' => 'required_if:sittings,2|array',
+                'subjects2.*' => 'required_if:sittings,2',
                 'subjects2.*.subject' => 'required_with:subjects2|distinct|min:4',
-                'subjects2.*.score' => 'required_with:subjects2|numeric|between:0,100',
-            ], [
+                'subjects2.*.score' => 'required_with:subjects2|regex:/^[A-F][1-9]$/',
+            ];
+        
+            $validationMessages = [
+                'subjects1.required' => 'Please add at least one subject and score for Sitting 1.',
+                'subjects2.required' => 'Please add at least one subject and score for Sitting 2.',
                 'subjects1.*.subject.required' => 'The subject is required.',
                 'subjects1.*.score.required' => 'The score is required.',
+                'subjects1.*.score.regex' => 'The score must be in the format A1, B2, C3, ..., F9.',
                 'subjects2.*.subject.required' => 'The subject is required.',
                 'subjects2.*.score.required' => 'The score is required.',
-
-            ], [
+                'subjects2.*.score.regex' => 'The score must be in the format A1, B2, C3, ..., F9.',
+                'subjects2.*.subject.min' => 'The subjects2 field must have at least 4 items.',
+            ];
+        
+            $validationAttributes = [
                 'subjects1.*.subject' => 'subject',
                 'subjects1.*.score' => 'score',
                 'subjects2.*.subject' => 'subject',
                 'subjects2.*.score' => 'score',
-            ]);
+            ];
+        
+            $this->validate($validationRules, $validationMessages, $validationAttributes);
         }
     }
 
@@ -488,15 +516,15 @@ class StudentApplication extends Component
         }
 
         // Store files with unique filenames
-        $documentMedicalReportPath = $this->storeFile($this->document_medical_report, 'documents');
+        $documentMedicalReportPath = $this->storeFile($this->document_medical_report, 'public/documents');
 
-        $documentBirthCertificatePath = $this->storeFile($this->document_birth_certificate, 'documents');
+        $documentBirthCertificatePath = $this->storeFile($this->document_birth_certificate, 'public/documents');
 
-        $documentLocalGovIdPath = $this->storeFile($this->document_local_government_identification, 'documents');
+        $documentLocalGovIdPath = $this->storeFile($this->document_local_government_identification, 'public/documents');
 
-        $documentSecondarySchoolCertPath = $this->storeFile($this->document_secondary_school_certificate_type, 'documents');
+        $documentSecondarySchoolCertPath = $this->storeFile($this->document_secondary_school_certificate_type, 'public/documents');
 
-        $passportPhotoPath = $this->storeFile($this->passport_photo, 'photos');
+        $passportPhotoPath = $this->storeFile($this->passport_photo, 'public/photos');
 
         $olevelExams = [
             'sittings' => $this->sittings,

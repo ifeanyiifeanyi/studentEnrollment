@@ -11,8 +11,8 @@
         <!-- Sidebar user panel (optional) -->
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
             <div class="image">
-                <img src="{{ empty(auth()->user()->student->photo) ? " https://placehold.it/150x100" :
-                    asset(auth()->user()->student->photo) }}" class="elevation-2" alt="User Image">
+                <img src="{{ empty(auth()->user()->student->passport_photo) ? "https://placehold.it/150x100" :
+                    Storage::url(auth()->user()->student->passport_photo) }}" class="elevation-2" alt="User Image">
             </div>
             <div class="info">
                 <a href="#" class="d-block">{{ Str::title(auth()->user()->first_name) }} {{
@@ -30,7 +30,7 @@
                         <p>Dashboard</p>
                     </a>
                 </li>
-                <li class="nav-item menu-open">
+                <li class="nav-item menu-close">
                     <a href="{{ route('student.profile') }}" class="nav-link">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
                         <p>

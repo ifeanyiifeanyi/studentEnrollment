@@ -119,5 +119,6 @@ class User extends Authenticatable implements MustVerifyEmail
         'password' => 'hashed',
         'previous_login_at' => 'datetime',
         'last_login_at' => 'datetime',
+        
     ];
 }

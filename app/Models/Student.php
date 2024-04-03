@@ -19,4 +19,9 @@ class Student extends Model
     // {
     //     return $this->hasMany(Application::class);
     // }
+
+    protected $casts = [
+        // 'dob' => 'date',
+        
+    ];
 }

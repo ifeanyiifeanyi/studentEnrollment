@@ -4,15 +4,17 @@
     <div class="step-one">
         <div class="shadow card">
             <div class="text-white card-header bg-secondary">
-                STEP <b>{{ $currentStep }}</b> OF {{ $totalSteps }}, PERSONAL DETAILS
+                <p> STEP <b>{{ $currentStep }}</b> OF {{ $totalSteps }}, PERSONAL DETAILS </p>
+                <div class="text-warning">Please ensure that all information provided is accurate and up-to-date.
+                    Inaccurate information may lead to delays or rejection of your admission application.</div>
             </div>
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="first_name">First Name</label>
-                            <input wire:model.lazy="first_name" type="text" class="form-control" id="first_name" placeholder="Enter First Name"
-                                required>
+                            <input wire:model.lazy="first_name" type="text" class="form-control" id="first_name"
+                                placeholder="Enter First Name" required>
                             @error('first_name')
                             <div class="text-danger">
                                 {{ $message }}
@@ -23,8 +25,8 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="last_name">Last Name</label>
-                            <input wire:model.lazy="last_name" type="text" class="form-control" id="last_name" placeholder="Enter Last Name"
-                                required>
+                            <input wire:model.lazy="last_name" type="text" class="form-control" id="last_name"
+                                placeholder="Enter Last Name" required>
                             @error('last_name')
                             <div class="text-danger">
                                 {{ $message }}
@@ -35,8 +37,8 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="other_names">Other Names</label>
-                            <input wire:model.lazy="other_names" type="text" class="form-control" id="other_names" placeholder="Other Names .."
-                                required>
+                            <input wire:model.lazy="other_names" type="text" class="form-control" id="other_names"
+                                placeholder="Other Names .." required>
                             @error('other_names')
                             <div class="text-danger">
                                 {{ $message }}
@@ -50,8 +52,7 @@
                         <div class="form-group">
                             <label for="email">Email</label>
                             <input wire:model.lazy="email" type="email" class="form-control" id="email"
-                                 placeholder="Enter Email Address"
-                                required>
+                                placeholder="Enter Email Address" required>
                             @error('email')
                             <div class="text-danger">
                                 {{ $message }}
@@ -63,8 +64,7 @@
                         <div class="form-group">
                             <label for="phone">Phone Number</label>
                             <input wire:model.lazy="phone" type="tel" class="form-control" id="phone"
-                                 placeholder="Enter Phone Number"
-                                required>
+                                placeholder="Enter Phone Number" required>
                             @error('phone')
                             <div class="text-danger">
                                 {{ $message }}
@@ -93,8 +93,8 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="religion">Religion</label>
-                            <input wire:model.lazy="religion" type="text" class="form-control" id="religion" placeholder="Religion"
-                                required>
+                            <input wire:model.lazy="religion" type="text" class="form-control" id="religion"
+                                placeholder="Religion" required>
                             @error('religion')
                             <div class="text-danger">
                                 {{ $message }}
@@ -116,7 +116,7 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="nin">NIN</label>
-                            <input wire:model.lazy="nin" type="text" class="form-control" id="nin" 
+                            <input wire:model.lazy="nin" type="text" class="form-control" id="nin"
                                 placeholder="National Identification Number" required>
                             @error('nin')
                             <div class="text-danger">
@@ -133,6 +133,8 @@
                             <label for="country">Country of Origin</label>
                             <select id="country" class="form-control" wire:model.lazy="country"
                                 wire:change="countrySelected">
+                                <option {{ !empty($country) ? "selected" : "" }} value="{{ $country }}">{{ $country }}
+                                </option>
                                 <option value="">Select Country</option>
                                 <option value="Nigeria">Nigeria</option>
                                 <option value="Other">Other</option>
@@ -146,6 +148,8 @@
                         <div class="form-group">
                             <label for="state">State</label>
                             <select id="state" class="form-control" wire:model.lazy="state" wire:change="stateSelected">
+                                <option {{ !empty($state) ? "selected" : "" }} value="{{ $state }}">{{ $state }}
+                                </option>
                                 <option value="">Select State</option>
                                 @foreach ($states as $state)
                                 <option value="{{ $state }}">{{ $state }}</option>
@@ -158,6 +162,8 @@
                         <div class="form-group">
                             <label for="localGovernment">Local Government</label>
                             <select id="localGovernment" class="form-control" wire:model.lazy="localGovernment">
+                                <option {{ !empty($localGovernment) ? "selected" : "" }} value="{{ $localGovernment }}">
+                                    {{ $localGovernment }}</option>
                                 <option value="">Select Local Government</option>
                                 @foreach ($localGovernments as $localGovernment)
                                 <option value="{{ $localGovernment }}">{{ $localGovernment }}</option>
@@ -192,8 +198,7 @@
                         <div class="form-group">
                             <label for="current_residence_address">Current Residence Address</label>
                             <input wire:model.lazy="current_residence_address" type="text" class="form-control"
-                                id="current_residence_address"
-                                placeholder="Enter current_residence_address" required>
+                                id="current_residence_address" placeholder="Enter current_residence_address" required>
                             @error('current_residence_address')
                             <div class="text-danger">
                                 {{ $message }}
@@ -205,8 +210,8 @@
                         <div class="form-group">
                             <label for="permanent_residence_address">Permanent Residence Address</label>
                             <input wire:model.lazy="permanent_residence_address" type="text" class="form-control"
-                                id="permanent_residence_address"
-                                placeholder="Enter permanent_residence_address" required>
+                                id="permanent_residence_address" placeholder="Enter permanent_residence_address"
+                                required>
                             @error('permanent_residence_address')
                             <div class="text-danger">
                                 {{ $message }}
@@ -240,7 +245,8 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="guardian_address">Guardian/Parent Address</label>
-                            <input wire:model.lazy="guardian_address" type="text" class="form-control" id="guardian_address" placeholder="Parent or Guardian Home Address" />
+                            <input wire:model.lazy="guardian_address" type="text" class="form-control"
+                                id="guardian_address" placeholder="Parent or Guardian Home Address" />
                             @error('guardian_address')
                             <span class="text-danger">{{ $message }}</span>
                             @enderror
@@ -262,8 +268,8 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="blood_group">Blood Group</label>
-                            <input wire:model.lazy="blood_group" type="text" class="form-control"
-                                id="blood_group" placeholder="Blood Group" />
+                            <input wire:model.lazy="blood_group" type="text" class="form-control" id="blood_group"
+                                placeholder="Blood Group" />
                             @error('blood_group')
                             <span class="text-danger">{{ $message }}</span>
                             @enderror
@@ -281,7 +287,11 @@
     <div class="step-two">
         <div class="shadow card">
             <div class="text-white card-header bg-secondary">
-                STEP <b>{{ $currentStep }}</b> OF {{ $totalSteps }}, ACADEMIC DETAILS
+                <p>STEP <b>{{ $currentStep }}</b> OF {{ $totalSteps }}, ACADEMIC DETAILS</p>
+                <div class="text-warning">Please ensure that all academic records provided are accurate and verifiable.
+                    Inaccurate or falsified academic information may result in disqualification from the admission
+                    process.</div>
+
             </div>
             <div class="card-body">
 
@@ -290,8 +300,7 @@
                         <div class="form-group">
                             <label for="secondary_school_attended">Secondary School Attended</label>
                             <input wire:model.lazy="secondary_school_attended" type="text" class="form-control"
-                                id="secondary_school_attended"
-                                placeholder="Secondary School Attended" />
+                                id="secondary_school_attended" placeholder="Secondary School Attended" />
                             @error('secondary_school_attended')
                             <span class="text-danger">{{ $message }}</span>
                             @enderror
@@ -301,8 +310,7 @@
                         <div class="form-group">
                             <label for="secondary_school_graduation_year">Graduation Year</label>
                             <input wire:model.lazy="secondary_school_graduation_year" type="date" class="form-control"
-                                id="secondary_school_graduation_year"
-                                placeholder="Secondary School Graduation Year" />
+                                id="secondary_school_graduation_year" placeholder="Secondary School Graduation Year" />
                             @error('secondary_school_graduation_year')
                             <span class="text-danger">{{ $message }}</span>
                             @enderror
@@ -335,7 +343,7 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="jamb_score">Jamb Score</label>
-                            <input wire:model.lazy="jamb_score" type="text" class="form-control" id="jamb_score"
+                            <input wire:model.lazy="jamb_score" type="number" class="form-control" id="jamb_score"
                                 placeholder="Jamb Score" />
                             @error('jamb_score')
                             <span class="text-danger">{{ $message }}</span>
@@ -360,19 +368,31 @@
 
                 <div class="row">
                     <div class="mx-auto mt-5 col-md-6">
+                        <div class="text-info mb-5">Before selecting a department, please ensure that you have
+                            thoroughly researched the department's requirements and qualifications. Applying for the
+                            right department increases your chances of successful admission and aligns with your
+                            academic and career goals.</div>
+
                         <div class="form-group">
                             <label for="department_id">Select Department</label>
-                            <select wire:model="department_id" class="form-control" id="department_id">
-                                <option selected disabled>Select Department(Program of choice)</option>
-                                @forelse ($departments as $department)
-                                <option value="{{ $department->id }}">{{ Str::title($department->name) }}</option>
-                                @empty
+                            <select wire:model.lazy="department_id" class="form-control" id="department_id">
+                                <option selected>Select Department(Program of choice)</option>
+                                @foreach ($departments as $department)
 
-                                @endforelse
+                                <option value="{{ $department->id }}">{{ Str::title($department->name) }}</option>
+
+                                @endforeach
                             </select>
                             @error('department_id')
                             <span class="text-danger">{{ $message }}</span>
                             @enderror
+                        </div>
+                        <div>
+                            @if ($department_description)
+                            <label for="department_description">Department Description:</label>
+                            <p>{!! $department_description !!}</p>
+                            @endif
+
                         </div>
                     </div>
                 </div>
@@ -388,21 +408,31 @@
     <div class="step-four">
         <div class="shadow card">
             <div class="text-white card-header bg-info">
-               STEP <b>{{ $currentStep }}</b> OF {{ $totalSteps }}, ENTER OLEVEL EXAM SUBJECTS AND SCORE <small>Not less than 8 subject for any sitting</small>
+                STEP <b>{{ $currentStep }}</b> OF {{ $totalSteps }}, ENTER OLEVEL EXAM SUBJECTS AND SCORE <small>Not
+                    less than 8 subject for any sitting</small>
             </div>
             <div class="card-body">
                 <div class="form-group">
                     <label>Number of Sittings:</label>
                     <div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" wire:model="sittings" value="1"
-                                wire:click="$set('subjects2', [])">
-                            <label class="form-check-label">One Sitting</label>
+                            <div><input class="form-check-input" type="radio" wire:model="sittings" value="1"
+                                    wire:click="$set('subjects2', [])">
+                                <label class="form-check-label">One Sitting</label>
+                            </div>
+                            @error('subjects1')
+                            <div class="text-danger">{{ $message }}</div>
+                            @enderror
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" wire:model="sittings" value="2"
-                                wire:click="$set('subjects1', [])">
-                            <label class="form-check-label">Two Sittings</label>
+                            <div><input class="form-check-input" type="radio" wire:model="sittings" value="2"
+                                    wire:click="$set('subjects1', [])">
+                                <label class="form-check-label">Two Sittings</label>
+                            </div>
+                            @error('subjects2')
+                            <div class="text-danger">{{ $message }}</div>
+                            @enderror
+
                         </div>
                     </div>
                 </div>
@@ -447,15 +477,25 @@
                         @foreach ($subjects1 as $index => $subject)
                         <div class="row form-group">
                             <div class="col-md-6">
-                                <input type="text" wire:model="subjects1.{{ $index }}.subject" placeholder="Subject"
-                                    class="form-control">
-                                @error('subjects1.'.$index.'.subject') <p class="text-danger">{{ $message }}</p> @enderror
+                                <input type="text" wire:model="subjects1.{{ $index }}.subject"
+                                    placeholder="Subject, Eg English Language" class="form-control 
+                                    @if ($errors->get('subjects1.'.$index.'.subject')) border-danger @endif ">
+                                @if ($errors->get('subjects1.'.$index.'.subject'))
+                                <div class="text-danger">
+                                    {{ $errors->get('subjects1.'.$index.'.subject')[0] }}
+                                </div>
 
+                                @endif
                             </div>
                             <div class="col-md-4">
-                                <input type="number" wire:model="subjects1.{{ $index }}.score" placeholder="Score"
-                                    min="0" max="100" class="form-control">
-                                @error('subjects1.'.$index.'.score') <p class="text-danger">{{ $message }}</p> @enderror
+                                <input type="text" wire:model="subjects1.{{ $index }}.score" placeholder="Score, Eg A1"
+                                    min="0" max="100"
+                                    class="form-control @if ($errors->get('subjects1.'.$index.'.score')) border-danger @endif">
+                                @if ($errors->get('subjects1.'.$index.'.score'))
+                                <div class="text-danger">
+                                    {{ $errors->get('subjects1.'.$index.'.score')[0] }}
+                                </div>
+                                @endif
 
                             </div>
                             <div class="col-md-2">
@@ -473,15 +513,23 @@
                         @foreach ($subjects2 as $index => $subject)
                         <div class="row form-group">
                             <div class="col-md-6">
-                                <input type="text" wire:model="subjects2.{{ $index }}.subject" placeholder="Subject"
-                                    class="form-control">
-                                @error('subjects2.'.$index.'.subject') <span class="text-danger">{{ $message }}</span> @enderror
+                                <input type="text" wire:model="subjects2.{{ $index }}.subject"
+                                    placeholder="Subject: Eg. English Language" class="form-control">
+                                @if ($errors->get('subjects2.'.$index.'.subject'))
+                                <div class="invalid-feedback text-danger">
+                                    {{ $errors->get('subjects2.'.$index.'.subject')[0] }}
+                                </div>
+                                @endif
 
                             </div>
                             <div class="col-md-4">
-                                <input type="number" wire:model="subjects2.{{ $index }}.score" placeholder="Score"
-                                    min="0" max="100" class="form-control">
-                                @error('subjects2.'.$index.'.score') <span class="text-danger">{{ $message }}</span> @enderror
+                                <input type="text" wire:model="subjects2.{{ $index }}.score" placeholder="Score: Eg. A1"
+                                    class="form-control">
+                                @if ($errors->get('subjects2.'.$index.'.score'))
+                                <div class="invalid-feedback text-danger">
+                                    {{ $errors->get('subjects2.'.$index.'.score')[0] }}
+                                </div>
+                                @endif
 
                             </div>
                             <div class="col-md-2">
@@ -546,7 +594,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="document_secondary_school_certificate_type">FSLC</label>
-                            <input type="file" accept="image/*"  wire:model="document_secondary_school_certificate_type"
+                            <input type="file" accept="image/*" wire:model="document_secondary_school_certificate_type"
                                 id="document_secondary_school_certificate_type" class="form-control">
                             @error('document_secondary_school_certificate_type')
                             <span class="text-danger">{{ $message }}</span>
@@ -559,15 +607,18 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="passport_photo">Passport Photo</label>
-                                    <input type="file" wire:model="passport_photo" id="passport_photo" class="form-control" capture accept="image/*" onChange="changeImg(this)">
+                                    <input type="file" wire:model="passport_photo" id="passport_photo"
+                                        class="form-control" capture accept="image/*">
+
                                     @error('passport_photo')
                                     <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <img id="previewImage" src="{{ empty($passport_photo) ? asset('admin/assets/img/avatar/avatar-1.png') : asset($passport_photo) }}" alt="" class="img-fluid img-thumbnail w-50">
-
+                               
+                                <img src="{{ Storage::url($passport_photo) ?? 'https://placehold.it/150x100' }}" alt="Passport Photo Preview" class="img-fluid img-responsive w-50">
+                                
                             </div>
                         </div>
 
@@ -575,11 +626,12 @@
                 </div>
                 <hr>
 
-                <div class="form-group mt-5">
+                <div class="form-group mt-5 form-check">
                     <label for="terms" class="d-block">
-                        <input type="checkbox" class="form-control" wire:model="terms" id="terms"> You must agree to our <a href=""
-                            class="link">terms
-                            and conditions.</a>
+                        <input type="checkbox" class="form-check-input" wire:model="terms" id="terms"> You must agree to
+                        our
+                        <button href="#!" data-target="#modal-default" class="link">terms
+                            and conditions.</button>
                     </label>
                     @error('terms')
                     <span class="text-danger">{{ $message }}</span>
@@ -594,20 +646,42 @@
 
     <div class="action-buttons d-flex justify-content-between bg-white p-2 mb-5">
         @if ($currentStep == 1)
-            <div></div>            
+        <div></div>
         @endif
         @if ($currentStep == 2 || $currentStep == 3 || $currentStep == 4 || $currentStep == 5)
-            <button wire:click="decreaseStep()" type="button" class="btn btn-secondary"><i class="fa fa-angle-double-left" aria-hidden="true"></i>
-                 Back</button>            
+        <button wire:click="decreaseStep()" type="button" class="btn btn-secondary"><i class="fa fa-angle-double-left"
+                aria-hidden="true"></i>
+            Back</button>
         @endif
         @if ($currentStep == 1 || $currentStep == 2 || $currentStep == 3 || $currentStep == 4)
-            <button wire:click='increaseStep()' type="button" class="btn btn-primary">Next <i class="fa fa-angle-double-right" aria-hidden="true"></i>
-            </button>
+        <button wire:click='increaseStep()' type="button" class="btn btn-primary">Next <i
+                class="fa fa-angle-double-right" aria-hidden="true"></i>
+        </button>
         @endif
         @if ($currentStep == 5)
         <button type="submit" class="btn btn-success">Submit Application</button>
         @endif
     </div>
 
-
+    <div  class="modal fade" id="modal-default">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Default Modal</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>One fine body&hellip;</p>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
 </form>
