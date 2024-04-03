@@ -10,4 +10,8 @@ class ApplicationProcessController extends Controller
     public function index(){
         return view('student.application.index');
     }
+
+    public function finalApplicationStep(){
+        return view('student.payment.index');
+    }
 }

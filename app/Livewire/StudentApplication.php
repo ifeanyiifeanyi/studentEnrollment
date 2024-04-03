@@ -153,6 +153,7 @@ class StudentApplication extends Component
 
 
 
+
     public function updatedDepartmentId()
     {
         // Assuming you have a Department model with a description attribute
@@ -217,7 +218,7 @@ class StudentApplication extends Component
                 'subjects2.*.subject' => 'required_with:subjects2|distinct|min:4',
                 'subjects2.*.score' => 'required_with:subjects2|regex:/^[A-F][1-9]$/',
             ];
-        
+
             $validationMessages = [
                 'subjects1.required' => 'Please add at least one subject and score for Sitting 1.',
                 'subjects2.required' => 'Please add at least one subject and score for Sitting 2.',
@@ -229,14 +230,14 @@ class StudentApplication extends Component
                 'subjects2.*.score.regex' => 'The score must be in the format A1, B2, C3, ..., F9.',
                 'subjects2.*.subject.min' => 'The subjects2 field must have at least 4 items.',
             ];
-        
+
             $validationAttributes = [
                 'subjects1.*.subject' => 'subject',
                 'subjects1.*.score' => 'score',
                 'subjects2.*.subject' => 'subject',
                 'subjects2.*.score' => 'score',
             ];
-        
+
             $this->validate($validationRules, $validationMessages, $validationAttributes);
         }
     }
@@ -591,7 +592,7 @@ class StudentApplication extends Component
         }
 
         // update application data (NOTE remember payment Id for each user)
-       $application = Application::create([
+        $application = Application::create([
             'user_id' => $user->id,
             'department_id' => $this->department_id,
             // 'payment_id' => 1 // will change later
@@ -605,8 +606,6 @@ class StudentApplication extends Component
             'message' => 'Application Details submitted, proceed to payment to finalize the process, thank you',
             'alert-type' => 'success'
         ];
-        return redirect()->route('payment.view')->with($notification);
-
-
+        return redirect()->route('payment.view.finalStep')->with($notification);
     }
 }

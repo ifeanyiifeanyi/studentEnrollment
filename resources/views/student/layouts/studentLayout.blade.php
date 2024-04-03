@@ -125,12 +125,10 @@
             $('#localGovernment').select2();
         });
     </script>
-    {{-- <script>
-        window.addEventListener('initSelect2', function () {
-            $('#state').select2();
-            $('#localGovernment').select2();
-        });
-    </script> --}}
+
+
+
+
     
     @livewireScripts
 </body>

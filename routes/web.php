@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\AdminProfileController;
 use League\CommonMark\Extension\SmartPunct\DashParser;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\ExamManagerController;
+use App\Http\Controllers\Admin\PaymentMethodController;
 use App\Http\Controllers\Admin\StudentManagementController;
 use App\Http\Controllers\Student\ApplicationProcessController;
 use App\Http\Controllers\Student\StudentDashboardController;
@@ -92,9 +93,22 @@ Route::prefix('admin')->middleware(['auth', 'verified', 'role:admin'])->group(fu
         Route::patch('update-student/{slug}', 'update')->name('admin.update.student');
     });
 
+
+
+    Route::controller(PaymentMethodController::class)->group(function(){
+        Route::get('payment-method-management', 'index')->name('admin.payment.manage');
+        Route::post('payment-method-manager', 'store')->name('admin.payment.store');
+        Route::put('payment-method-manager/{id}', 'update')->name('admin.payment.update');
+
+    });
+
+
+
+
+
 });
 
-Route::prefix('student')->middleware('auth', 'verified', 'role:student')->group(function(){
+Route::prefix('student')->middleware(['auth', 'verified', 'role:student'])->group(function(){
     Route::controller(StudentDashboardController::class)->group(function(){
         Route::get('dashboard', 'dashboard')->name('student.dashboard');
         Route::get('logout', 'logout')->name('student.logout');
@@ -109,6 +123,10 @@ Route::prefix('student')->middleware('auth', 'verified', 'role:student')->group(
 
     Route::controller(ApplicationProcessController::class)->group(function(){
         Route::get('application-process', 'index')->name('student.application.process');
+        Route::get('/payment', 'finalApplicationStep')->name('payment.view.finalStep');
     });
+
+
+
 });
 require __DIR__ . '/auth.php';

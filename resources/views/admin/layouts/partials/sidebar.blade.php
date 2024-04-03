@@ -24,11 +24,21 @@
         </ul>
       </li>
       <li class="dropdown">
-        <a href="{{ route('admin.student.management') }}" class="nav-link has-dropdown"><i class="fas fa-users"></i> <span>Student Management</span></a>
+        <a href="{{ route('admin.student.management') }}" class="nav-link has-dropdown"><i class="fas fa-users"></i>
+          <span>Student Management</span></a>
         <ul class="dropdown-menu">
           <li><a class="nav-link" href="{{ route('admin.student.management') }}">All Students</a></li>
           <li><a class="nav-link" href="bootstrap-badge.html">Active Applications</a></li>
           <li><a class="nav-link" href="bootstrap-breadcrumb.html">Breadcrumb</a></li>
+        </ul>
+      </li>
+      <li class="dropdown">
+        <a href="{{ route('admin.payment.manage') }}" class="nav-link has-dropdown"><i class="fas fa-coins"></i>
+          <span>Payment Management</span></a>
+        <ul class="dropdown-menu">
+          <li><a class="nav-link" href="{{ route('admin.payment.manage') }}">Create Payment</a></li>
+          <li><a class="nav-link" href="bootstrap-badge.html">Payment Types</a></li>
+          <li><a class="nav-link" href="bootstrap-breadcrumb.html">All Payments</a></li>
         </ul>
       </li>
 
