@@ -17,24 +17,25 @@
         <div class="section-body">
             <div class="container">
                 <div class="row">
-                    <div class="col-md-6 mx-auto card shadow p-5">
+                    <div class="col-md-6 mx-auto card shadow p-2 col-sm-12">
 
-                        <form method="@if (isset($paymentMethod)) PUT @else POST @endif"
-                            action="{{ isset($paymentMethod) ? route('admin.payment.update', $paymentMethod->id) : route('admin.payment.store') }}">
+                        <form method="POST" action="{{ isset($paymentMethod) ? route('admin.payment.update', $paymentMethod->id) : route('admin.payment.store') }}">
                             @csrf
-                            @if (isset($paymentMethod))
-                            @method('PUT')
-                            @endif
-                            @if (isset($paymentMethod))
-                            <input type="hidden" name="id" value="{{ $paymentMethod->id }}">
-                            @endif
+                            @isset($paymentMethod)
+                                @method('PATCH')
+                            @endisset
+                            
+                            @isset($paymentMethod)
+                                <input type="hidden" name="id" value="{{ $paymentMethod->id }}">
+                            @endisset
 
 
                             <div class="form-group">
-                                <label for="department">Payment Method:</label>
-                                <input type="text" name="name" class="form-control"
+                                <label for="name">Payment Method:</label>
+                                <input type="text" id="name" name="name" class="form-control"
                                     placeholder="Payment Method, Eg, Flutterwave"
-                                    value="{{ old('name', isset($paymentMethod) ? $paymentMethod->name : '') }}">
+                                    value="{{ old('name', isset($paymentMethod) ? $paymentMethod->name : '') }}"
+                                    autocomplete="true">
 
                                 @error('name')
                                 <span class="text-danger">{{ $message }}</span>
@@ -43,68 +44,60 @@
 
 
                             <div class="form-group">
-                                <label for="venue">Description:</label>
-                                <textarea class="summernote-simple" placeholder="Payment method description .."
-                                    name="description" id="description"
+                                <label for="description">Description:</label>
+                                <textarea class="summernote-simple" placeholder="Payment method description .." name="description" id="description"
                                     class="form-control">{{ old('description', isset($paymentMethod) ? $paymentMethod->description : '') }}</textarea>
                                 @error('description')
                                 <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
 
-                            <button type="submit" class="btn btn-primary">Submit</button>
+                            <button type="submit" class="btn btn-primary">
+                                @if(isset($paymentMethod))
+                                Update
+                                @else
+                                Create
+                                @endif
+
+                            </button>
                         </form>
                     </div>
                 </div>
 
                 <div class="row">
-                    <div class="table-responsive">
-                        <table class="table table-striped">
-                            <tr>
-                                <th class="text-center pt-2">
-                                    <div class="custom-checkbox custom-checkbox-table custom-control">
-                                        <input type="checkbox" data-checkboxes="mygroup" data-checkbox-role="dad"
-                                            class="custom-control-input" id="checkbox-all">
-                                        <label for="checkbox-all" class="custom-control-label">&nbsp;</label>
-                                    </div>
-                                </th>
-                                <th>s/n</th>
-                                <th>Name</th>
-                            </tr>
+                    <div class="col-md-6 mx-auto col-sm-12">
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <tr>
+                                    <th style="width: 20px">s/n</th>
+                                    <th>Name</th>
+                                </tr>
 
 
 
-                            {{-- @dd($students) --}}
+                                @forelse ($paymentMethods as $pay)
 
-                            @forelse ($paymentMethods as $pay)
+                                <tr>
+                                    <td>{{ $loop->iteration }}</td>
 
-                            <tr>
-                                <td>{{ $loop->iteration }}</td>
-                                <td>
-                                    <div class="custom-checkbox custom-control">
-                                        <input type="checkbox" data-checkboxes="mygroup" class="custom-control-input"
-                                            id="checkbox-2">
-                                        <label for="checkbox-2" class="custom-control-label">&nbsp;</label>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="d-inline-block">
-                                        {!! Str::title($pay->name) !!}
-                                    </div>
-                                    <div class="table-links mb-3">
-                                        <a href="">View</a>
-                                        <div class="bullet"></div>
-                                        <a href="{{route('admin.payment.manage', $pay->id) }}">Edit</a>
-                                        <div class="bullet"></div>
-                                        <a href="#" class="text-danger">Trash</a>
-                                    </div>
-                                </td>
-                            </tr>
+                                    <td>
+                                        <div class="d-inline-block">
+                                            {!! Str::title($pay->name) !!}
+                                        </div>
+                                        <div class=" mb-3">
+                                            <div class=""></div>
+                                            <a href="{{route('admin.payment.manage', $pay->id) }}">Edit</a>
+                                            <div class="bullet"></div>
+                                            <a data-toggle="modal" data-target="#exampleModal" data-pay-slug="{{ $pay->id }}" href="#" class="text-danger">Trash</a>
+                                        </div>
+                                    </td>
+                                </tr>
 
-                            @empty
-                            <div class="alert alert-danger text-center"><b>Not available</b></div>
-                            @endforelse
-                        </table>
+                                @empty
+                                <div class="alert alert-danger text-center"><b>Not available</b></div>
+                                @endforelse
+                            </table>
+                        </div>
                     </div>
                 </div>
 
@@ -113,10 +106,36 @@
         </div>
     </section>
 </div>
+<div class="modal fade" tabindex="-1" role="dialog" id="exampleModal">
+    <div class="modal-dialog" role="document">
+       <div class="modal-content">
+          <div class="modal-header">
+             <h5 class="modal-title text-danger"><i class="fas fa-exclamation-triangle fa-3x"></i> Warning</h5>
+             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+             </button>
+          </div>
+          <div class="modal-body">
+             <p>Are You Sure? <br> This action can not be undone. Do you want to continue?</p>
+          </div>
+          <div class="modal-footer bg-whitesmoke br">
+             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+             <a href="#" class="btn btn-danger" id="deletePayBtn">Delete</a>
+          </div>
+       </div>
+    </div>
+  </div>
 @endsection
 
 
 
 @section('js')
-
+<script>
+    $('#exampleModal').on('show.bs.modal', function (event) {
+       var button = $(event.relatedTarget);
+       var payId = button.data('pay-id');
+       var modal = $(this);
+       modal.find('#deletePayBtn').attr('href', '/admin/payment-method-del/' + payId);
+    });
+  </script>
 @endsection

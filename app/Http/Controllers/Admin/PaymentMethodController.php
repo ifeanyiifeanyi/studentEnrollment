@@ -10,12 +10,12 @@ class PaymentMethodController extends Controller
 {
     public function index($id = null)
     {
-        $paymentMethods = PaymentMethod::all();
+        $paymentMethods = PaymentMethod::latest()->get();
         $paymentMethod = null;
 
-        if (request()->has('id')) {
-            $id = request()->input('id');
+        if ($id) {
             $paymentMethod = PaymentMethod::findOrFail($id);
+            // dd($paymentMethod);
         }
 
         return view('admin.paymentMethod.index', compact('paymentMethods', 'paymentMethod'));
@@ -53,6 +53,6 @@ class PaymentMethodController extends Controller
             'alert-type' => 'success'
         ];
 
-        return redirect()->back()->with($notification);
+        return redirect()->route('admin.payment.manage')->with($notification);
     }
 }

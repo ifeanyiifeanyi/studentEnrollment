@@ -96,9 +96,12 @@ Route::prefix('admin')->middleware(['auth', 'verified', 'role:admin'])->group(fu
 
 
     Route::controller(PaymentMethodController::class)->group(function(){
-        Route::get('payment-method-management', 'index')->name('admin.payment.manage');
+        Route::get('payment-method-management/{id?}', 'index')->name('admin.payment.manage');
         Route::post('payment-method-manager', 'store')->name('admin.payment.store');
-        Route::put('payment-method-manager/{id}', 'update')->name('admin.payment.update');
+        Route::patch('payment-method-manage/{id}', 'update')->name('admin.payment.update');
+        Route::get('payment-method-del/{id}', 'destroy')->name('admin.payment.destroy');
+
+        
 
     });
 
