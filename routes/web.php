@@ -115,6 +115,9 @@ Route::prefix('student')->middleware(['auth', 'verified', 'role:student'])->grou
     Route::controller(StudentDashboardController::class)->group(function(){
         Route::get('dashboard', 'dashboard')->name('student.dashboard');
         Route::get('logout', 'logout')->name('student.logout');
+
+        Route::get('faculty-user/{slug}', 'facultyDetail')->name('student.faculty.show');
+        Route::get('department-user/{id}', 'departmentDetail')->name('student.department.show');
     });
 
     Route::controller(StudentProfileController::class)->group(function(){

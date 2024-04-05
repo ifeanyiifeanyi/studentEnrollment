@@ -15,7 +15,7 @@ class Department extends Model
     }
 
     public function exam_managers(){
-        return $this->hasMany(ExamManager::class);
+        return $this->hasOne(ExamManager::class);
     }
 
     public function applications(){
