@@ -42,6 +42,8 @@ Route::prefix('admin')->middleware(['auth', 'verified', 'role:admin'])->group(fu
     Route::controller(AdminDashboardController::class)->group(function(){
         Route::get('dashboard', 'index')->name('admin.dashboard');
         Route::get('logout', 'logout')->name('admin.logout');
+
+        Route::get('site-settings', 'siteSettings')->name('site.settings');
     });
 
     Route::controller(AdminProfileController::class)->group(function(){

@@ -10,6 +10,8 @@ class Student extends Model
     use HasFactory;
 
     Protected $guarded = [];
+    protected $table = 'students';
+
 
     public function user(){
         return $this->belongsTo(User::class);

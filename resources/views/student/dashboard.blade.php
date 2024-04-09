@@ -53,6 +53,7 @@
             transform: translateY(0);
         }
     }
+
 </style>
 @endsection
 
@@ -63,8 +64,8 @@
             <div class="container">
                 <div class="card greeting-card">
                     <div class="card-body d-flex justify-content-center align-items-center flex-column">
-                        <div class="greeting-icon mb-3"></div>
-                        <h4 class="greeting-text mb-0"></h4>
+                        <div class="mb-3 greeting-icon"></div>
+                        <h4 class="mb-0 greeting-text"></h4>
                         <p class="text-muted">{{ Str::title(auth()->user()->first_name) }}</p>
                     </div>
                 </div>
@@ -74,10 +75,10 @@
             <div class="container">
                 <div class="card greeting-card">
                     <div class="card-body d-flex justify-content-center align-items-center flex-column">
-                        <div class="greeting-icon mb-3">
+                        <div class="mb-3 greeting-icon">
                             <i class="fas fa-user-ninja"></i>
                         </div>
-                        <h5 class="greeting-text mb-0">{{ Str::title(auth()->user()->first_name) }} {{
+                        <h5 class="mb-0 greeting-text">{{ Str::title(auth()->user()->first_name) }} {{
                             Str::title(auth()->user()->last_name) }} {{ Str::title(auth()->user()->other_names) ?? "?"
                             }}</h5>
                         <p class="text-muted"><b>Username: </b>{{ Str::title(auth()->user()->nameSlug) }}</p>
@@ -89,10 +90,10 @@
             <div class="container">
                 <div class="card greeting-card">
                     <div class="card-body d-flex justify-content-center align-items-center flex-column">
-                        <div class="greeting-icon mb-3">
+                        <div class="mb-3 greeting-icon">
                             <i class="fas fa-clock"></i>
                         </div>
-                        <h4 class="greeting-text mb-0">{{ auth()->user()->previous_login_at?->diffForHumans() ?? 'N/A'
+                        <h4 class="mb-0 greeting-text">{{ auth()->user()->previous_login_at?->diffForHumans() ?? 'N/A'
                             }}</h4>
                         <p class="text-muted">Last Login</p>
                     </div>
@@ -122,9 +123,9 @@
                         <div class="row">
                             @forelse ($faculties as $faculty)
                             <div class="col-sm-4">
-                                <div class="position-relative p-1 card" style="height: 180px">
+                                <div id="f-card" class="h-auto p-1 position-relative card" >
                                     <div class="ribbon-wrapper ">
-                                        <div class="ribbon text-white" style="background-color: rgb(99 102 241 / 1);">
+                                        <div class="text-white ribbon" style="background-color: rgb(99 102 241 / 1);">
                                             Faculties
                                         </div>
                                     </div>
@@ -135,7 +136,7 @@
                                             </p>
                                         </div>
                                         <div class="mt-2">
-                                            <ul style="list-style-image: url({{ asset('list.png') }})">
+                                            <ul class="list-group" style="list-style-image: url({{ asset('list.png') }})">
                                                 @forelse ($faculty->departments as $department)
                                                 <li>
                                                     <a data-toggle="modal" data-target="#departmentModal"
@@ -149,8 +150,10 @@
                                                 <li style="list-style-image: url({{ asset('error.png') }})"
                                                     class="text-danger">
                                                     Coming soon <i class="fas fa-spinner fa-spin"></i></li>
+                                                    
 
                                                 @endforelse
+                                                <hr>
                                             </ul>
                                         </div>
 
@@ -162,8 +165,9 @@
                             @empty
                             <div class="alert alert-danger">Try again later</div>
                             @endforelse
-
-
+                        </div>
+                        <div class=" d-flex justify-content-center">
+                        {{$faculties->links()}}
                         </div>
                     </div>
                     <!-- /.card-body -->
@@ -188,7 +192,7 @@
                 <div class="modal-body">
                     <!-- Department details will be loaded here -->
                 </div>
-                <div class="modal-footer float-right">
+                <div class="float-right modal-footer">
                     <a href="{{ route('student.application.process') }}" class="btn btn-primary">Start Application</a>
                 </div>
             </div>

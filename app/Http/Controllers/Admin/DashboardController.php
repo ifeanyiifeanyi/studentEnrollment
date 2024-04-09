@@ -22,4 +22,9 @@ class DashboardController extends Controller
 
         return redirect('/');
     }
+
+
+    public function siteSettings(){
+        return view('admin.siteSetting.index');
+    }
 }

@@ -11,7 +11,7 @@ class FacultyController extends Controller
 {
     public function index()
     {
-        $faculties = Faculty::latest()->get();
+        $faculties = Faculty::latest()->simplePaginate('10');
         // dd($faculties);
 
         return view('admin.faculty.index', compact('faculties'));

@@ -11,6 +11,7 @@ class Application extends Model
 
     protected $guarded = [];
 
+    protected $table = 'applications';
 
 
     public function user()

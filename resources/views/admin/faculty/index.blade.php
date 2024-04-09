@@ -70,6 +70,7 @@
                   </tbody>
                 </table>
               </div>
+              {{ $faculties->links() }}
             </div>
           </div>
         </div>

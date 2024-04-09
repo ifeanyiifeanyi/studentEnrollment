@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\User;
+use App\Models\Student;
 use Livewire\Component;
 use App\Models\Department;
 use App\Models\Application;
@@ -10,6 +11,8 @@ use Illuminate\Support\Str;
 use GuzzleHttp\Psr7\Request;
 use Livewire\WithFileUploads;
 use Illuminate\Validation\Rule;
+use App\Jobs\ProcessRegistration;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\RegistrationConfirmationMail;
 
@@ -518,15 +521,21 @@ class StudentApplication extends Component
 
         // Store files with unique filenames
         $documentMedicalReportPath = $this->storeFile($this->document_medical_report, 'public/documents');
-
         $documentBirthCertificatePath = $this->storeFile($this->document_birth_certificate, 'public/documents');
-
         $documentLocalGovIdPath = $this->storeFile($this->document_local_government_identification, 'public/documents');
-
         $documentSecondarySchoolCertPath = $this->storeFile($this->document_secondary_school_certificate_type, 'public/documents');
-
         $passportPhotoPath = $this->storeFile($this->passport_photo, 'public/photos');
 
+        // Create a new array with the file paths
+        $files = [
+            'document_medical_report' => $documentMedicalReportPath,
+            'document_birth_certificate' => $documentBirthCertificatePath,
+            'document_local_government_identification' => $documentLocalGovIdPath,
+            'document_secondary_school_certificate_type' => $documentSecondarySchoolCertPath,
+            'passport_photo' => $passportPhotoPath,
+        ];
+
+        // In the register method
         $olevelExams = [
             'sittings' => $this->sittings,
             'exam_boards' => [
@@ -542,25 +551,20 @@ class StudentApplication extends Component
         // Convert to JSON and save to database
         $olevelExamsJson = json_encode($olevelExams);
 
-
-        // find student data
-        // Fetch the user along with their associated student data
-        $user = User::with('student')->find(auth()->user()->id);
-
-        $uniqueNumber = 'SHN' . Str::random(8) . time();
-
-        //update user table data
-        $user->update([
+        $user = User::where('id', $this->userId)->firstOrFail();
+        $userData = [
             'first_name' => $this->first_name,
             'last_name' => $this->last_name,
             'other_names' => $this->other_names,
-            'email' => $this->email
-        ]);
+            'email' => $this->email,
+        ];
+        $user->update($userData);
 
-        // Update student data
+
+
         if ($user->student) {
             $user->student->update([
-                'application_unique_number' => $uniqueNumber,
+                'application_unique_number' => $this->generateUniqueNumber(),
                 'document_medical_report' => $documentMedicalReportPath,
                 'document_birth_certificate' => $documentBirthCertificatePath,
                 'document_local_government_identification' => $documentLocalGovIdPath,
@@ -591,21 +595,38 @@ class StudentApplication extends Component
             ]);
         }
 
-        // update application data (NOTE remember payment Id for each user)
-        $application = Application::create([
-            'user_id' => $user->id,
-            'department_id' => $this->department_id,
-            // 'payment_id' => 1 // will change later
-        ]);
-        // $this->reset();
-        // $this->currentStep = 1;
 
-        // Send the registration confirmation email
+        $applicationData = [
+            'department_id' => $this->department_id,
+            'user_id' => $this->userId,
+        ];
+
+        $application = Application::updateOrCreate(
+            [
+                'user_id' => $this->userId,
+                'department_id' => $this->department_id,
+            ]
+        );
+
+
+        // Dispatch the job
+        // ProcessRegistration::dispatch($userData, $applicationData, $studentData, $files);
+
         Mail::to($user->email)->send(new RegistrationConfirmationMail($user, $application));
+
+
+
         $notification = [
             'message' => 'Application Details submitted, proceed to payment to finalize the process, thank you',
-            'alert-type' => 'success'
+            'alert-type' => 'success',
         ];
         return redirect()->route('payment.view.finalStep')->with($notification);
+    }
+
+    
+    private function generateUniqueNumber()
+    {
+        $lastRegisteredPerson = Student::max('id') + 1;
+        return 'SHN' . mt_rand(1000000, 9999999) . $lastRegisteredPerson;
     }
 }

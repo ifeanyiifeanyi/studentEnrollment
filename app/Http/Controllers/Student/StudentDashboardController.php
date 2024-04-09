@@ -12,7 +12,10 @@ use Illuminate\Support\Facades\Auth;
 class StudentDashboardController extends Controller
 {
     public function dashboard(){
-        $faculties = Faculty::with('departments')->get();
+        $faculties = Faculty::has('departments')
+        ->with('departments')
+        ->simplePaginate(15);
+
         return view('student.dashboard', compact('faculties'));
     }
     /**

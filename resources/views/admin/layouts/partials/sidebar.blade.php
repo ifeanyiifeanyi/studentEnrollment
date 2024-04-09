@@ -41,7 +41,7 @@
         </ul>
       </li>
 
-      <li><a class="nav-link" href="credits.html"><i class="fas fa-pencil-ruler"></i> <span>Credits</span></a></li>
+      <li><a class="nav-link" href="{{ route('site.settings') }}"><i class="fas fa-pencil-ruler"></i> <span>Site Settings</span></a></li>
     </ul>
 
 
