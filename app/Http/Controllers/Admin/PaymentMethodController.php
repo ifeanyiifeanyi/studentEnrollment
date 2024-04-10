@@ -103,4 +103,18 @@ class PaymentMethodController extends Controller
 
         return redirect()->route('admin.payment.manage')->with($notification);
     }
+
+    public function destroy($id){
+        $payment = PaymentMethod::findOrFail($id);
+        if (!empty($payment->logo) && file_exists(public_path($payment->logo))) {
+            unlink(public_path($payment->logo));
+        }
+        $payment->delete();
+        $notification = [
+           'message' => 'Payment Method Deleted!',
+            'alert-type' =>'success'
+        ];
+
+        return redirect()->route('admin.payment.manage')->with($notification);
+    }
 }

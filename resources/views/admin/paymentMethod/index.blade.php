@@ -99,7 +99,7 @@
                                             <div class=""></div>
                                             <a href="{{route('admin.payment.manage', $pay->id) }}">Edit</a>
                                             <div class="bullet"></div>
-                                            <a data-toggle="modal" data-target="#exampleModal" data-pay-slug="{{ $pay->id }}" href="#" class="text-danger">Trash</a>
+                                            <a data-toggle="modal" data-target="#exampleModal" data-pay-id="{{ $pay->id }}" href="#" class="text-danger">Trash</a>
                                         </div>
                                     </td>
                                     <td>
