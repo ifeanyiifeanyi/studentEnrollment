@@ -44,6 +44,7 @@ Route::prefix('admin')->middleware(['auth', 'verified', 'role:admin'])->group(fu
         Route::get('logout', 'logout')->name('admin.logout');
 
         Route::get('site-settings', 'siteSettings')->name('site.settings');
+        Route::post('site-settings/store', 'siteSettingStore')->name('site.setting.store');
     });
 
     Route::controller(AdminProfileController::class)->group(function(){
@@ -133,6 +134,11 @@ Route::prefix('student')->middleware(['auth', 'verified', 'role:student'])->grou
     Route::controller(ApplicationProcessController::class)->group(function(){
         Route::get('application-process', 'index')->name('student.application.process');
         Route::get('/payment/{userSlug}', 'finalApplicationStep')->name('payment.view.finalStep');
+
+        Route::post('application-process/store','processPayment')->name('student.payment.process');
+        Route::get('handle/payment-call', 'handlePaymentCallBack')->name('student.payment.callback');
+        Route::get('/payment/success', 'showSuccess')->name('student.payment.success');
+
     });
 
 

@@ -118,37 +118,38 @@
                   </tr>
                 </table>
               </div>
-              <div class="col-md-12">
-                <p class="lead">Payment Methods:</p>
-                  @forelse ($paymentMethods as $pm)
-                    <input type="radio" name="{{ $pm->name }}" value="{{ $pm->id }}" id="">
-                    <img src="{{ asset($pm->logo) }}" width="80" alt=""> {{ $pm->name }} <br>
-                  @empty
-                    
-                  @endforelse
-              </div>
-              <div class="col-md-12 mt-3 btn-group">
-                <a href="invoice-print.html" rel="noopener" target="_blank" class="btn btn-default"><i
-                    class="fas fa-print"></i> Print</a>
-  
-                <button type="button" class="btn btn-success float-right"><i class="far fa-credit-card"></i> Submit
-                  Payment
-                </button>
-  
-                {{-- <button type="button" class="btn btn-primary float-right" style="margin-right: 5px;">
-                  <i class="fas fa-download"></i> Generate PDF
-                </button> --}}
-              </div>
-            </div>
-            </div>
-            <!-- /.col -->
-            
-          </div>
-          <!-- /.row -->
 
-          <!-- this row will not appear when printing -->
-          <div class="row no-print">
-            
+              <form action="{{ route('student.payment.process') }}" method="POST">
+                @csrf
+                <div class="col-md-12">
+                  <p class="lead">Payment Methods:</p>
+                    <input type="hidden" name="amount" value="20010.34">
+                    @foreach ($paymentMethods as $pm)
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="payment_method_id" id="{{ $pm->id }}" value="{{ $pm->id }}">
+                      <label class="form-check-label" for="{{ $pm->id }}">
+                        <img src="{{ asset($pm->logo) }}" width="80" alt="{{ $pm->name }}"> {{ $pm->name }}
+                      </label>
+                    </div>
+                    @endforeach
+                </div>
+                <div class="col-md-12 mt-3 btn-group">
+                  <button type="submit" class="btn btn-success float-right"><i class="far fa-credit-card"></i> Submit
+                    Payment
+                  </button>
+                </div>
+              </form>
+
+            </div>
+          </div>
+          <!-- /.col -->
+
+        </div>
+        <!-- /.row -->
+
+        <!-- this row will not appear when printing -->
+        <div class="row no-print">
+
 
         </div>
         <!-- /.invoice -->
