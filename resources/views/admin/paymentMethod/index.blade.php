@@ -19,7 +19,7 @@
                 <div class="row">
                     <div class="col-md-6 mx-auto card shadow p-2 col-sm-12">
 
-                        <form method="POST" action="{{ isset($paymentMethod) ? route('admin.payment.update', $paymentMethod->id) : route('admin.payment.store') }}">
+                        <form method="POST" action="{{ isset($paymentMethod) ? route('admin.payment.update', $paymentMethod->id) : route('admin.payment.store') }}" enctype="multipart/form-data">
                             @csrf
                             @isset($paymentMethod)
                                 @method('PATCH')
@@ -38,6 +38,16 @@
                                     autocomplete="true">
 
                                 @error('name')
+                                <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+                            <div class="form-group">
+                                <label for="logo">Payment Logo:</label><br>
+                            @isset($paymentMethod)
+                                <img width="70px" src="{{ asset($paymentMethod->logo) }}" alt="" class="img-responsive">
+                            @endisset
+                                <input type="file" id="logo" name="logo" class="form-control" placeholder="Payment Method, Eg, Flutterwave" autocomplete="true">
+                                @error('logo')
                                 <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
@@ -71,6 +81,7 @@
                                 <tr>
                                     <th style="width: 20px">s/n</th>
                                     <th>Name</th>
+                                    <th>Logo</th>
                                 </tr>
 
 
@@ -90,6 +101,9 @@
                                             <div class="bullet"></div>
                                             <a data-toggle="modal" data-target="#exampleModal" data-pay-slug="{{ $pay->id }}" href="#" class="text-danger">Trash</a>
                                         </div>
+                                    </td>
+                                    <td>
+                                        <img src="{{ asset($pay->logo) }}" alt="" class="img-circle w-50">
                                     </td>
                                 </tr>
 

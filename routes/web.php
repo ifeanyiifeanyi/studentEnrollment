@@ -131,7 +131,7 @@ Route::prefix('student')->middleware(['auth', 'verified', 'role:student'])->grou
 
     Route::controller(ApplicationProcessController::class)->group(function(){
         Route::get('application-process', 'index')->name('student.application.process');
-        Route::get('/payment', 'finalApplicationStep')->name('payment.view.finalStep');
+        Route::get('/payment/{userSlug}', 'finalApplicationStep')->name('payment.view.finalStep');
     });
 
 

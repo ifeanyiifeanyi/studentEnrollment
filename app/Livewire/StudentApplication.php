@@ -596,15 +596,13 @@ class StudentApplication extends Component
         }
 
 
-        $applicationData = [
-            'department_id' => $this->department_id,
-            'user_id' => $this->userId,
-        ];
+        
 
         $application = Application::updateOrCreate(
             [
                 'user_id' => $this->userId,
                 'department_id' => $this->department_id,
+                'invoice_number' => mt_rand(100000, 999999)
             ]
         );
 
@@ -620,7 +618,7 @@ class StudentApplication extends Component
             'message' => 'Application Details submitted, proceed to payment to finalize the process, thank you',
             'alert-type' => 'success',
         ];
-        return redirect()->route('payment.view.finalStep')->with($notification);
+            return redirect()->route('payment.view.finalStep', ['userSlug' => $user->nameSlug])->with($notification);
     }
 
     
