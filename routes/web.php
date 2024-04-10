@@ -115,20 +115,21 @@ Route::prefix('admin')->middleware(['auth', 'verified', 'role:admin'])->group(fu
 
 Route::prefix('student')->middleware(['auth', 'verified', 'role:student'])->group(function(){
     Route::controller(StudentDashboardController::class)->group(function(){
-        Route::get('dashboard', 'dashboard')->name('student.dashboard');
+        Route::get('dashboard', 'dashboard')->name('student.dashboard')->middleware('check.payment.status');
         Route::get('logout', 'logout')->name('student.logout');
 
         Route::get('faculty-user/{slug}', 'facultyDetail')->name('student.faculty.show');
         Route::get('department-user/{id}', 'departmentDetail')->name('student.department.show');
     });
 
-    Route::controller(StudentProfileController::class)->group(function(){
+    Route::controller(StudentProfileController::class)->middleware('check.payment.status')->group(function(){
         Route::get('profile', 'profile')->name('student.profile');
         Route::get('profile/set-password', 'setPassword')->name('student.profile.setPassword');
         Route::patch('profile/update-password', 'updatePassword')->name('student.profile.updatePassword');
         Route::patch('profile/update', 'update')->name('student.profile.update');
     });
 
+    //NOTE: remember there is a task to delete application not paid after 20days(DeleteUnpaidApplications)
     Route::controller(ApplicationProcessController::class)->group(function(){
         Route::get('application-process', 'index')->name('student.application.process');
         Route::get('/payment/{userSlug}', 'finalApplicationStep')->name('payment.view.finalStep');
