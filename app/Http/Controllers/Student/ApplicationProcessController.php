@@ -183,8 +183,9 @@ class ApplicationProcessController extends Controller
         $application = $user->applications->first(); // Example, adjust based on your application logic
         $payment = $application ? $application->payment : null; // Example logic
 
-        if (!$payment) {
-            // Handle the case where there is no payment found, perhaps redirect or show an error
+        if (!$payment || !$user || $application) {
+            return redirect()->route('payment.view.finalStep', ['userSlug' => $user->nameSlug])
+            ->withErrors('An error occurred while processing the payment. Please try again.');
         }
 
         return view('student.payment.success', compact('user', 'application', 'payment'));

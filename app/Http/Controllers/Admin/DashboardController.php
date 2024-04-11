@@ -10,6 +10,11 @@ use Illuminate\Support\Facades\Auth;
 class DashboardController extends Controller
 {
     public function index(){
+        $user = auth()->user();
+        $latestApplication = $user->applications->latest()->first();
+    
+        $hasPendingApplication = $latestApplication ? $latestApplication->admission_status === 'pending' : false;
+    
         return view('admin.dashboard');
     }
 
