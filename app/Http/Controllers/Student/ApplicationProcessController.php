@@ -22,7 +22,11 @@ class ApplicationProcessController extends Controller
         // dd($application);
         if ($application && is_null($application->payment_id)) {
             // Application form has been filled, but payment is pending
-            return redirect()->route('payment.view.finalStep', ['userSlug' => $user->nameSlug])->with('info', 'Please complete the payment to finalize your application.');
+            $notification = [
+                'message' => 'Please complete the payment to finalize your application.',
+                'alert-type' => 'info'
+            ];
+            return redirect()->route('payment.view.finalStep', ['userSlug' => $user->nameSlug])->with($notification);
         }
         return view('student.application.index');
     }
@@ -133,7 +137,7 @@ class ApplicationProcessController extends Controller
                 if ($user) {
                     $application = $user->applications()->first();
                     $paymentMethodId = PaymentMethod::where('name', 'Flutterwave')->first()->id;
-                // dd($paymentMethodId);
+                    // dd($paymentMethodId);
 
 
                     $paymentData = [
@@ -156,18 +160,23 @@ class ApplicationProcessController extends Controller
                         'application' => $application,
                         'payment' => $payment,
                     ]);
+                } else {
+                    $userSlug = optional(auth()->user())->nameSlug;
+                    return redirect()->route('payment.view.finalStep', ['userSlug' => $userSlug])
+                        ->withErrors('Payment was not successful. Please try again.');
                 }
             } elseif ($status == 'cancelled') {
+
                 $userSlug = optional(auth()->user())->nameSlug;
                 return redirect()->route('payment.view.finalStep', ['userSlug' => $userSlug])
                     ->withErrors('Payment was cancelled.');
             } else {
+
                 $userSlug = optional(auth()->user())->nameSlug;
                 return redirect()->route('payment.view.finalStep', ['userSlug' => $userSlug])
                     ->withErrors('Payment was not successful. Please try again.');
             }
         } catch (\Exception $e) {
-            // Log the error
             // dd($e->getMessage());
 
             // Redirect with an error message
@@ -185,7 +194,7 @@ class ApplicationProcessController extends Controller
 
         if (!$payment || !$user || $application) {
             return redirect()->route('payment.view.finalStep', ['userSlug' => $user->nameSlug])
-            ->withErrors('An error occurred while processing the payment. Please try again.');
+                ->withErrors('An error occurred while processing the payment. Please try again.');
         }
 
         return view('student.payment.success', compact('user', 'application', 'payment'));

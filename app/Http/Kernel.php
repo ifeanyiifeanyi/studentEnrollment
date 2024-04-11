@@ -68,6 +68,7 @@ class Kernel extends HttpKernel
         
         // this line is used to make student most pay after filling the application form
         'check.payment.status' => \App\Http\Middleware\CheckPaymentStatusRole::class, 
+        'check.application.status' => \App\Http\Middleware\CheckApplicationStatus::class,
 
     ];
 }

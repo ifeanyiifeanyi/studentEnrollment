@@ -17,7 +17,12 @@ class StudentProfileController extends Controller
      */
     public function profile()
     {
-        return view('student.profile.index', ['user' => auth()->user()]);
+        $user = auth()->user();
+        $application = $user->applications->first();
+
+        $hasPendingApplication = $application ? $application->admission_status === 'pending' : false;
+
+        return view('student.profile.index', ['user' => $user, 'application' => $application, 'hasPendingApplication' => $hasPendingApplication]);
     }
 
     /**
@@ -90,8 +95,7 @@ class StudentProfileController extends Controller
             'permanent_residence_address' =>'required|string',
             'secondary_school_attended' =>'required|string',
             'secondary_school_graduation_year' =>'required|date',
-            'phone' =>'required|string',
-            'agreement' => 'required'
+            'phone' =>'required|string'
         ]);
 
         $user->update([

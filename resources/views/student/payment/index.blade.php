@@ -10,7 +10,12 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col-12">
-        
+        <div class="callout callout-danger">
+          <h5 class="text-danger"><i class="fas fa-info"></i> Note:</h5>
+         <p class="text-muted">
+          Please be advised that any student applications not completed within 2 weeks of initiation will be automatically cancelled. Ensure you finalize all aspects of your application promptly to secure your candidacy.
+         </p>
+        </div>
 
 
         <!-- Main content -->

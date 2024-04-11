@@ -12,11 +12,15 @@ use Illuminate\Support\Facades\Auth;
 class StudentDashboardController extends Controller
 {
     public function dashboard(){
+        $user = auth()->user();
+        $application = $user->applications->first();
+
+        $hasPendingApplication = $application ? $application->admission_status === 'pending' : false;
         $faculties = Faculty::has('departments')
         ->with('departments')
         ->simplePaginate(15);
 
-        return view('student.dashboard', compact('faculties'));
+        return view('student.dashboard', compact('faculties', 'application', 'hasPendingApplication', 'user'));
     }
     /**
      * Display a listing of the resource.

@@ -132,7 +132,7 @@ Route::prefix('student')->middleware(['auth', 'verified', 'role:student'])->grou
 
     //NOTE: remember there is a task to delete application not paid after 20days(DeleteUnpaidApplications)
     Route::controller(ApplicationProcessController::class)->group(function(){
-        Route::get('application-process', 'index')->name('student.application.process');
+        Route::get('application-process', 'index')->name('student.application.process')->middleware('check.application.status');
         Route::get('/payment/{userSlug}', 'finalApplicationStep')->name('payment.view.finalStep');
 
         Route::post('application-process/store','processPayment')->name('student.payment.process');

@@ -103,20 +103,14 @@
                 <div class="card">
                     <div class="card-header p-2">
                         <ul class="nav nav-pills">
-                            <li class="nav-item"><a class="nav-link active" href="#activity"
-                                    data-toggle="tab">Activity</a></li>
-
-                            </li>
+                            
                             <li class="nav-item"><a class="nav-link" href="#settings" data-toggle="tab">Settings</a>
                             </li>
                         </ul>
                     </div><!-- /.card-header -->
                     <div class="card-body">
                         <div class="tab-content">
-                            <div class="tab-pane" id="activity">
-
-                            </div>
-                            <!-- /.tab-pane -->
+                            
 
                             <div class="active tab-pane" id="settings">
                                 <!-- general form elements -->
@@ -287,21 +281,16 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="form-check">
-                                                <input type="checkbox" name="agreement" class="form-check-input" id="exampleCheck1">
-                                                <label class="form-check-label" for="exampleCheck1">I accept, that
-                                                    falsifed information has been added</label>
-                                                    <br>
-                                                @error('agreement')
-                                                    <span class="text-danger">{{ $message }}</span>
-                                                @enderror
-                                            </div>
                                         </div>
                                         <!-- /.card-body -->
-
+                                        @if ($application && $hasPendingApplication == true)
+                                        <a href="{{ route("student.profile.setPassword") }}" class="btn btn-danger btn-block"><b>Update Account Password</b></a>
+                                        @else
                                         <div class="card-footer">
                                             <button type="submit" class="btn btn-primary">Submit</button>
-                                        </div>
+                                        </div>                                         
+                                        @endif
+   
                                     </form>
                                 </div>
                                 <!-- /.card -->

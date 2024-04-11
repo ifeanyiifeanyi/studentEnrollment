@@ -20,7 +20,11 @@ class CheckPaymentStatusRole
 
         if ($application && is_null($application->payment_id)) {
             // Application form has been filled, but payment is pending
-            return redirect()->route('payment.view.finalStep', ['userSlug' => $user->nameSlug])->with('info', 'Please complete the payment to finalize your application.');
+            $notification = [
+                'message' => 'Please complete the payment to finalize your application.',
+                'alert-type' => 'info'
+            ];
+            return redirect()->route('payment.view.finalStep', ['userSlug' => $user->nameSlug])->with($notification);
         }
         return $next($request);
     }

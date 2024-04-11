@@ -60,7 +60,7 @@
 @section('student')
 <section class="content">
     <div class="row">
-        <div class="col-md-4 col-sm-12">
+        <div class="mx-auto col-md-4 col-sm-12">
             <div class="container">
                 <div class="card greeting-card">
                     <div class="card-body d-flex justify-content-center align-items-center flex-column">
@@ -71,40 +71,15 @@
                 </div>
             </div>
         </div>
-        {{-- <div class="col-md-4 col-sm-12">
-            <div class="container">
-                <div class="card greeting-card">
-                    <div class="card-body d-flex justify-content-center align-items-center flex-column">
-                        <div class="mb-3 greeting-icon">
-                            <i class="fas fa-user-ninja"></i>
-                        </div>
-                        <h5 class="mb-0 greeting-text">{{ Str::title(auth()->user()->first_name) }} {{
-                            Str::title(auth()->user()->last_name) }} {{ Str::title(auth()->user()->other_names) ?? "?"
-                            }}</h5>
-                        <p class="text-muted"><b>Username: </b>{{ Str::title(auth()->user()->nameSlug) }}</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4 col-sm-12">
-            <div class="container">
-                <div class="card greeting-card">
-                    <div class="card-body d-flex justify-content-center align-items-center flex-column">
-                        <div class="mb-3 greeting-icon">
-                            <i class="fas fa-clock"></i>
-                        </div>
-                        <h4 class="mb-0 greeting-text">{{ auth()->user()->previous_login_at?->diffForHumans() ?? 'N/A'
-                            }}</h4>
-                        <p class="text-muted">Last Login</p>
-                    </div>
-                </div>
-            </div>
-        </div> --}}
     </div>
 
+    @if ($application && $hasPendingApplication == true)
+
+        @include('student.payment.applicationStatus')
+    @else
     <div class="container-fluid">
         <div class="row">
-            <div class="col-12">
+            <div class="col-md-12">
                 <div class="card card-light">
                     <div class="card-header">
                         <h3 class="card-header">Faculties and Associated Department</h3>
@@ -178,6 +153,9 @@
         </div>
         <!-- /.row -->
     </div>
+    @endif
+    
+
     <!-- /.container-fluid -->
     <div class="modal fade" id="departmentModal" tabindex="-1" role="dialog" aria-labelledby="departmentModalLabel"
         aria-hidden="true">
