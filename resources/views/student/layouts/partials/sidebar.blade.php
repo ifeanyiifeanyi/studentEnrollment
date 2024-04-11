@@ -15,7 +15,7 @@
                     Storage::url(auth()->user()->student->passport_photo) }}" class="elevation-2" alt="User Image">
             </div>
             <div class="info">
-                <a href="#" class="d-block">{{ Str::title(auth()->user()->fullName) }} </a>
+                <a href="{{ route('student.profile') }}" class="d-block">{{ Str::title(auth()->user()->fullName) }} </a>
             </div>
         </div>
 
