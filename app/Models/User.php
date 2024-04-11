@@ -59,7 +59,7 @@ class User extends Authenticatable implements MustVerifyEmail
         $fullName = $this->first_name . ' ' . $this->last_name;
 
         if ($this->other_names) {
-            $fullName .='<br>'. ' (' . $this->other_names . ')';
+            $fullName .= ' ' . $this->other_names;
         }
 
         return $fullName;

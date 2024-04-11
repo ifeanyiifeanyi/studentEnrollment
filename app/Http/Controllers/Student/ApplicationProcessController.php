@@ -104,20 +104,12 @@ class ApplicationProcessController extends Controller
                     return redirect()->back()->withErrors('An error occurred while processing the payment.');
                 }
 
-                $paymentData = [
-                    'user_id' => $user->id,
-                    'amount' => 20010.34,
-                    'payment_method' => 'Flutterwave',
-                    'payment_status' => 'Pending',
-                    'transaction_id' =>  $reference,
-                    'payment_method_id' => $paymentMethodId,
-                ];
-
-                Payment::create($paymentData);
+                // $transactionId = $payment;
+                // dd($transactionId);
 
                 return redirect($payment['data']['link']);
             } catch (\Exception $e) {
-        // dd($e->getMessage());
+                dd($e->getMessage());
 
                 return redirect()->back()->withErrors('An error occurred: ' . $e->getMessage());
             }
@@ -125,48 +117,65 @@ class ApplicationProcessController extends Controller
     }
 
 
+
     public function handlePaymentCallBack(Request $request)
     {
-        $status = $request->input('status');
-        $transactionId = Flutterwave::getTransactionIDFromCallback();
-        $data = Flutterwave::verifyTransaction($transactionId);
+        try {
+            $status = $request->input('status');
+            if ($status === 'successful') {
+
+                $transactionId = Flutterwave::getTransactionIDFromCallback();
+                $data = Flutterwave::verifyTransaction($transactionId);
+                // dd($data);
+
+                $user = User::where('email', $data['data']['customer']['email'])->first();
+
+                if ($user) {
+                    $application = $user->applications()->first();
+                    $paymentMethodId = PaymentMethod::where('name', 'Flutterwave')->first()->id;
+                // dd($paymentMethodId);
 
 
-        if ($data['status'] === 'success' && $status === 'successful') {
-            $payment = Payment::where('transaction_id', $transactionId)->first();
+                    $paymentData = [
+                        'user_id' => $user->id,
+                        'amount' => $data['data']['amount'],
+                        'payment_method' => 'Flutterwave',
+                        'payment_status' => 'Successful',
+                        'transaction_id' => $transactionId,
+                        'payment_method_id' => $paymentMethodId,
+                    ];
 
-            if ($payment && $payment->user) {
-                $payment->payment_status = 'Successful';
-                $payment->save();
+                    $payment = Payment::create($paymentData);
 
-                $application = $payment->user->applications()->first();
-                if ($application) {
-                    $application->update(['payment_id' => $payment->id]);
+                    if ($application) {
+                        $application->update(['payment_id' => $payment->id]);
+                    }
+
+                    return view('student.payment.success', [
+                        'user' => $user,
+                        'application' => $application,
+                        'payment' => $payment,
+                    ]);
                 }
-
-                return view('student.payment.success', [
-                    'user' => $payment->user,
-                    'application' => $application,
-                    'payment' => $payment,
-                ]);
+            } elseif ($status == 'cancelled') {
+                $userSlug = optional(auth()->user())->nameSlug;
+                return redirect()->route('payment.view.finalStep', ['userSlug' => $userSlug])
+                    ->withErrors('Payment was cancelled.');
+            } else {
+                $userSlug = optional(auth()->user())->nameSlug;
+                return redirect()->route('payment.view.finalStep', ['userSlug' => $userSlug])
+                    ->withErrors('Payment was not successful. Please try again.');
             }
-        }elseif ($status ==  'cancelled'){
-            $userSlug = optional(auth()->user())->nameSlug;  // Use authenticated user as a fallback
+        } catch (\Exception $e) {
+            // Log the error
+            // dd($e->getMessage());
 
-            // Redirect with error, ensuring there's a user context for the redirection
+            // Redirect with an error message
+            $userSlug = optional(auth()->user())->nameSlug;
             return redirect()->route('payment.view.finalStep', ['userSlug' => $userSlug])
-                ->withErrors('Payment was cancelled.');
-        }else {
-            // In case of failure, you should determine the appropriate user context
-            // especially if $payment is null or does not exist
-            $userSlug = optional(auth()->user())->nameSlug;  // Use authenticated user as a fallback
-
-            // Redirect with error, ensuring there's a user context for the redirection
-            return redirect()->route('payment.view.finalStep', ['userSlug' => $userSlug])
-                ->withErrors('Payment was not successful. Please try again.');
+                ->withErrors('An error occurred while processing the payment. Please try again.');
         }
     }
-
 
     public function showSuccess()
     {

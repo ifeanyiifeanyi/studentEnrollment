@@ -4,7 +4,9 @@
   <meta charset="UTF-8">
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
   <meta name="csrf-token" content="{{ csrf_token() }}">
-  <title>{{ config('app.name') }} | @yield('title')</title>
+  {{-- <title>{{ $sitesetting->site_title ?? config('app.name') }} | @yield('title')</title> --}}
+
+  {{-- <meta name="description" content="{{ $sitesetting->site_description }}"> --}}
 
   <!-- General CSS Files -->
   <link rel="stylesheet" href="{{ asset("") }}admin/assets/modules/bootstrap/css/bootstrap.min.css">
@@ -17,7 +19,7 @@
   <link rel="stylesheet" href="{{ asset("") }}admin/assets/css/style.css">
   <link rel="stylesheet" href="{{ asset("") }}admin/assets/css/components.css">
 
-  <link rel="shortcut icon" href="{{ asset("") }}admin/assets/img/favicon.ico">
+  {{-- <link rel="shortcut icon" href="{{ asset($sitesetting->site_favicon) }}"> --}}
   @yield('css')
 </head>
 

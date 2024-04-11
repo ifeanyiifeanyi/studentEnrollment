@@ -10,11 +10,7 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col-12">
-        <div class="callout callout-info">
-          <h5><i class="fas fa-info"></i> Note:</h5>
-          This page is optimized for printing. Please use the print button located at the bottom of the invoice to
-          obtain a hard copy for your records and future reference.
-        </div>
+        
 
 
         <!-- Main content -->
@@ -79,7 +75,7 @@
                     <td>1</td>
                     <td>Application Form</td>
                     <td>Application fee for department enrollment processing and confirmation.</td>
-                    <td>N20, 000</td>
+                    <td>N{{ number_format($siteSetting->form_price, 2, '.', ',') }}</td>
                   </tr>
                 </tbody>
               </table>
@@ -106,15 +102,15 @@
                 <table class="table">
                   <tr>
                     <th style="width:50%">Subtotal:</th>
-                    <td>N20, 000</td>
+                    <td>N{{ number_format($siteSetting->form_price, 2, '.', ',') }}</td>
                   </tr>
                   <tr>
                     <th>Tax (9.3%)</th>
-                    <td>N10.34</td>
+                    <td>N0.0</td>
                   </tr>
                   <tr>
                     <th>Total:</th>
-                    <td>N20, 010.34</td>
+                    <td>N{{ number_format($siteSetting->form_price, 2, '.', ',') }}</td>
                   </tr>
                 </table>
               </div>
@@ -123,7 +119,7 @@
                 @csrf
                 <div class="col-md-12">
                   <p class="lead">Payment Methods:</p>
-                    <input type="hidden" name="amount" value="20010.34">
+                    <input type="hidden" name="amount" value="{{ $siteSetting->form_price }}">
                     @foreach ($paymentMethods as $pm)
                     <div class="form-check">
                       <input class="form-check-input" type="radio" name="payment_method_id" id="{{ $pm->id }}" value="{{ $pm->id }}">

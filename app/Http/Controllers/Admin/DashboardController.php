@@ -44,14 +44,14 @@ class DashboardController extends Controller
             'site_favicon' => 'nullable|image|mimes:jpeg,png,jpg,svg|max:10000',
         ]);
 
-        $site = new SiteSetting();
+        $site = SiteSetting::firstOrNew();
 
         if ($request->hasFile('site_logo')) {
             $thumb = $request->file('site_logo');
             $extension = $thumb->getClientOriginalExtension();
             $profilePhoto = time() . "." . $extension;
             $thumb->move('site/', $profilePhoto);
-            $site->site_logo = 'site/' . $profilePhoto;
+            $site->site_icon = 'site/' . $profilePhoto;
         }
 
         if ($request->hasFile('site_favicon')) {
@@ -70,7 +70,7 @@ class DashboardController extends Controller
         $site->email = $request->email;
         $site->address = $request->address;
         $site->about = $request->about;
-        $site->google_analytics_code = $request->google_analytics_code;
+        $site->google_analytics = $request->google_analytics_code;
         $site->save();
 
         $notification = [

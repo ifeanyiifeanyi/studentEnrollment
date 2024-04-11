@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
-  <title>{{ config('app.name') }} | @yield('title')</title>
+  <title>{{ $siteSetting->site_title ??config('app.name')  }} | @yield('title')</title>
   <meta name="csrf-token" content="{{ csrf_token() }}">
 
 
@@ -21,11 +21,13 @@
   <link rel="stylesheet" href="{{ asset("") }}admin/assets/modules/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css">
   <link rel="stylesheet" href="{{ asset("") }}admin/assets/modules/datatables/Select-1.2.4/css/select.bootstrap4.min.css">
 
+  <meta name="description" content="{{ $siteSetting->site_description }}">
+
   <!-- Template CSS -->
   <link rel="stylesheet" href="{{ asset("") }}admin/assets/css/style.css">
   <link rel="stylesheet" href="{{ asset("") }}admin/assets/css/components.css">
   
-  <link rel="shortcut icon" href="{{ asset("") }}admin/assets/img/favicon.ico">
+  <link rel="icon" href="{{ asset($siteSetting->site_favicon) }}" type="image/x-icon">
   <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css">
 </head>
 @yield('css')
