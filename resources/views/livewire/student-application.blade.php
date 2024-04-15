@@ -93,7 +93,7 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="religion">Religion</label>
-                            <input wire:model.lazy="religion" type="text" class="form-control" id="religion"
+                            <input wire:model.blur="religion" type="text" class="form-control" id="religion"
                                 placeholder="Religion" required>
                             @error('religion')
                             <div class="text-danger">
@@ -409,7 +409,7 @@
         <div class="shadow card">
             <div class="text-white card-header bg-info">
                 STEP <b>{{ $currentStep }}</b> OF {{ $totalSteps }}, ENTER OLEVEL EXAM SUBJECTS AND SCORE <small>Not
-                    less than 8 subject for any sitting</small>
+                    less than 4 subject for any sitting(maximum of 2 sittings)</small>
             </div>
             <div class="card-body">
                 <div class="form-group">
@@ -660,7 +660,9 @@
         </button>
         @endif
         @if ($currentStep == 5)
-        <button type="submit" class="btn btn-success">Submit Application</button>
+        <button type="submit" class="btn btn-success">
+            Submit Application <i wire:loading class="fa fa-spinner fa-spin" aria-hidden="true"></i>
+        </button>
         @endif
     </div>
 
