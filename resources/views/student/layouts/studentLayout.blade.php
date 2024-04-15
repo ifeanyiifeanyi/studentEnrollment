@@ -133,6 +133,7 @@
         $(document).ready(function() {
             $('#state').select2();
             $('#localGovernment').select2();
+            $('#department_id').select2();
         });
     </script>
 

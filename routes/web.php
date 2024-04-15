@@ -136,7 +136,10 @@ Route::prefix('student')->middleware(['auth', 'verified', 'role:student'])->grou
         Route::get('/payment/{userSlug}', 'finalApplicationStep')->name('payment.view.finalStep');
 
         Route::post('application-process/store','processPayment')->name('student.payment.process');
-        Route::get('handle/payment-call', 'handlePaymentCallBack')->name('student.payment.callback');
+        Route::get('handle/flutter-payment-call', 'handlePaymentCallBack')->name('student.payment.callbackFlutter');
+        Route::get('handle/paystack-payment-call', 'handlePaymentCallBackPayStack')->name('student.payment.callbackPaystack');
+
+
         Route::get('/payment/success', 'showSuccess')->name('student.payment.success');
 
     });

@@ -159,7 +159,6 @@ return [
         /*
          * Package Service Providers...
          */
-
         /*
          * Application Service Providers...
          */
@@ -169,6 +168,9 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         App\Providers\SiteSettingServiceProvider::class,
+        // \Yabacon\Paystack\PaystackServiceProvider::class,
+
+        
     ])->toArray(),
 
     /*

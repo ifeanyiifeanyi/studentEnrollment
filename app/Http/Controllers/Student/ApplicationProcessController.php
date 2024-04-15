@@ -3,14 +3,20 @@
 namespace App\Http\Controllers\Student;
 
 use App\Models\User;
-use App\Models\Application;
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use App\Models\Department;
 use App\Models\Payment;
+use App\Models\Department;
+use App\Models\Application;
+use Illuminate\Support\Str;
+use Illuminate\Http\Request;
 use App\Models\PaymentMethod;
+use App\Http\Controllers\Controller;
+
 use KingFlamez\Rave\Facades\Rave as Flutterwave;
 use Unicodeveloper\Flutterwave\Facades\Flutterwave as UnicodeveloperFlutterwave;
+
+use Yabacon\Paystack\Paystack;
+use Yabacon\Paystack\PaystackClient;
+
 
 
 class ApplicationProcessController extends Controller
@@ -88,7 +94,7 @@ class ApplicationProcessController extends Controller
                     'amount' => $paymentAmount,
                     'currency' => 'NGN',
                     'email' => $user->email,
-                    'redirect_url' => route('student.payment.callback'),
+                    'redirect_url' => route('student.payment.callbackFlutter'),
                     'payment_options' => 'card',
                     'customer' => [
                         'email' => $user->email,
@@ -117,6 +123,82 @@ class ApplicationProcessController extends Controller
 
                 return redirect()->back()->withErrors('An error occurred: ' . $e->getMessage());
             }
+        } else if ($paymentMethod->name == "Paystack") {
+            try {
+
+                $paystack = new \Yabacon\Paystack(config('paystack.secretKey'));
+
+
+                $transaction = $paystack->transaction->initialize([
+                    'email' => $user->email,
+                    'amount' => $paymentAmount * 100, // Convert amount to kobo
+                    'reference' => $this->generateUniqueReference(),
+                    'callback_url' => route('student.payment.callbackPaystack'),
+                ]);
+
+                return redirect($transaction->data->authorization_url);
+            } catch (\Exception $e) {
+                // dd($e->getMessage());
+                return redirect()->back()->withErrors('An error occurred: ' . $e->getMessage());
+            }
+        } else {
+            return redirect()->back()->withErrors('Payment Method not found.');
+        }
+    }
+
+    public function handlePaymentCallBackPayStack(Request $request)
+    {
+        $paystack = new \Yabacon\Paystack(config('paystack.secretKey'));
+ 
+        // dd($paystack);
+        try {
+            $transaction = $paystack->transaction->verify([
+                'reference' => $request->reference,
+            ]);
+
+            if ($transaction->data->status === 'success') {
+                $user = User::where('email', $transaction->data->customer->email)->first();
+
+                if ($user) {
+                    $application = $user->applications()->first();
+                    $paymentMethodId = PaymentMethod::where('name', 'Paystack')->first()->id;
+
+                    $paymentData = [
+                        'user_id' => $user->id,
+                        'amount' => $transaction->data->amount / 100, // Convert kobo to Naira
+                        'payment_method' => 'Paystack',
+                        'payment_status' => 'Successful',
+                        'transaction_id' => $transaction->data->reference,
+                        'payment_method_id' => $paymentMethodId,
+                    ];
+
+                    $payment = Payment::create($paymentData);
+
+                    if ($application) {
+                        $application->update(['payment_id' => $payment->id]);
+                    }
+
+                    return view('student.payment.success', [
+                        'user' => $user,
+                        'application' => $application,
+                        'payment' => $payment,
+                    ]);
+                    
+                } else {
+                    $userSlug = optional(auth()->user())->nameSlug;
+                    return redirect()->route('payment.view.finalStep', ['userSlug' => $userSlug])
+                        ->withErrors('Payment was not successful. Please try again.');
+                }
+            } else {
+                $userSlug = optional(auth()->user())->nameSlug;
+                return redirect()->route('payment.view.finalStep', ['userSlug' => $userSlug])
+                    ->withErrors('Payment was not successful. Please try again.');
+            }
+        } catch (\Exception $e) {
+            dd($e->getMessage());
+            $userSlug = optional(auth()->user())->nameSlug;
+            return redirect()->route('payment.view.finalStep', ['userSlug' => $userSlug])
+                ->withErrors('An error occurred while processing the payment. Please try again.');
         }
     }
 
@@ -190,7 +272,7 @@ class ApplicationProcessController extends Controller
     {
         $user = auth()->user();
         $application = $user->applications->first(); // Example, adjust based on your application logic
-        $payment = $application ? $application->payment : null; // Example logic
+        $payment = $application ? $application->payment : null; 
 
         if (!$payment || !$user || $application) {
             return redirect()->route('payment.view.finalStep', ['userSlug' => $user->nameSlug])
@@ -198,5 +280,17 @@ class ApplicationProcessController extends Controller
         }
 
         return view('student.payment.success', compact('user', 'application', 'payment'));
+    }
+
+
+    private function generateUniqueReference()
+    {
+        // Generate a unique reference for the transaction
+        // combination of user ID, timestamp, and a random string
+
+        $userId = auth()->user()->id;
+        $timestamp = time();
+        $randomString = Str::random(10);
+        return $userId . '_' . $timestamp . '_' . $randomString;
     }
 }
