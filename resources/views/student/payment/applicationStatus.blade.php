@@ -5,7 +5,7 @@
 @section('css')
 <style>
     @media print{
-        .callout, .btn-primary, card-header{
+        .callout, .btn-primary, card-header, .print-hide{
             display: none !important;
         }
     }
@@ -42,6 +42,13 @@
                                     @elseif ($application->admission_status == 'approved')
                                         <span class="badge rounded-pill" style="background: linear-gradient(to right, #00b09b, #96c93d); color: #ffffff;">{{ $application->admission_status }}</span>
                                     @endif
+                                </li>
+                                <li class="list-group-item"><b>Exam Score: </b> 
+                                @if (empty($user->student->exam_score) || $user->student->exam_score == null)
+                                    &nbsp;<i class="print-hide fa fa-spinner fa-spin text-primary"></i>
+                                @else
+                                    <code>{{ $user->student->exam_score }}</code>
+                                @endif
                                 </li>
                             </ul>
                         </div>

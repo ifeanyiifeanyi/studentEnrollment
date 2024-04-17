@@ -15,7 +15,13 @@ class Payment extends Model
         return $this->belongsTo(PaymentMethod::class);
     }
 
-    public function user(){
+    public function user()
+    {
         return $this->belongsTo(User::class);
+    }
+
+    public function application()
+    {
+        return $this->hasOne(Application::class);
     }
 }

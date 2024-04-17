@@ -2,7 +2,7 @@
 
 @section('title', "Application Manager")
 @section('css')
-    
+
 @endsection
 
 @section('student')
@@ -17,6 +17,7 @@
 
 
 @section('js')
+
 <script>
     function changeImg(input) {
         let preview = document.getElementById('previewImage');

@@ -23,5 +23,8 @@ class Application extends Model
     {
         return $this->belongsTo(Department::class);
     }
-
+    public function payment()
+    {
+        return $this->belongsTo(Payment::class);
+    }
 }

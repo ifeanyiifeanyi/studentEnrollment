@@ -22,13 +22,13 @@
                     {{ auth()->user()->previous_login_at?->diffForHumans() ?? 'N/A' }}
                     </code>
                 </div>
-                <a href="{{ route('admin.profile') }}" class="dropdown-item has-icon">
+                <a wire:navigate href="{{ route('admin.profile') }}" class="dropdown-item has-icon">
                     <i class="far fa-user"></i> Profile
                 </a>
-                <a href="{{ route('admin.profile.setPassword') }}" class="dropdown-item has-icon">
+                <a wire:navigate href="{{ route('admin.profile.setPassword') }}" class="dropdown-item has-icon">
                     <i class="fas fa-user-lock"></i> Manage Password
                 </a>
-                <a href="features-settings.html" class="dropdown-item has-icon">
+                <a wire:navigate href="{{ route('admin.dashboard') }}" class="dropdown-item has-icon">
                     <i class="fas fa-cog"></i> Settings
                 </a>
                 <div class="dropdown-divider"></div>

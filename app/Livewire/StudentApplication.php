@@ -75,10 +75,8 @@ class StudentApplication extends Component
     public $showSecondSitting = false;
 
 
-
     public function mount()
     {
-
 
         $user = User::with('student')->find(auth()->user()->id);
         $this->userId = $user->id;
@@ -153,6 +151,8 @@ class StudentApplication extends Component
 
         $this->currentStep = 1;
     }
+
+    
 
 
 

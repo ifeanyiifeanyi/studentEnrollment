@@ -59,75 +59,73 @@
                                         <th>Phone Number</th>
                                         <th>Email</th>
                                         <th>Date Join</th>
-                                        <th>Status</th>
+                                        <th>Application</th>
                                     </tr>
 
 
 
-                                    {{-- @dd($students) --}}
 
                                     @forelse ($students as $student)
+                                    {{-- @dd($student->applications->payment_id) --}}
 
-                                    <tr>
-                                        <td>
-                                            <div class="custom-checkbox custom-control">
-                                                <input type="checkbox" data-checkboxes="mygroup"
-                                                    class="custom-control-input" id="checkbox-2">
-                                                <label for="checkbox-2" class="custom-control-label">&nbsp;</label>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <center>
-                                                <div class="text-center mb-1">
-                                                    <img alt="image"
-                                                        src="{{ empty($student->student->photo) ? asset('admin/assets/img/avatar/avatar-5.png') : asset($student->student->photo) }}"
-                                                        class="rounded-circle" width="35" data-toggle="title"
-                                                        title="{{ $student->last_name }}">
+                                        <tr>
+                                            <td>
+                                                <div class="custom-checkbox custom-control">
+                                                    <input type="checkbox" data-checkboxes="mygroup"
+                                                        class="custom-control-input" id="checkbox-2">
+                                                    <label for="checkbox-2" class="custom-control-label">&nbsp;</label>
                                                 </div>
+                                            </td>
+                                            <td>
+                                                <center>
+                                                    <div class="text-center mb-1">
+                                                        <img alt="image" src="{{ empty($student->student->passport_photo) ? asset('admin/assets/img/avatar/avatar-5.png') : 
+                                                            Storage::url($student->student->passport_photo) }}"
+                                                            class="rounded-circle" width="35" data-toggle="title"
+                                                            title="{{ $student->last_name }}">
+                                                    </div>
 
-                                                <div class="d-inline-block">
-                                                    {!! Str::title($student->full_name) !!}
+                                                    <div class="d-inline-block">
+                                                        {!! Str::title($student->full_name) !!}
+                                                    </div>
+                                                </center>
+                                                <div class="table-links mb-3">
+                                                    <a href="{{ route('admin.show.student', $student->nameSlug) }}">View</a>
+                                                    <div class="bullet"></div>
+                                                    <a href="#">Edit</a>
+                                                    <div class="bullet"></div>
+                                                    <a href="#" class="text-danger">Trash</a>
                                                 </div>
-                                            </center>
-                                            <div class="table-links mb-3">
-                                                <a href="{{ route('admin.show.student', $student->nameSlug) }}">View</a>
-                                                <div class="bullet"></div>
-                                                <a href="#">Edit</a>
-                                                <div class="bullet"></div>
-                                                <a href="#" class="text-danger">Trash</a>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <a href="tel:{{ $student->student->phone }}">{{ $student->student->phone
-                                                }}</a>
-                                        </td>
-                                        <td>
-                                            <a href="mailto:{{ $student->email }}">
+                                            </td>
+                                            <td>
+                                                <a href="tel:{{ $student->student->phone }}">{{ $student->student->phone
+                                                    }}</a>
+                                            </td>
+                                            <td>
+                                                <a href="mailto:{{ $student->email }}">
 
-                                                <div class="d-inline-block ml-1 link">{{ Str::lower($student->email) }}
-                                                </div>
-                                            </a>
-                                        </td>
-                                        <td>{{ \Carbon\Carbon::parse($student->created_at)->format('jS F Y') }}</td>
-                                        <td>
-                                            @switch($student->student->admission_status)
-                                            @case('pending')
-                                            <span class="badge bg-warning">Pending</span>
-                                            @break
-                                            @case('approved')
-                                            <span class="badge bg-success">Approved</span>
-                                            @break
-                                            @case('denied')
-                                            <span class="badge bg-danger">Denied</span>
-                                            @break
-                                            @default
-                                            <span class="badge bg-secondary">Unknown</span>
-                                            @endswitch
-                                        </td>
-                                    </tr>
+                                                    <div class="d-inline-block ml-1 link">{{ Str::lower($student->email) }}
+                                                    </div>
+                                                </a>
+                                            </td>
+
+                                            <td>{{ \Carbon\Carbon::parse($student->created_at)->format('jS F Y') }}</td>
+                                            
+                                            <td>
+                                                @if ($student->applications->isNotEmpty())
+                                                @if ($student->applications->contains('payment_id', '!=', null))
+                                                        <span class="badge bg-success text-light">Applied</span>
+                                                    @else
+                                                        <span class="badge bg-secondary text-light">Unknown</span>
+                                                    @endif
+                                                @else
+                                                    <span class="badge bg-danger text-light">Not Applied</span>
+                                                @endif
+                                            </td>
+                                        </tr>
 
                                     @empty
-                                    <div class="alert alert-danger text-center"><b>Not available</b></div>
+                                        <div class="alert alert-danger text-center"><b>Not available</b></div>
                                     @endforelse
                                 </table>
                             </div>
