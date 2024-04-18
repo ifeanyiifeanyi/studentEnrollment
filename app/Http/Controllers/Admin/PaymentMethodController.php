@@ -6,6 +6,7 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\PaymentMethod;
 use App\Http\Controllers\Controller;
+use App\Models\Payment;
 use Illuminate\Support\Facades\File;
 
 class PaymentMethodController extends Controller
@@ -116,5 +117,13 @@ class PaymentMethodController extends Controller
         ];
 
         return redirect()->route('admin.payment.manage')->with($notification);
+    }
+
+
+    public function studentApplicationPayment(){
+
+        $payments = Payment::with('user', 'application')->simplePaginate('100');
+        // dd($payments);
+        return view('admin.paymentMethod.studentPaymentManager', compact('payments'));
     }
 }

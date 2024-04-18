@@ -27,4 +27,15 @@ class Application extends Model
     {
         return $this->belongsTo(Payment::class);
     }
+    public function applicationDepartment()
+    {
+        return $this->hasManyThrough(
+            Department::class,
+            User::class,
+            'id', // Foreign key on the applications table for the user_id
+            'id', // Foreign key on the users table for the user_id
+            'user_id', // Local key on the applications table for the user_id
+            'id' // Local key on the users table for the user_id
+        );
+    }
 }

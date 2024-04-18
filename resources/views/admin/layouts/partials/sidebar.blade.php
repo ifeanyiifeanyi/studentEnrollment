@@ -37,7 +37,7 @@
           <span>Payment Management</span></a>
         <ul class="dropdown-menu">
           <li><a wire:navigate class="nav-link" href="{{ route('admin.payment.manage') }}">Manage Payment</a></li>
-          <li><a wire:navigate class="nav-link" href="bootstrap-breadcrumb.html">All Payments</a></li>
+          <li><a wire:navigate class="nav-link" href="{{ route('admin.studentApplication.payment') }}">All Payments</a></li>
         </ul>
       </li>
 

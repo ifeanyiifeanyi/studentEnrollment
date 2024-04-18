@@ -39,6 +39,11 @@
 
   <link rel="icon" href="{{ asset($siteSetting->site_favicon) }}" type="image/x-icon">
   <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css">
+  <style>
+    #example1_paginate{
+      display: none !important;
+    }
+  </style>
 </head>
 @yield('css')
 @livewireStyles
@@ -77,7 +82,7 @@
     $(function () {
       $("#example1").DataTable({
         "responsive": true, "lengthChange": false, "autoWidth": false,
-        "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+        "buttons": ["csv", "excel", "pdf"]
       }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
       $('#example2').DataTable({
         "paging": false,
@@ -90,6 +95,7 @@
       });
     });
   </script>
+  @yield('js')
 </body>
 
 </html>
