@@ -24,46 +24,44 @@
               @csrf
               <div class="form-group">
                 <label for="exampleInputFile">Import File</label>
-                <div class="form-group">
-                  <div class="container">
-                    @error('file')
-                    <span class="text-danger">{{ $message }}</span>
-                    @enderror
-                  </div>
-                  <div class="custom-file">
-                    <input type="file" name="file" class="form-control w-100" id="exampleInputFile">
-
-                  </div>
-                  <button type="submit" class="btn btn-primary ml-3">Import</button>
-
+                <div class="container">
+                  @error('file')
+                  <span class="text-danger">{{ $message }}</span>
+                  @enderror
+                </div>
+                <div class="custom-file">
+                  <input type="file" name="file" class="form-control w-100" id="exampleInputFile">
+                  <button type="submit" class="btn btn-primary w-100 mt-2">Import</button>
                 </div>
               </div>
             </form>
           </div>
 
-          
+
           <div class="float-right">
             <form id="departmentForm" action="{{ route('admin.student.application') }}" method="GET">
-              <select class="form-control selectric" name="department_id" onchange="updateExportLink(); this.form.submit();">
+              <select class="form-control selectric" name="department_id"
+                onchange="updateExportLink(); this.form.submit();">
                 <option value="">Select by Department (Show All)</option>
                 @foreach ($departments as $department)
-                  <option value="{{ $department->id }}" {{ request('department_id') == $department->id ? 'selected' : '' }}>
-                    {{ Str::title($department->name) }}
-                  </option>
+                <option value="{{ $department->id }}" {{ request('department_id')==$department->id ? 'selected' : '' }}>
+                  {{ Str::title($department->name) }}
+                </option>
                 @endforeach
               </select>
             </form>
           </div>
-          
+
 
           <div class="clearfix mb-3"></div>
 
           <div class="container">
             <div class="float-left pb-1">
               <div class="float-left">
-                <a href="{{ route('admin.student.applications.export') }}" class="btn btn-success" id="exportButton">Export to Excel</a>
+                <a href="{{ route('admin.student.applications.export') }}" class="btn btn-success"
+                  id="exportButton">Export to Excel</a>
               </div>
-              
+
             </div>
           </div>
           <div class="table-responsive">
