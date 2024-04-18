@@ -9,7 +9,13 @@ class Application extends Model
 {
     use HasFactory;
 
-    protected $guarded = [];
+    protected $fillable = [
+        'user_id',
+        'department_id',
+        'payment_id',
+        'invoice_number',
+        'admission_status'
+    ];
 
     protected $table = 'applications';
 

@@ -7,6 +7,7 @@ use App\Models\Student;
 use App\Models\Department;
 use App\Models\Application;
 use Illuminate\Http\Request;
+use App\Exports\ApplicationsExport;
 use App\Imports\ApplicationsImport;
 use App\Http\Controllers\Controller;
 use Maatwebsite\Excel\Facades\Excel;
@@ -49,25 +50,42 @@ class StudentManagementController extends Controller
 
     public function application(Request $request)
     {
-        $departmentId = $request->input('department_id');
         $departments = Department::latest()->get();
-
+        $departmentId = $request->input('department_id');
 
         if ($departmentId) {
-            $applications = Application::with('user', 'payment')
-                ->whereHas('department', function ($query) use ($departmentId) {
-                    $query->where('id', $departmentId);
-                })
-                ->simplePaginate('50');
-
-            $selectedDepartment = Department::findOrFail($departmentId);
+            $applications = Application::with(['user.student', 'department'])
+                ->where('department_id', $departmentId)
+                ->simplePaginate(50);
         } else {
-            $applications = Application::with('user', 'department', 'payment')->simplePaginate('50');
-            $selectedDepartment = null;
+            $applications = Application::with(['user.student', 'department'])->simplePaginate(50);
         }
 
-        return view('admin.studentManagement.application', compact('applications', 'selectedDepartment', 'departments'));
+        return view('admin.studentManagement.application', compact('applications', 'departments'));
     }
+
+    public function exportApplications(Request $request)
+    {
+        $departmentId = $request->input('department_id');
+        return Excel::download(new ApplicationsExport($departmentId), 'applications.xlsx');
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     public function import()
     {

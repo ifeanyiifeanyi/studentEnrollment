@@ -152,9 +152,17 @@
                         </div>
                         <div class="card-body">
                           <ul class="list-group">
-                            @foreach ($olevel_exams['exam_boards'] as $key => $value)
-                              <li class="list-group-item">{{ $key }}: {{ $value }}</li>
-                            @endforeach
+                            @if ($olevel_exams['sittings'] == 1)
+                              @foreach ($olevel_exams['exam_boards'] as $key => $value)
+                                @if ($key === 'exam_board_1')
+                                  <li class="list-group-item">{{ Str::upper($key) }}: {{ Str::upper($value) }}</li>
+                                @endif
+                              @endforeach
+                            @else
+                              @foreach ($olevel_exams['exam_boards'] as $key => $value)
+                                <li class="list-group-item">{{ Str::upper($key) }}: {{ Str::upper($value) }}</li>
+                              @endforeach
+                            @endif
                           </ul>
                         </div>
                       </div>
