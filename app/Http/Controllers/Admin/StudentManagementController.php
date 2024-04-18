@@ -29,9 +29,23 @@ class StudentManagementController extends Controller
     public function show($slug)
     {
 
-        $student = User::where('role', 'student')->where('nameSlug', $slug)->first();
+        $student = User::with(['applications' => function ($query) {
+            $query->select('applications.*', 'departments.name as department_name')
+                ->join('departments', 'applications.department_id', '=', 'departments.id');
+        }])
+            ->where('role', 'student')
+            ->where('nameSlug', $slug)
+            ->first();
         return view('admin.studentManagement.show', compact('student'));
     }
+
+
+
+
+
+
+
+
 
     public function application(Request $request)
     {

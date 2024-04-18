@@ -39,7 +39,13 @@
                                 <td>{{ $payment->transaction_id }}</td>
                                 <td>{{ $payment->payment_method }}</td>
                                 <td>{{ $payment->application->invoice_number }}</td>
-                                <td>{{ $payment->payment_status }}</td>
+                                <td>
+                                    @if ($payment->payment_status == 'successful')
+                                        <p class="badge badge-success">Successful <i class="fas fa-user-check"></i></p>
+                                    @else
+                                    <p class="badge badge-danger">Error! <i class="fas fa-user-slash"></i></p>
+                                    @endif
+                                </td>
                             </tr>
                             @endforeach
                         </tbody>

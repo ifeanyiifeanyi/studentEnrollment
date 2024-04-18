@@ -30,7 +30,7 @@
                             </div>
 
                             <div class="table-responsive">
-                                <table class="table table-striped" id="example1">
+                                <table class="table table-striped" id="myTable">
                                     <tr>
                                         <th class="text-center pt-2">
                                             <div class="custom-checkbox custom-checkbox-table custom-control">
