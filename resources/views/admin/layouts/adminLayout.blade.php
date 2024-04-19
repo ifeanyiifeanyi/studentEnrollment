@@ -65,6 +65,7 @@
   @livewireScripts
 
   <!-- DataTables  & Plugins -->
+  {{-- <script src="https://code.jquery.com/jquery-3.4.0.min.js"></script> --}}
   <script src="{{ asset("") }}student/plugins/datatables/jquery.dataTables.min.js"></script>
   <script src="{{ asset("") }}student/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
   <script src="{{ asset("") }}student/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>

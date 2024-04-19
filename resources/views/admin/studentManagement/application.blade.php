@@ -36,9 +36,9 @@
               </div>
             </form>
           </div>
+          <div class="clearfix mb-3"></div>
 
-
-          <div class="float-right">
+          <div class="float-left">
             <form id="departmentForm" action="{{ route('admin.student.application') }}" method="GET">
               <select class="form-control selectric" name="department_id"
                 onchange="updateExportLink(); this.form.submit();">
@@ -52,18 +52,10 @@
             </form>
           </div>
 
-
-          <div class="clearfix mb-3"></div>
-
-          <div class="container">
-            <div class="float-left pb-1">
-              <div class="float-left">
+            <div class="float-right pb-1">
                 <a href="{{ route('admin.student.applications.export') }}" class="btn btn-success"
                   id="exportButton">Export to Excel</a>
-              </div>
-
             </div>
-          </div>
           <div class="table-responsive">
             <table id="example1" class="table table-bordered table-striped">
               <thead>

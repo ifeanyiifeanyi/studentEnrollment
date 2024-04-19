@@ -102,39 +102,6 @@ class StudentManagementController extends Controller
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    // public function import()
-    // {
-    //     $this->validate(request(), [
-    //         'file' => 'required|file|mimes:xlsx,xls',
-    //     ]);
-    //     // dd(request()->file('file')->get());
-    //     // Import the applications from the Excel file
-    //     // config(['excel.import.startRow' => 2    ]);
-
-    //     Excel::import(new ApplicationsImport, request()->file('file'));
-    //     $notification = [
-    //         'message' => 'Applications imported successfully.',
-    //         'alert-type' => 'success'
-    //     ];
-
-    //     return redirect()->route('admin.student.application')->with($notification);
-    // }
-
     public function import(Request $request)
     {
         $request->validate([
@@ -142,7 +109,6 @@ class StudentManagementController extends Controller
         ]);
         $file = $request->file('file');
 
-        // Validate the file or perform other pre-import logic here
 
         Excel::import(new ApplicationsImport, $file);
 

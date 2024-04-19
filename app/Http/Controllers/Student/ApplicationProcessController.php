@@ -61,6 +61,23 @@ class ApplicationProcessController extends Controller
         $paymentMethods = PaymentMethod::latest()->get();
         // dd($application->department);
 
+
+        // the user has already complete application
+        if ($user) {
+            $application = $user->applications
+                ->whereNotNull('payment_id')
+                ->first();
+
+                $notification = [
+                    'message' => 'You have already submitted an application!',
+                    'alert-type' => 'info'
+                ];
+
+            if ($application) {
+                return redirect()->route('student.dashboard')->with($notification);
+            }
+        }
+
         return view('student.payment.index', compact('user', 'application', 'paymentMethods'));
     }
 
