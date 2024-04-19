@@ -74,7 +74,7 @@
         </div>
     </div>
 
-    @if ($application && $hasPendingApplication == true)
+    @if ($application)
 
         @include('student.payment.applicationStatus')
     @else

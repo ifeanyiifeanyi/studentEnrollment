@@ -51,8 +51,7 @@
                 <tr>
                   <th colspan="2" class="text-center">
                     <p><img alt="image" src="{{ empty($student->student->passport_photo) ? asset('admin/assets/img/avatar/avatar-5.png') : 
-                      Storage::url($student->student->passport_photo) }}" class="rounded-circle" width="200"
-                      data-toggle="title" title="{{ $student->full_name }}"></p>
+                      Storage::url($student->student->passport_photo) }}" class="mt-3 img-thumbnail" style="width: 250px !important; height:250px !important" data-toggle="title" title="{{ $student->full_name }}"></p>
                     <div class="d-inline-block">
                       <p>{{ Str::title($student->student->nationality ?? "N/A")  }}</p>
                       <p class="text-muted">
@@ -194,6 +193,42 @@
               <p><b>Guardian Address: </b> <blockquote>{{ $student->student->guardian_address ?? "N/A" }}</blockquote></p>
             </div>
           </div>
+
+
+          <div class="section">
+            <div class="container">
+              <h3 class="text-center mb-4">Student Documents</h3>
+              @foreach ($documents as $label => $doc)
+                <div class="mb-3 card card-body">
+                  <strong>{{ Str::title(str_replace('_', ' ', $label)) }}:</strong>
+                  @if ($doc['exists'])
+                    @if ($doc['isPdf'])
+                      <a href="{{ $doc['filePath'] }}" class="btn btn-primary mt-2" target="_blank">Open PDF in New Tab</a>
+                    @else
+                      <button class="btn btn-success mt-2" onclick="showImage('{{ $doc['filePath'] }}')">View Image</button>
+                      <!-- Image view modal placeholder -->
+                      <div id="imageModal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:1050;" onclick="this.style.display='none'">
+                        <img src="{{ $doc['filePath'] }}" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);max-height:90%;max-width:90%;">
+                      </div>
+                    @endif
+                  @else
+                    <span class="text-danger">Not Available</span>
+                  @endif
+                </div>
+              @endforeach
+            </div>
+          </div>
+          
+          {{-- <script>
+          function showImage(src) {
+            const modal = document.getElementById('imageModal');
+            modal.style.display = 'block';
+            modal.querySelector('img').src = src;
+          }
+          </script> --}}
+          
+          
+          
         </div>
 
       </div>
@@ -205,5 +240,11 @@
 
 
 @section('js')
-
+<script>
+  function showImage(src) {
+    const modal = document.getElementById('imageModal');
+    modal.style.display = 'block';
+    modal.querySelector('img').src = src;
+  }
+  </script>
 @endsection

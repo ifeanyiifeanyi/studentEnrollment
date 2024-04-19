@@ -42,7 +42,7 @@
                                         </th>
                                         <th>Name</th>
                                         <th>Email</th>
-                                        <th>Date Join</th>
+                                        <th>Date</th>
                                         <th>Application</th>
                                     </tr>
 
@@ -90,15 +90,28 @@
                                             </a>
                                             {{-- @dd($student->applications->department) --}}
                                             @if ($student->applications->isNotEmpty())
-                                                @foreach ($student->applications as $application)
-                                                    <p><b>Department</b>: {{ $application->department_name ?? 'N/A' }}</p>
-                                                @endforeach
+                                            @foreach ($student->applications as $application)
+                                            <p><b>Department</b>: {{ $application->department_name ?? 'N/A' }}</p>
+                                            @endforeach
                                             @else
-                                                <p><b>Department</b>: N/A</p>
+                                            <p><b>Department</b>: N/A</p>
                                             @endif
                                         </td>
 
-                                        <td>{{ \Carbon\Carbon::parse($student->created_at)->format('jS F Y') }}</td>
+                                        <td>
+                                            @if ($student->applications->isNotEmpty())
+                                            @foreach ($student->applications as $application)
+                                            <p>
+                                                {{ \Carbon\Carbon::parse($application->created_at)->format('jS F Y') }}
+                                            </p>
+                                            @endforeach
+
+                                            @else
+
+                                            null
+                                            @endif
+
+                                        </td>
 
                                         <td>
                                             @if ($student->applications->isNotEmpty())
@@ -114,7 +127,7 @@
                                     </tr>
 
                                     @empty
-                                        <div class="alert alert-danger text-center"><b>Not available</b></div>
+                                    <div class="alert alert-danger text-center"><b>Not available</b></div>
                                     @endforelse
                                 </table>
                             </div>

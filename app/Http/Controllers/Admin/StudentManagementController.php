@@ -6,11 +6,13 @@ use App\Models\User;
 use App\Models\Student;
 use App\Models\Department;
 use App\Models\Application;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Exports\ApplicationsExport;
 use App\Imports\ApplicationsImport;
 use App\Http\Controllers\Controller;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Storage;
 
 class StudentManagementController extends Controller
 {
@@ -37,7 +39,35 @@ class StudentManagementController extends Controller
             ->where('role', 'student')
             ->where('nameSlug', $slug)
             ->first();
-        return view('admin.studentManagement.show', compact('student'));
+
+        $documentKeys = [
+            'birth_certificate' => 'document_birth_certificate',
+            'local_government_identification' => 'document_local_government_identification',
+            'medical_report' => 'document_medical_report',
+            'secondary_school_certificate' => 'document_secondary_school_certificate_type'
+        ];
+
+        $documents = [];
+        foreach ($documentKeys as $label => $key) {
+            $filename = $student->student->$key;
+            if ($filename) { // Corrected path check
+                $filePath = Storage::url($filename); // Corrected URL generation
+                $isPdf = Str::endsWith($filename, '.pdf');
+                $documents[$label] = [
+                    'filePath' => $filePath,
+                    'isPdf' => $isPdf,
+                    'exists' => true
+                ];
+            } else {
+                $documents[$label] = [
+                    'exists' => false
+                ];
+            }
+        }
+        // dd($documents);
+
+
+        return view('admin.studentManagement.show', compact('student', 'documents'));
     }
 
 

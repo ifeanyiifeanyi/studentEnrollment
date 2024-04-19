@@ -15,12 +15,11 @@ class StudentDashboardController extends Controller
         $user = auth()->user();
         $application = $user->applications->first();
 
-        $hasPendingApplication = $application ? $application->admission_status === 'pending' : false;
         $faculties = Faculty::has('departments')
         ->with('departments')
         ->simplePaginate(15);
 
-        return view('student.dashboard', compact('faculties', 'application', 'hasPendingApplication', 'user'));
+        return view('student.dashboard', compact('faculties', 'application', 'user'));
     }
     /**
      * Display a listing of the resource.
