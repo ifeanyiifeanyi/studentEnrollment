@@ -283,7 +283,7 @@
                                             </div>
                                         </div>
                                         <!-- /.card-body -->
-                                        @if ($application && $hasPendingApplication == true)
+                                        @if ($application)
                                         <a href="{{ route("student.profile.setPassword") }}" class="btn btn-danger btn-block"><b>Update Account Password</b></a>
                                         @else
                                         <div class="card-footer">

@@ -8,6 +8,7 @@ use App\Models\Department;
 use App\Models\Application;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Exports\ApplicationsExport;
 use App\Imports\ApplicationsImport;
 use App\Http\Controllers\Controller;
@@ -111,7 +112,58 @@ class StudentManagementController extends Controller
 
 
         Excel::import(new ApplicationsImport, $file);
+        $notification = [
+            'message' => 'File Import Was Successful!!',
+            'alert-type' => 'success'
+        ];
 
-        return back()->withSuccess('Applications updated successfully.');
+        return redirect()->back()->with($notification);
+    }
+
+
+
+    public function deleteMultipleStudents(Request $request)
+    {
+        $userIds = $request->input('selected_students'); // These are user IDs.
+
+        DB::transaction(function () use ($userIds) {
+            $students = Student::whereIn('user_id', $userIds)->get();
+            // dd($students);
+
+            foreach ($students as $student) {
+                // List of document columns to check and potentially delete
+                $documentFields = [
+                    'document_birth_certificate',
+                    'document_local_government_identification',
+                    'document_medical_report',
+                    'document_secondary_school_certificate'
+                ];
+                // dd($student->passport_photo);
+                // Delete passport photo if it exists
+                if ($student->passport_photo && Storage::disk('public')->exists($student->passport_photo)) {
+                    Storage::disk('public')->delete($student->passport_photo);
+                }
+
+                // Check and delete each document if it exists
+                foreach ($documentFields as $field) {
+                    if ($student->$field && Storage::disk('public')->exists($student->$field)) {
+                        Storage::disk('public')->delete($student->$field);
+                    }
+                }
+
+                // Delete the student record
+                $student->delete();
+            }
+
+            // Delete users associated with these student records
+            User::whereIn('id', $userIds)->delete();
+        });
+        $notification = [
+            'message' => 'Students deleted successfully!!',
+            'alert-type' => 'success'
+        ];
+
+
+        return redirect()->back()->with($notification);
     }
 }

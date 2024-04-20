@@ -92,6 +92,10 @@ Route::prefix('admin')->middleware(['auth', 'verified', 'role:admin'])->group(fu
 
         Route::post('/import-applications', 'import')->name('admin.student.applications.import');
         Route::get('student-applications/export', 'exportApplications')->name('admin.student.applications.export');
+
+        Route::post('/delete-multiple-students', 'deleteMultipleStudents')->name('admin.students.deleteMultiple');
+
+        
         
 
 
