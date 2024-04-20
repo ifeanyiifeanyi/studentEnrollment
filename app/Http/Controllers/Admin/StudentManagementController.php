@@ -166,4 +166,45 @@ class StudentManagementController extends Controller
 
         return redirect()->back()->with($notification);
     }
+
+    public function destroy($slug)
+    {
+        DB::transaction(function () use ($slug) {
+            $user = User::where('nameSlug', $slug)->firstOrFail(); // Find the user by slug
+            // dd($user);
+
+            $student = $user->student; // Assuming there is a 'student' relationship defined in the User model
+            // dd($student);
+
+
+            // Check and delete files associated with the student
+            $filesToDelete = [
+                $student->passport_photo,
+                $student->document_birth_certificate,
+                $student->document_local_government_identification,
+                $student->document_medical_report,
+                $student->document_secondary_school_certificate
+            ];
+
+            foreach ($filesToDelete as $filePath) {
+                if ($filePath && Storage::disk('public')->exists($filePath)) {
+                    Storage::disk('public')->delete($filePath);
+                }
+            }
+
+            // Delete the student record
+            $student->delete();
+
+            // Optionally delete the user if required
+            $user->delete();
+        });
+
+        $notification = [
+            'message' => 'Student deleted successfully!!',
+            'alert-type' => 'success'
+        ];
+
+
+        return redirect()->back()->with($notification);
+    }
 }

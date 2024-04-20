@@ -14,7 +14,7 @@
             <div class="col-12 col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-8 offset-lg-2 col-xl-8 offset-xl-2">
                 @include('layouts.logo')
 
-                <div class="card card-primary">
+                <div class="card card-danger shadow">
                     <div class="card-header">
                         <h4>Sign up here</h4>
                     </div>

@@ -34,10 +34,6 @@ class User extends Authenticatable implements MustVerifyEmail
     //     return $this->hasManyThrough(Application::class, Student::class);
     // }
 
-    // public function student()
-    // {
-    //     return $this->hasOne(Student::class);
-    // }
 
     public function applications()
     {
@@ -47,11 +43,6 @@ class User extends Authenticatable implements MustVerifyEmail
     public function departments(){
         return $this->hasMany(Department::class);
     }
-
-
-
-
-
 
 
     public function getFullNameAttribute()
@@ -64,18 +55,6 @@ class User extends Authenticatable implements MustVerifyEmail
 
         return $fullName;
     }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     // generate random username for users

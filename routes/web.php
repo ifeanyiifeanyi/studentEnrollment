@@ -92,19 +92,19 @@ Route::prefix('admin')->middleware(['auth', 'verified', 'role:admin'])->group(fu
 
         Route::post('/import-applications', 'import')->name('admin.student.applications.import');
         Route::get('student-applications/export', 'exportApplications')->name('admin.student.applications.export');
+        Route::get('view-student/{slug}','show')->name('admin.show.student');
 
         Route::post('/delete-multiple-students', 'deleteMultipleStudents')->name('admin.students.deleteMultiple');
-
-        
-        
-
-
-
-        Route::get('create-student', 'create')->name('admin.create.student');
-        Route::post('store-student','store')->name('admin.store.student');
         Route::get('delete-student/{slug}', 'destroy')->name('admin.destroy.student');
+
+
+        
+        
+
+
+
+        Route::post('store-student','store')->name('admin.store.student');
         Route::get('edit-student/{slug}', 'edit')->name('admin.edit.student');
-        Route::get('view-student/{slug}','show')->name('admin.show.student');
         Route::patch('update-student/{slug}', 'update')->name('admin.update.student');
     });
 

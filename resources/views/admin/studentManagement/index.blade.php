@@ -3,7 +3,11 @@
 @section('title', 'Student Management')
 
 @section('css')
-
+<style>
+    table tr{
+        border-bottom: 2px solid #ccc
+    }
+</style>
 @endsection
 
 @section('admin')
@@ -22,15 +26,17 @@
                             <h4>@yield('title')</h4>
                         </div>
                         <div class="card-body">
-                            <form id="bulk-action-form" method="POST" action="{{ route('admin.students.deleteMultiple') }}">
+                            <form id="bulk-action-form" method="POST"
+                                action="{{ route('admin.students.deleteMultiple') }}">
                                 @csrf
                                 <div class="float-right mb-3">
-                                    <select class="form-control selectric" onchange="if (this.value) { this.form.submit(); }">
+                                    <select class="form-control selectric"
+                                        onchange="if (this.value) { this.form.submit(); }">
                                         <option value="">Action For Selected</option>
                                         <option value="delete">Delete Permanently</option>
                                     </select>
                                 </div>
-                            
+
                                 <div class="table-responsive">
                                     <table class="table table-striped" id="table-1">
                                         <thead>
@@ -59,20 +65,26 @@
                                             <tr>
                                                 <td>
                                                     <div class="custom-checkbox custom-control">
-                                                        <input type="checkbox" name="selected_students[]" value="{{ $student->id }}" data-checkboxes="mygroup" class="custom-control-input" id="checkbox-{{ $student->id }}">
-                                                        <label for="checkbox-{{ $student->id }}" class="custom-control-label">&nbsp;</label>
+                                                        <input type="checkbox" name="selected_students[]"
+                                                            value="{{ $student->id }}" data-checkboxes="mygroup"
+                                                            class="custom-control-input"
+                                                            id="checkbox-{{ $student->id }}">
+                                                        <label for="checkbox-{{ $student->id }}"
+                                                            class="custom-control-label">&nbsp;</label>
                                                     </div>
                                                 </td>
                                                 <td>{{ $loop->iteration }}</td>
                                                 <td>
                                                     {{ Str::title($student->full_name) }}
-                                                    <p><code>{{ $student->student->application_unique_number }}</code></p>
-                                                        <a
-                                                            href="{{ route('admin.show.student', $student->nameSlug) }}">View</a>
-                                                        <div class="bullet"></div>
-                                                        <a href="#">Edit</a>
-                                                        <div class="bullet"></div>
-                                                        <a href="#" class="text-danger">Trash</a>
+                                                    <p><code>{{ $student->student->application_unique_number }}</code>
+                                                    </p>
+                                                    <a
+                                                        href="{{ route('admin.show.student', $student->nameSlug) }}">View</a>
+                                                    <div class="bullet"></div>
+                                                    <a href="#"><i class="fas fa-edit"></i></a>
+                                                    <div class="bullet"></div>
+                                                    <a data-toggle="modal" data-target="#exampleModal"
+                                                    data-student-slug="{{ $student->nameSlug }}" href="#" class="text-danger"><i class="fas fa-trash"></i></a>
 
                                                 </td>
                                                 <td class="align-middle">
@@ -85,19 +97,22 @@
                                                     @endif
                                                 </td>
                                                 <td>
-                                                    <img alt="image" src="{{ empty($student->student->passport_photo) ? asset('admin/assets/img/avatar/avatar-5.png') : Storage::url($student->student->passport_photo) }}" class="img-responsive -img-thumbnail" width="90"
+                                                    <img alt="image"
+                                                        src="{{ empty($student->student->passport_photo) ? asset('admin/assets/img/avatar/avatar-5.png') : Storage::url($student->student->passport_photo) }}"
+                                                        class="img-responsive -img-thumbnail" width="90"
                                                         data-toggle="title" title="{{ $student->last_name }}">
                                                 </td>
                                                 <td>
                                                     @if ($student->applications->isNotEmpty())
                                                     @foreach ($student->applications as $application)
                                                     <p>
-                                                        {{ \Carbon\Carbon::parse($application->created_at)->format('jS F Y') }}
+                                                        {{ \Carbon\Carbon::parse($application->created_at)->format('jS F
+                                                        Y') }}
                                                     </p>
                                                     @endforeach
-            
+
                                                     @else
-            
+
                                                     null
                                                     @endif
                                                 </td>
@@ -112,7 +127,9 @@
                                                     <span class="badge bg-danger text-light">Not Applied</span>
                                                     @endif
                                                 </td>
-                                                <td><a href="#" class="btn btn-danger"><i class="fas fa-trash"></i></a></td>
+                                                <td><a href="#" data-toggle="modal" data-target="#exampleModal"
+                                                        data-student-slug="{{ $student->nameSlug }}"
+                                                        class="btn btn-danger"><i class="fas fa-trash"></i></a></td>
                                             </tr>
                                             @empty
 
@@ -131,11 +148,41 @@
         </div>
     </section>
 </div>
+
+<div class="modal fade" tabindex="-1" role="dialog" id="exampleModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-danger"><i class="fas fa-exclamation-triangle fa-3x"></i> Warning</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Are You Sure? <br> This action can not be undone. Do you want to continue?</p>
+            </div>
+            <div class="modal-footer bg-whitesmoke br">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <a href="#" class="btn btn-danger" id="deleteSingleStudent">Delete</a>
+            </div>
+        </div>
+    </div>
+</div>
+
 @endsection
 
 
 
 @section('js')
+<script>
+    $('#exampleModal').on('show.bs.modal', function (event) {
+       var button = $(event.relatedTarget);
+       var studentSlug = button.data('student-slug');
+       var modal = $(this);
+       modal.find('#deleteSingleStudent').attr('href', '/admin/delete-student/' + studentSlug);
+    });
+</script>
+
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const masterCheckbox = document.getElementById('checkbox-all');
@@ -147,6 +194,6 @@
             });
         });
     });
-    </script>
-    
+</script>
+
 @endsection
