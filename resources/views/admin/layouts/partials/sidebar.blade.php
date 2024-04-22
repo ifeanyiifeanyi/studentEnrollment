@@ -29,7 +29,7 @@
         <ul class="dropdown-menu">
           <li><a wire:navigate class="nav-link" href="{{ route('admin.student.management') }}">All Students</a></li>
           <li><a wire:navigate class="nav-link" href="{{ route("admin.student.application") }}">Active Applications</a></li>
-          <li><a wire:navigate class="nav-link" href="bootstrap-breadcrumb.html">Breadcrumb</a></li>
+          <li><a wire:navigate class="nav-link active" href="{{ route('admin.student.applicationRef') }}">Application REF</a></li>
         </ul>
       </li>
       <li class="dropdown">

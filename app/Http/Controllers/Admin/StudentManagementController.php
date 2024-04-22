@@ -89,6 +89,28 @@ class StudentManagementController extends Controller
         return view('admin.studentManagement.application', compact('applications', 'departments'));
     }
 
+
+    public function applicationRef(Request $request)
+    {
+        $departments = Department::latest()->get();
+        $departmentId = $request->input('department_id');
+
+        if ($departmentId) {
+            $applications = Application::with(['user.student', 'department'])
+                ->where('department_id', $departmentId)
+                ->simplePaginate(50);
+        } else {
+            $applications = Application::with(['user.student', 'department'])->simplePaginate(50);
+        }
+
+        return view('admin.studentManagement.applicationRef', compact('applications', 'departments'));
+    }
+
+
+
+
+
+
     public function exportApplications(Request $request)
     {
         $departmentId = $request->input('department_id');
