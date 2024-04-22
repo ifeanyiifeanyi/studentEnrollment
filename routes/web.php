@@ -100,10 +100,6 @@ Route::prefix('admin')->middleware(['auth', 'verified', 'role:admin'])->group(fu
 
         
         
-
-
-
-        Route::post('store-student','store')->name('admin.store.student');
         Route::get('edit-student/{slug}', 'edit')->name('admin.edit.student');
         Route::patch('update-student/{slug}', 'update')->name('admin.update.student');
     });

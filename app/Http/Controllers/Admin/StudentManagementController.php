@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\DB;
 use App\Exports\ApplicationsExport;
 use App\Imports\ApplicationsImport;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\File;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Storage;
 
@@ -72,13 +73,6 @@ class StudentManagementController extends Controller
     }
 
 
-
-
-
-
-
-
-
     public function application(Request $request)
     {
         $departments = Department::latest()->get();
@@ -121,6 +115,96 @@ class StudentManagementController extends Controller
     }
 
 
+    public function edit($slug)
+    {
+        $path = public_path('countries.json');
+        if (!File::exists($path)) {
+            abort(404, 'file not found');
+        }
+        $json = File::get($path);
+        $countries = json_decode($json, true);
+        $user = User::where('nameSlug', $slug)->firstOrFail();
+        // dd($user);
+        return view('admin.studentManagement.edit', compact('user', 'countries'));
+    }
+
+
+    public function update(Request $request, $slug)
+    {
+        $user = User::where('nameSlug', $slug)->firstOrFail();
+        $application = $user->applications->first();
+
+        $request->validate([
+            'first_name' => 'required|string',
+            'last_name' => 'required|string',
+            'email' => 'required|email|unique:users,email,' . $user->id,
+            'phone' => 'required|string',
+            'jamb_reg_no' => 'nullable|string',
+            'jamb_score' => 'nullable|numeric',
+            'religion' => 'nullable|string',
+            'nin' => 'nullable|string',
+            'dob' => 'required|date',
+            'current_residence_address' => 'nullable|string',
+            'country_of_origin' => 'required|string',
+            'blood_group' => 'nullable|string',
+            'genotype' => 'nullable|string',
+            'gender' => 'nullable|string',
+            'exam_score' => 'nullable|numeric',
+            'admission_status' => 'nullable|in:denied,pending,approved',
+            'passport_photo' => 'nullable|image|mimes:jpeg,png,jpg|max:1000',
+        ]);
+
+        if ($request->hasFile('passport_photo')) {
+            $old_image = $user->passport_passport_photo;
+
+            if (!empty($old_image) && file_exists(public_path($old_image))) {
+                unlink(public_path($old_image));
+            }
+
+            $thumb = $request->file('passport_photo');
+            $user->student->passport_photo =  $this->storeFile($thumb, 'public/photos');
+        }
+
+        $user->update([
+            'first_name' => $request->input('first_name'),
+            'last_name' => $request->input('last_name'),
+            'other_names' => $request->input('other_names'),
+            'email' => $request->input('email')
+        ]);
+
+        $user->student->update([
+            'phone' => $request->input('phone'),
+            'nin' => $request->input('nin'),
+            'dob' => $request->input('dob'),
+            'blood_group' => $request->input('blood_group'),
+            'genotype' => $request->input('genotype'),
+            'gender' => $request->input('gender'),
+            'phone' => $request->input('phone'),
+            'jamb_reg_no' => $request->input('jamb_reg_no'),
+            'jamb_score' => $request->input('jamb_score'),
+            'religion' => $request->input('religion'),
+            'country_of_origin' => $request->input('country_of_origin'),
+            'current_residence_address' => $request->input('current_residence_address'),
+            'permanent_residence_address' => $request->input('current_residence_address'),
+            'nationality' => $request->input('country_of_origin'),
+        ]);
+
+        if ($application) {
+            $application->update([
+                'admission_status' => $request->input('admission_status'),
+            ]);
+
+            $application->student->update([
+                'exam_score' => $request->input('exam_score'),
+            ]);
+        }
+        $notification = [
+            'message' => 'Details Updated!!!',
+            'alert-type' => 'success'
+        ];
+
+        return redirect()->route('admin.student.management')->with($notification);
+    }
 
     public function deleteMultipleStudents(Request $request)
     {
@@ -206,5 +290,16 @@ class StudentManagementController extends Controller
 
 
         return redirect()->back()->with($notification);
+    }
+
+    protected function storeFile($file, $directory)
+    {
+        if ($file) {
+            $filename = Str::random(20) . '.' . $file->getClientOriginalExtension();
+            $path = $file->storeAs($directory, $filename);
+            return $path;
+        }
+
+        return null;
     }
 }

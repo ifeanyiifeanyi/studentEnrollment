@@ -31,6 +31,7 @@ class ApplicationsImport implements ToModel, WithHeadingRow
                 if ($application) {
                     // Update the student's exam score and application's admission status
                     $student->exam_score = $row['exam_score'];
+                    $student->admission_status = $row['admission_status'];
                     $student->save();
 
                     $application->admission_status = $row['admission_status'];

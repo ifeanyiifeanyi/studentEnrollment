@@ -4,7 +4,7 @@
 
 @section('css')
 <style>
-    table tr{
+    table tr {
         border-bottom: 2px solid #ccc
     }
 </style>
@@ -78,13 +78,18 @@
                                                     {{ Str::title($student->full_name) }}
                                                     <p><code>{{ $student->student->application_unique_number }}</code>
                                                     </p>
-                                                    <a
-                                                        href="{{ route('admin.show.student', $student->nameSlug) }}">View</a>
+                                                    <a title="View Student Details"
+                                                        href="{{ route('admin.show.student', $student->nameSlug) }}"><i
+                                                            class="fas fa-binoculars"></i>
+                                                    </a>
                                                     <div class="bullet"></div>
-                                                    <a href="#"><i class="fas fa-edit"></i></a>
+                                                    <a title="Edit Student Basic Details" href="{{ route('admin.edit.student', $student->nameSlug) }}">
+                                                        <i class="fas fa-edit"></i>
+                                                    </a>
                                                     <div class="bullet"></div>
-                                                    <a data-toggle="modal" data-target="#exampleModal"
-                                                    data-student-slug="{{ $student->nameSlug }}" href="#" class="text-danger"><i class="fas fa-trash"></i></a>
+                                                    <a title="Delete Student Account" data-toggle="modal" data-target="#exampleModal"
+                                                        data-student-slug="{{ $student->nameSlug }}" href="#"
+                                                        class="text-danger"><i class="fas fa-trash"></i></a>
 
                                                 </td>
                                                 <td class="align-middle">
