@@ -2,17 +2,20 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
 use App\Models\Department;
 use App\Models\ExamManager;
+use App\Models\ExamSubject;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class ExamManagerController extends Controller
 {
     public function index()
     {
+        $subjects = ExamSubject::latest()->get();
         $departments = Department::doesntHave('exam_managers')->get();
-        return view('admin.subjects.index', compact('departments'));
+        return view('admin.subjects.index', compact('departments', 'subjects'));
     }
 
     public function store(Request $request)
@@ -98,6 +101,43 @@ class ExamManagerController extends Controller
         $notification = [
            'message' => 'Department Exam Subject Deleted!',
             'alert-type' => 'success'
+        ];
+
+        return redirect()->back()->with($notification);
+    }
+
+
+
+
+    public function subjects(){
+        $subjects = ExamSubject::latest()->get();
+        return view("admin.subjects.examSubject", compact('subjects'));
+    }
+
+    public function subjectStore(Request $request){
+        $request->validate([
+            'name' =>'required|string|unique:exam_subjects'
+        ]);
+
+        ExamSubject::create([
+            'name' => $request->name,
+            'slug' => Str::slug($request->name)
+        ]);
+
+        $notification = [
+           'message' => 'Exam Subject Created!',
+            'alert-type' =>'success'
+        ];
+
+        return redirect()->back()->with($notification);
+    }
+
+    public function subjectDel(ExamSubject $subject){
+        $subject->delete();
+
+        $notification = [
+           'message' => 'Exam Subject Deleted!',
+            'alert-type' =>'success'
         ];
 
         return redirect()->back()->with($notification);

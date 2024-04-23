@@ -17,9 +17,9 @@
         <div class="section-body">
             <div class="container">
                 <div class="row">
-                    <div class="col-md-6 mx-auto card shadow p-5">
-                        <a href="{{ route('admin.exam.details') }}" class="btn btn-info btn-sm float-left mb-3" style="width: 50px"><i
-                                class="fas fa-arrow-left"></i></a>
+                    <div class="p-5 mx-auto shadow col-md-6 card">
+                        <a href="{{ route('admin.exam.details') }}" class="float-left mb-3 btn btn-info btn-sm"
+                            style="width: 50px"><i class="fas fa-arrow-left"></i></a>
                         <h2>Add Exam Subjects</h2>
                         <form method="POST" action="{{ route('admin.exam.store') }}">
                             @csrf
@@ -39,9 +39,13 @@
 
                             <div id="subject-fields">
                                 <div class="form-group">
-                                    <label for="exam_subject">Subject (JSON format):</label>
-                                    <input type="text" placeholder="Eg. Mathematics" name="exam_subject[]"
-                                        class="form-control" value="{{ old('exam_subject.0') }}">
+                                    <label for="exam_subject">Subject:</label>
+                                    <select name="exam_subject[]" class="form-control">
+                                        <option value="" selected disabled>Select Subject</option>
+                                        @foreach ($subjects as $subject)
+                                        <option value="{{ $subject->name }}">{{ Str::title($subject->name) }}</option>
+                                        @endforeach
+                                    </select>
                                     <div class="input-group-append">
                                         <button type="button" class="btn btn-danger remove-subject">Remove</button>
                                     </div>
@@ -91,8 +95,13 @@
             var newSubjectField = document.createElement('div');
             newSubjectField.classList.add('form-group');
             newSubjectField.innerHTML = `
-                <label for="subjects">Subject (JSON format):</label>
-                <input type="text" placeholder="Eg. Mathematics" name="exam_subject[]" value="{{ old('exam_subject.*') }}" class="form-control" >
+            <label for="subjects">Subject (JSON format):</label>
+                <select name="exam_subject[]" class="form-control" >
+                    <option value="" selected disabled>Select Subject</option>
+                    @foreach ($subjects as $subject)
+                        <option value="{{ $subject->name }}">{{ Str::title($subject->name) }}</option>
+                    @endforeach
+                </select>
                 <div class="input-group-append">
                     <button type="button" class="btn btn-danger remove-subject">Remove</button>
                 </div>

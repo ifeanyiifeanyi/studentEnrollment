@@ -21,6 +21,7 @@
         <ul class="dropdown-menu">
           <li><a wire:navigate class="nav-link" href="{{ route('admin.exam.manager') }}">Exam Manager</a></li>
           <li><a wire:navigate class="nav-link" href="{{ route('admin.exam.details') }}">Exam Details</a></li>
+          <li><a wire:navigate class="nav-link" href="{{ route('admin.subject') }}">Exam Subject Creater</a></li>
         </ul>
       </li>
       <li class="dropdown">

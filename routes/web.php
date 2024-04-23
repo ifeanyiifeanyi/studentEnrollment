@@ -83,6 +83,10 @@ Route::prefix('admin')->middleware(['auth', 'verified', 'role:admin'])->group(fu
         Route::get('exam-management-details/{id}/edit', "edit")->name('admin.exam.edit');
         Route::patch('exam-management-details/{id}/update', "update")->name('admin.exam.update');
         Route::get('exam-management-details/del/{id}', "destroy")->name('admin.exam.destroy');
+
+        Route::get('exam-subject', 'subjects')->name("admin.subject");
+        Route::post('exam-subject/store', 'subjectStore')->name("admin.subject.store");
+        Route::get('exam-subject/del/{subject}', 'subjectDel')->name("admin.subject.del");
     
     });
 
