@@ -8,6 +8,7 @@
         border-bottom: 2px solid #dee !important;
     }
 </style>
+
 @endsection
 
 @section('admin')
@@ -42,7 +43,7 @@
                     </div>
 
                     <div class="float-right pb-1">
-                        <a href="{{ route('admin.student.applications.export') }}" class="btn btn-primary"
+                        <a href="{{ route('admin.student.applications.exportPDF') }}" class="btn btn-primary"
                             id="exportButton">Export to PDF <i class="fas fa-file"></i></a>
                     </div>
                     <div class="table-responsive">
@@ -52,7 +53,7 @@
                                     <th style="width: 20px">s/n</th>
                                     <th style="width: auto !important">Student</th>
                                     <th>profile</th>
-                                    <th>Transactions</th>
+                                    <th style="width: 40px">Transactions</th>
                                     <th>Department</th>
                                     <th>Exam Venue</th>
                                 </tr>
@@ -70,12 +71,12 @@
                                             class="img-fluid" width="150px" height="120px">
                                     </td>
                                     <td>
-                                        <p><b>Invoice: </b> {{ $ap->invoice_number }}</p>
-                                        <p><b>Transact: </b> {{ $ap->payment->transaction_id }}</p>
+                                        <small><b>Invoice: </b> {{ $ap->invoice_number }}</small> <br>
+                                        <small><b>Transact: </b> {{ $ap->payment->transaction_id }}</small>
                                     </td>
                                     <td>{{ $ap->department->name }}</td>
                                     <td>
-                                        <p><b>Venue: </b>{{ $ap->department->exam_managers->venue ?? 'null' }}</p>
+                                        <small><b>Venue: </b>{{ $ap->department->exam_managers->venue ?? 'null' }}</small>
                                         <p><b>Date: </b>{{ $ap->department->exam_managers->date_time ?? 'null' }}</p>
                                     </td>
                                 </tr>
@@ -125,7 +126,7 @@
     function updateExportLink() {
     const departmentId = document.querySelector('[name="department_id"]').value;
     const exportButton = document.getElementById('exportButton');
-    let url = '{{ route("admin.student.applications.export") }}';
+    let url = '{{ route("admin.student.applications.exportPDF") }}';
     url += departmentId ? '?department_id=' + departmentId : '';
     exportButton.href = url;
     }

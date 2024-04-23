@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\User;
 use App\Models\Student;
+use Barryvdh\DomPDF\PDF;
 use App\Models\Department;
 use App\Models\Application;
 use Illuminate\Support\Str;
@@ -12,6 +13,7 @@ use Illuminate\Support\Facades\DB;
 use App\Exports\ApplicationsExport;
 use App\Imports\ApplicationsImport;
 use App\Http\Controllers\Controller;
+use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
 use Illuminate\Support\Facades\File;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Storage;
@@ -104,6 +106,40 @@ class StudentManagementController extends Controller
         }
 
         return view('admin.studentManagement.applicationRef', compact('applications', 'departments'));
+    }
+
+    // public function exportPdf(Request $request)
+    // {
+    //     $departments = Department::latest()->get();
+    //     $departmentId = $request->input('department_id');
+    //     $query = Application::with(['user.student', 'department']);
+
+    //     if ($departmentId) {
+    //         $query->where('department_id', $departmentId);
+    //     }
+
+    //     $applications = $query->simplePaginate(50); // Use get() to retrieve all applications for PDF export
+
+    //     $pdf = FacadePdf::loadView('admin.studentManagement.applicationRef', compact('applications', 'departments'));
+    //     return $pdf->download('applications.pdf');
+    // }
+
+    public function exportPdf(Request $request)
+    {
+        $departments = Department::latest()->get();
+        $departmentId = $request->input('department_id');
+        $query = Application::with(['user.student', 'department']);
+
+        if ($departmentId) {
+            $query->where('department_id', $departmentId);
+        }
+
+        $applications = $query->get(); // Retrieve all applications for PDF export
+
+        // Load a separate view specifically for the PDF export
+        $pdf = FacadePdf::loadView('admin.studentManagement.pdfView', compact('applications', 'departments'));
+
+        return $pdf->download('applications.pdf');
     }
 
 

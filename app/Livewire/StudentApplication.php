@@ -13,6 +13,7 @@ use Livewire\WithFileUploads;
 use Illuminate\Validation\Rule;
 use App\Jobs\ProcessRegistration;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\RegistrationConfirmationMail;
 
@@ -267,8 +268,15 @@ class StudentApplication extends Component
     }
 
 
+
     public function render()
     {
+        $path = public_path('countries.json');
+        if (!File::exists($path)) {
+            abort(404, 'file not found');
+        }
+        $json = File::get($path);
+        $countries = json_decode($json, true);
         $departments = Department::all();
         return view('livewire.student-application', ['departments' => $departments]);
     }

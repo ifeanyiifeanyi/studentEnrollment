@@ -8,6 +8,9 @@
 @section('student')
 <section class="content">
     <div class="container-fluid">
+        <div>
+            <p class="text-muted">All fields marked with <q><span class="text-danger">*</span></q>, are required.</p>
+        </div>
         @livewire('student-application')
 
     </div>
@@ -29,7 +32,7 @@
             reader.readAsDataURL(input.files[0]);
         }
     }
-  </script>
+</script>
 
-  
+
 @endsection

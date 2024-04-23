@@ -90,6 +90,8 @@ Route::prefix('admin')->middleware(['auth', 'verified', 'role:admin'])->group(fu
         Route::get('student-management', 'index')->name('admin.student.management');
         Route::get('student-applications', 'application')->name('admin.student.application');
         Route::get('student-application-ref', 'applicationRef')->name('admin.student.applicationRef');
+        Route::get('student-application-pdf', 'exportPdf')->name('admin.student.applications.exportPDF');
+
 
         Route::post('/import-applications', 'import')->name('admin.student.applications.import');
         Route::get('student-applications/export', 'exportApplications')->name('admin.student.applications.export');
