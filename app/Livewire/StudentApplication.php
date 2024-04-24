@@ -7,6 +7,7 @@ use App\Models\Student;
 use Livewire\Component;
 use App\Models\Department;
 use App\Models\Application;
+use App\Models\ExamSubject;
 use Illuminate\Support\Str;
 use GuzzleHttp\Psr7\Request;
 use Livewire\WithFileUploads;
@@ -57,7 +58,8 @@ class StudentApplication extends Component
     public $department_description;
 
 
-
+    public $examSubjects;
+    public $countries = [];
 
 
     public $country;
@@ -80,6 +82,20 @@ class StudentApplication extends Component
     {
 
         $user = User::with('student')->find(auth()->user()->id);
+        $this->examSubjects = ExamSubject::pluck('name', 'name');
+
+        // Load countries from JSON and extract names
+        $path = public_path('countries.json');
+        if (File::exists($path)) {
+            $json = File::get($path);
+            $countriesData = json_decode($json, true);
+            $this->countries = array_map(function ($country) {
+                return $country['name'];
+            }, $countriesData);
+        } else {
+            $this->countries = []; // Ensure the countries array is always initialized
+        }
+
         $this->userId = $user->id;
         $this->first_name = old('first_name') ?? ($user ? $user->first_name : null);
 
@@ -153,7 +169,7 @@ class StudentApplication extends Component
         $this->currentStep = 1;
     }
 
-    
+
 
 
 
@@ -271,14 +287,13 @@ class StudentApplication extends Component
 
     public function render()
     {
-        $path = public_path('countries.json');
-        if (!File::exists($path)) {
-            abort(404, 'file not found');
-        }
-        $json = File::get($path);
-        $countries = json_decode($json, true);
+
         $departments = Department::all();
-        return view('livewire.student-application', ['departments' => $departments]);
+        return view('livewire.student-application', [
+            'departments' => $departments,
+            'examSubjects' => $this->examSubjects,
+            'countries' => $this->countries
+        ]);
     }
 
     public function updatedSittings($value)
@@ -458,17 +473,18 @@ class StudentApplication extends Component
         return $localGovernments[$state] ?? [];
     }
 
+    
     public function countrySelected()
     {
-        // Logic to handle country selection
         if ($this->country === 'Nigeria') {
-            // Load states for Nigeria
             $this->states = $this->getNigerianStates();
+            $this->localGovernments = [];
         } else {
-            // Clear states if country is not Nigeria
             $this->states = [];
+            $this->localGovernments = [];
         }
     }
+
 
     public function stateSelected()
     {
@@ -604,7 +620,7 @@ class StudentApplication extends Component
         }
 
 
-        
+
 
         $application = Application::updateOrCreate(
             [
@@ -626,10 +642,10 @@ class StudentApplication extends Component
             'message' => 'Application Details submitted, proceed to payment to finalize the process, thank you',
             'alert-type' => 'success',
         ];
-            return redirect()->route('payment.view.finalStep', ['userSlug' => $user->nameSlug])->with($notification);
+        return redirect()->route('payment.view.finalStep', ['userSlug' => $user->nameSlug, 'application' => $application])->with($notification);
     }
 
-    
+
     private function generateUniqueNumber()
     {
         $lastRegisteredPerson = Student::max('id') + 1;

@@ -24,7 +24,7 @@
                     </div>
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label for="last_name">Last Name  <span class="text-danger">*</span></label>
+                            <label for="last_name">Last Name <span class="text-danger">*</span></label>
                             <input wire:model.lazy="last_name" type="text" class="form-control" id="last_name"
                                 placeholder="Enter Last Name" required>
                             @error('last_name')
@@ -36,7 +36,7 @@
                     </div>
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label for="other_names">Other Names  <span class="text-danger">*</span></label>
+                            <label for="other_names">Other Names <span class="text-danger">*</span></label>
                             <input wire:model.lazy="other_names" type="text" class="form-control" id="other_names"
                                 placeholder="Other Names .." required>
                             @error('other_names')
@@ -50,7 +50,7 @@
                 <div class="row">
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label for="email">Email  <span class="text-danger">*</span></label>
+                            <label for="email">Email <span class="text-danger">*</span></label>
                             <input wire:model.lazy="email" type="email" class="form-control" id="email"
                                 placeholder="Enter Email Address" required>
                             @error('email')
@@ -62,7 +62,7 @@
                     </div>
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label for="phone">Phone Number  <span class="text-danger">*</span></label>
+                            <label for="phone">Phone Number <span class="text-danger">*</span></label>
                             <input wire:model.lazy="phone" type="tel" class="form-control" id="phone"
                                 placeholder="Enter Phone Number" required>
                             @error('phone')
@@ -74,7 +74,7 @@
                     </div>
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label for="gender">Gender:  <span class="text-danger">*</span></label>
+                            <label for="gender">Gender: <span class="text-danger">*</span></label>
                             <select wire:model.lazy="gender" id="gender" class="form-control">
                                 <option value="" disabled>Select Gender</option>
                                 <option value="male">Male</option>
@@ -92,7 +92,7 @@
                 <div class="row">
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label for="religion">Religion  <span class="text-danger">*</span></label>
+                            <label for="religion">Religion <span class="text-danger">*</span></label>
                             <input wire:model.blur="religion" type="text" class="form-control" id="religion"
                                 placeholder="Religion" required>
                             @error('religion')
@@ -104,7 +104,7 @@
                     </div>
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label for="dob">Date of Birth  <span class="text-danger">*</span></label>
+                            <label for="dob">Date of Birth <span class="text-danger">*</span></label>
                             <input wire:model.lazy="dob" type="date" class="form-control" id="dob" required>
                             @error('dob')
                             <div class="text-danger">
@@ -115,7 +115,7 @@
                     </div>
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label for="nin">NIN  <span class="text-danger">*</span></label>
+                            <label for="nin">NIN <span class="text-danger">*</span></label>
                             <input wire:model.lazy="nin" type="text" class="form-control" id="nin"
                                 placeholder="National Identification Number" required>
                             @error('nin')
@@ -130,24 +130,23 @@
                 <div class="row">
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label for="country">Country of Origin  <span class="text-danger">*</span></label>
-                            <select id="country" class="form-control" wire:model.live="country"
+                            <label for="country">Country of Origin <span class="text-danger">*</span></label>
+                            <select id="country" class="form-control" wire:model="country"
                                 wire:change="countrySelected">
-                                <option {{ !empty($country) ? "selected" : "" }} value="{{ $country }}">{{ $country }}
-                                </option>
-                                <option value="" selected>Select Country</option>
-                                <option value="Nigeria">Nigeria</option>
-                                <option value="">Other Countries</option>
-
+                                <option value="">Select Country</option>
+                                @foreach($countries as $countryName)
+                                <option value="{{ $countryName }}">{{ $countryName }}</option>
+                                @endforeach
                             </select>
                             @error('country') <span class="text-danger">{{ $message }}</span> @enderror
                         </div>
+
                     </div>
 
                     @if ($country == 'Nigeria')
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label for="state">State  <span class="text-danger">*</span></label>
+                            <label for="state">State <span class="text-danger">*</span></label>
                             <select id="state" class="form-control" wire:model.lazy="state" wire:change="stateSelected">
                                 <option {{ !empty($state) ? "selected" : "" }} value="{{ $state }}">{{ $state }}
                                 </option>
@@ -162,7 +161,7 @@
 
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label for="localGovernment">Local Government  <span class="text-danger">*</span></label>
+                            <label for="localGovernment">Local Government <span class="text-danger">*</span></label>
                             <select id="localGovernment" class="form-control" wire:model.lazy="localGovernment">
                                 <option {{ !empty($localGovernment) ? "selected" : "" }} value="{{ $localGovernment }}">
                                     {{ $localGovernment }}</option>
@@ -177,7 +176,7 @@
                     @else
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label for="state">State/Province  <span class="text-danger">*</span></label>
+                            <label for="state">State/Province <span class="text-danger">*</span></label>
                             <input type="text" placeholder="State/Province" id="state" class="form-control"
                                 wire:model.lazy="state">
                             @error('state') <span class="text-danger">{{ $message }}</span> @enderror
@@ -185,7 +184,8 @@
                     </div>
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label for="localGovernment">City/Local Government  <span class="text-danger">*</span></label>
+                            <label for="localGovernment">City/Local Government <span
+                                    class="text-danger">*</span></label>
                             <input type="text" placeholder="City/Local Government" id="localGovernment"
                                 class="form-control" wire:model.lazy="localGovernment">
                             @error('localGovernment') <span class="text-danger">{{ $message }}</span> @enderror
@@ -198,7 +198,8 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="current_residence_address">Current Residence Address  <span class="text-danger">*</span></label>
+                            <label for="current_residence_address">Current Residence Address <span
+                                    class="text-danger">*</span></label>
                             <input wire:model.lazy="current_residence_address" type="text" class="form-control"
                                 id="current_residence_address" placeholder="Enter current_residence_address" required>
                             @error('current_residence_address')
@@ -210,7 +211,8 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="permanent_residence_address">Permanent Residence Address  <span class="text-danger">*</span></label>
+                            <label for="permanent_residence_address">Permanent Residence Address <span
+                                    class="text-danger">*</span></label>
                             <input wire:model.lazy="permanent_residence_address" type="text" class="form-control"
                                 id="permanent_residence_address" placeholder="Enter permanent_residence_address"
                                 required>
@@ -226,7 +228,7 @@
                 <div class="row">
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label for="guardian_name">Guardian/Parent  <span class="text-danger">*</span></label>
+                            <label for="guardian_name">Guardian/Parent <span class="text-danger">*</span></label>
                             <input wire:model.lazy="guardian_name" type="text" class="form-control" id="guardian_name"
                                 placeholder="Guardian / Parent Name" />
                             @error('guardian_name')
@@ -236,7 +238,8 @@
                     </div>
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label for="guardian_phone_number">Guardian/Parent Phone number  <span class="text-danger">*</span></label>
+                            <label for="guardian_phone_number">Guardian/Parent Phone number <span
+                                    class="text-danger">*</span></label>
                             <input wire:model.lazy="guardian_phone_number" type="text" class="form-control"
                                 id="guardian_phone_number" placeholder="Parent or Guardian Phone Number" />
                             @error('guardian_phone_number')
@@ -246,7 +249,8 @@
                     </div>
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label for="guardian_address">Guardian/Parent Address  <span class="text-danger">*</span></label>
+                            <label for="guardian_address">Guardian/Parent Address <span
+                                    class="text-danger">*</span></label>
                             <input wire:model.lazy="guardian_address" type="text" class="form-control"
                                 id="guardian_address" placeholder="Parent or Guardian Home Address" />
                             @error('guardian_address')
@@ -322,7 +326,8 @@
                 <div class="row">
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label for="secondary_school_attended">Secondary School Attended <span class="text-danger">*</span></label>
+                            <label for="secondary_school_attended">Secondary School Attended <span
+                                    class="text-danger">*</span></label>
                             <input wire:model.lazy="secondary_school_attended" type="text" class="form-control"
                                 id="secondary_school_attended" placeholder="Secondary School Attended" />
                             @error('secondary_school_attended')
@@ -332,7 +337,8 @@
                     </div>
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label for="secondary_school_graduation_year">Graduation Year <span class="text-danger">*</span></label>
+                            <label for="secondary_school_graduation_year">Graduation Year <span
+                                    class="text-danger">*</span></label>
                             <input wire:model.lazy="secondary_school_graduation_year" type="date" class="form-control"
                                 id="secondary_school_graduation_year" placeholder="Secondary School Graduation Year" />
                             @error('secondary_school_graduation_year')
@@ -501,26 +507,27 @@
                         @foreach ($subjects1 as $index => $subject)
                         <div class="row form-group">
                             <div class="col-md-6">
-                                <input type="text" wire:model="subjects1.{{ $index }}.subject"
-                                    placeholder="Subject, Eg English Language" class="form-control 
-                                    @if ($errors->get('subjects1.'.$index.'.subject')) border-danger @endif ">
-                                @if ($errors->get('subjects1.'.$index.'.subject'))
-                                <div class="text-danger">
-                                    {{ $errors->get('subjects1.'.$index.'.subject')[0] }}
+                                <select wire:model="subjects1.{{ $index }}.subject"
+                                    class="form-control @error('subjects1.'.$index.'.subject') is-invalid @enderror">
+                                    <option value="">Select Subject</option>
+                                    @foreach($examSubjects as $name => $displayName)
+                                    <option value="{{ $name }}">{{ $displayName }}</option>
+                                    @endforeach
+                                </select>
+                                @error('subjects1.'.$index.'.subject')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
                                 </div>
-
-                                @endif
+                                @enderror
                             </div>
                             <div class="col-md-4">
                                 <input type="text" wire:model="subjects1.{{ $index }}.score" placeholder="Score, Eg A1"
-                                    min="0" max="100"
-                                    class="form-control @if ($errors->get('subjects1.'.$index.'.score')) border-danger @endif">
-                                @if ($errors->get('subjects1.'.$index.'.score'))
-                                <div class="text-danger">
-                                    {{ $errors->get('subjects1.'.$index.'.score')[0] }}
+                                    class="form-control @error('subjects1.'.$index.'.score') is-invalid @enderror">
+                                @error('subjects1.'.$index.'.score')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
                                 </div>
-                                @endif
-
+                                @enderror
                             </div>
                             <div class="col-md-2">
                                 <button type="button" wire:click="removeSubject(1, {{ $index }})"
@@ -528,7 +535,9 @@
                             </div>
                         </div>
                         @endforeach
-                        <button type="button" wire:click="addSubject(1)" class="btn btn-primary">Add Subject <i class="fas fa-plus"></i></button>
+
+                        <button type="button" wire:click="addSubject(1)" class="btn btn-primary">Add Subject <i
+                                class="fas fa-plus"></i></button>
                     </div>
 
                     <div class="col-md-6">
@@ -537,24 +546,27 @@
                         @foreach ($subjects2 as $index => $subject)
                         <div class="row form-group">
                             <div class="col-md-6">
-                                <input type="text" wire:model="subjects2.{{ $index }}.subject"
-                                    placeholder="Subject: Eg. English Language" class="form-control">
-                                @if ($errors->get('subjects2.'.$index.'.subject'))
-                                <div class="invalid-feedback text-danger">
-                                    {{ $errors->get('subjects2.'.$index.'.subject')[0] }}
+                                <select wire:model="subjects2.{{ $index }}.subject"
+                                    class="form-control @error('subjects2.'.$index.'.subject') is-invalid @enderror">
+                                    <option value="">Select Subject</option>
+                                    @foreach($examSubjects as $name => $displayName)
+                                    <option value="{{ $name }}">{{ $displayName }}</option>
+                                    @endforeach
+                                </select>
+                                @error('subjects2.'.$index.'.subject')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
                                 </div>
-                                @endif
-
+                                @enderror
                             </div>
                             <div class="col-md-4">
-                                <input type="text" wire:model="subjects2.{{ $index }}.score" placeholder="Score: Eg. A1"
-                                    class="form-control">
-                                @if ($errors->get('subjects2.'.$index.'.score'))
-                                <div class="invalid-feedback text-danger">
-                                    {{ $errors->get('subjects2.'.$index.'.score')[0] }}
+                                <input type="text" wire:model="subjects2.{{ $index }}.score" placeholder="Score, Eg A1"
+                                    class="form-control @error('subjects2.'.$index.'.score') is-invalid @enderror">
+                                @error('subjects2.'.$index.'.score')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
                                 </div>
-                                @endif
-
+                                @enderror
                             </div>
                             <div class="col-md-2">
                                 <button type="button" wire:click="removeSubject(2, {{ $index }})"
@@ -562,8 +574,10 @@
                             </div>
                         </div>
                         @endforeach
-                        <button type="button" wire:click="addSubject(2)" class="btn btn-primary">Add Subject <i class="fas fa-plus"></i></button>
+                        <button type="button" wire:click="addSubject(2)" class="btn btn-primary">Add Subject <i
+                                class="fas fa-plus"></i></button>
                         @endif
+
                     </div>
                 </div>
             </div>
@@ -585,7 +599,8 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="document_medical_report">Submit Medical Report</label>
+                            <label for="document_medical_report">Submit Medical Report <span
+                                    class="text-danger">*</span></label>
                             <input type="file" wire:model="document_medical_report" id="document_medical_report"
                                 class="form-control">
                             @error('document_medical_report')
@@ -595,7 +610,8 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="document_birth_certificate">Birth Certificate</label>
+                            <label for="document_birth_certificate">Birth Certificate <span
+                                    class="text-danger">*</span></label>
                             <input type="file" wire:model="document_birth_certificate" id="document_birth_certificate"
                                 class="form-control">
                             @error('document_birth_certificate')
@@ -608,7 +624,8 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="document_local_government_identification">LGA Identification</label>
+                            <label for="document_local_government_identification">LGA Identification <span
+                                    class="text-danger">*</span></label>
                             <input type="file" wire:model="document_local_government_identification"
                                 id="document_local_government_identification" class="form-control">
                             @error('document_local_government_identification')
@@ -627,11 +644,13 @@
                         </div>
                     </div>
 
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                         <div class="row">
-                            <div class="col-md-6">
+                            <hr>
+                            <div class="col-md-12">
                                 <div class="form-group">
-                                    <label for="passport_photo">Passport Photo</label>
+                                    <label for="passport_photo">Passport Photo <span
+                                            class="text-danger">*</span></label>
                                     <input type="file" wire:model="passport_photo" id="passport_photo"
                                         class="form-control" capture accept="image/*">
 
@@ -639,12 +658,6 @@
                                     <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
-                            </div>
-                            <div class="col-md-6">
-
-                                <img src="{{ Storage::url($passport_photo) ?? 'https://placehold.it/150x100' }}"
-                                    alt="Passport Photo Preview" class="img-fluid img-responsive w-50">
-
                             </div>
                         </div>
 

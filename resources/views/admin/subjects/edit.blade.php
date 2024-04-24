@@ -17,7 +17,7 @@
         <div class="section-body">
             <div class="container">
                 <div class="row">
-                    <div class="col-md-6 mx-auto card shadow p-5">
+                    <div class="p-5 mx-auto shadow col-md-6 card">
                         <h2>Update Exam Subjects</h2>
                         <form method="POST" action="{{ route('admin.exam.update', $exam->id) }}">
                             @csrf
@@ -36,24 +36,30 @@
                                 @enderror
                             </div>
                             <hr>
-                            @forelse (json_decode($exam->exam_subject) as $subject)
-                            <div class="subject-fields form-group">
-                                <label for="exam_subject">Subject (JSON format):</label>
+                            @forelse (json_decode($exam->exam_subject) as $subjectName)
+                            <div id="subject-fields" class="form-group">
+                                <label for="exam_subject">Subject:</label>
                                 <div class="input-group">
-                                    <input type="text" placeholder="Eg. Mathematics" name="exam_subject[]"
-                                        class="form-control" value="{{ old('exam_subject.*', $subject) }}">
+                                    <select name="exam_subject[]" class="form-control">
+                                        <option value="" disabled>Select Subject</option>
+                                        @foreach($examSubject as $subject)
+                                        <option value="{{ $subject->name }}" {{ $subjectName==$subject->name ?
+                                            'selected' : '' }}>{{ $subject->name }}</option>
+                                        @endforeach
+                                    </select>
                                     <div class="input-group-append">
                                         <button type="button" class="btn btn-danger remove-subject">Remove</button>
                                     </div>
                                 </div>
                                 @error('exam_subject.*')
-                                    <span class="text-danger">{{ $message }}</span>
+                                <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
-                        @empty
-                            <div class="alert alert-danger">Try again later</div>
-                        @endforelse
-                        
+                            @empty
+                            <div class="alert alert-danger">No subjects available. Try again later.</div>
+                            @endforelse
+
+
 
                             <hr>
                             <div class="form-group">
@@ -92,33 +98,39 @@
 @section('js')
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        document.querySelectorAll('.remove-subject').forEach(function(button) {
-            button.addEventListener('click', function () {
-                button.closest('.subject-fields').remove();
-            });
-        });
-
-        document.getElementById('add-subject').addEventListener('click', function () {
-            var subjectFields = document.getElementById('subject-fields');
-            var newSubjectField = document.createElement('div');
-            newSubjectField.classList.add('subject-fields', 'form-group');
-            newSubjectField.innerHTML = `
-                <label for="subjects">Subject (JSON format):</label>
-                <div class="input-group">
-                    <input type="text" placeholder="Add another subject ..." name="exam_subject[]" class="form-control" >
-                    <div class="input-group-append">
-                        <button type="button" class="btn btn-danger remove-subject">Remove</button>
-                    </div>
-                </div>
-            `;
-            subjectFields.appendChild(newSubjectField);
-            
-            // Attach remove button event listener
-            newSubjectField.querySelector('.remove-subject').addEventListener('click', function () {
-                newSubjectField.remove();
-            });
+    document.querySelectorAll('.remove-subject').forEach(function(button) {
+        button.addEventListener('click', function () {
+            this.closest('.form-group').remove();
         });
     });
+
+    document.getElementById('add-subject').addEventListener('click', function () {
+        var subjectFields = document.getElementById('subject-fields');
+        var newSubjectField = document.createElement('div');
+        newSubjectField.classList.add('form-group');
+        newSubjectField.innerHTML = `
+            <label for="subjects">Subject:</label>
+            <div class="input-group">
+                <select name="exam_subject[]" class="form-control">
+                    <option value="" disabled>Select Subject</option>
+                    @foreach($examSubject as $subject)
+                    <option value="{{ $subject->name }}">{{ $subject->name }}</option>
+                    @endforeach
+                </select>
+                <div class="input-group-append">
+                    <button type="button" class="btn btn-danger remove-subject">Remove</button>
+                </div>
+            </div>
+        `;
+        subjectFields.appendChild(newSubjectField);
+        
+        // Attach remove button event listener
+        newSubjectField.querySelector('.remove-subject').addEventListener('click', function () {
+            newSubjectField.remove();
+        });
+    });
+});
+
 </script>
 
 @endsection

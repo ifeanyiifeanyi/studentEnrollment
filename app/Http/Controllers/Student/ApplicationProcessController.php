@@ -9,13 +9,15 @@ use App\Models\Application;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\PaymentMethod;
+use Yabacon\Paystack\Paystack;
+
+use App\Mail\ApplicationStatusMail;
 use App\Http\Controllers\Controller;
 
+use Illuminate\Support\Facades\Mail;
+use Yabacon\Paystack\PaystackClient;
 use KingFlamez\Rave\Facades\Rave as Flutterwave;
 use Unicodeveloper\Flutterwave\Facades\Flutterwave as UnicodeveloperFlutterwave;
-
-use Yabacon\Paystack\Paystack;
-use Yabacon\Paystack\PaystackClient;
 
 
 
@@ -37,6 +39,7 @@ class ApplicationProcessController extends Controller
         return view('student.application.index');
     }
 
+    // thi view is for the invoice payment
     public function finalApplicationStep($userSlug)
     {
         $user = User::Where('nameSlug', $userSlug)->first();
@@ -64,16 +67,14 @@ class ApplicationProcessController extends Controller
 
         // the user has already complete application
         if ($user) {
-            $application = $user->applications
-                ->whereNotNull('payment_id')
-                ->first();
+            $applicant = $user->applications->whereNotNull('payment_id')->first();
 
-                $notification = [
-                    'message' => 'You have already submitted an application!',
-                    'alert-type' => 'info'
-                ];
+            $notification = [
+                'message' => 'You have already submitted an application!',
+                'alert-type' => 'info'
+            ];
 
-            if ($application) {
+            if ($applicant) {
                 return redirect()->route('student.dashboard')->with($notification);
             }
         }
@@ -88,6 +89,8 @@ class ApplicationProcessController extends Controller
         // dd($request);
         $request->validate([
             'payment_method_id' => 'required'
+        ], [
+            'payment_method_id.required' => "Please Select Payment Option to Proceed, Thank you."
         ]);
 
         $user = auth()->user();
@@ -166,7 +169,7 @@ class ApplicationProcessController extends Controller
     public function handlePaymentCallBackPayStack(Request $request)
     {
         $paystack = new \Yabacon\Paystack(config('paystack.secretKey'));
- 
+
         // dd($paystack);
         try {
             $transaction = $paystack->transaction->verify([
@@ -194,13 +197,13 @@ class ApplicationProcessController extends Controller
                     if ($application) {
                         $application->update(['payment_id' => $payment->id]);
                     }
+                    Mail::to($user->email)->send(new ApplicationStatusMail($user, $application, $payment));
 
                     return view('student.payment.success', [
                         'user' => $user,
                         'application' => $application,
                         'payment' => $payment,
                     ]);
-                    
                 } else {
                     $userSlug = optional(auth()->user())->nameSlug;
                     return redirect()->route('payment.view.finalStep', ['userSlug' => $userSlug])
@@ -221,6 +224,7 @@ class ApplicationProcessController extends Controller
 
 
 
+    // handle flutterwave payment callback
     public function handlePaymentCallBack(Request $request)
     {
         try {
@@ -253,6 +257,7 @@ class ApplicationProcessController extends Controller
                     if ($application) {
                         $application->update(['payment_id' => $payment->id]);
                     }
+                    Mail::to($user->email)->send(new ApplicationStatusMail($user, $application, $payment));
 
                     return view('student.payment.success', [
                         'user' => $user,
@@ -289,7 +294,7 @@ class ApplicationProcessController extends Controller
     {
         $user = auth()->user();
         $application = $user->applications->first(); // Example, adjust based on your application logic
-        $payment = $application ? $application->payment : null; 
+        $payment = $application ? $application->payment : null;
 
         if (!$payment || !$user || $application) {
             return redirect()->route('payment.view.finalStep', ['userSlug' => $user->nameSlug])

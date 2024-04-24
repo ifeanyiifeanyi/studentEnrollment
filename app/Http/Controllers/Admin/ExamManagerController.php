@@ -60,9 +60,10 @@ class ExamManagerController extends Controller
     }
 
     public function edit($id){
+        $examSubject = ExamSubject::latest()->get();
         $exam = ExamManager::find($id);
         $departments = Department::all();
-        return view('admin.subjects.edit', compact('exam', 'departments'));
+        return view('admin.subjects.edit', compact('exam', 'departments', 'examSubject'));
     }
 
     public function update(Request $request, $id){
