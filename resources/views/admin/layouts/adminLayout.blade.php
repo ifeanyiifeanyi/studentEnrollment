@@ -43,7 +43,18 @@
     #example1_paginate{
       display: none !important;
     }
+    .active{
+      background-color: #007bff!important;
+      color: #fff !important;
+      border-radius: 20px !important;
+      margin: 0 10px 0 10px !important;
+    }
+    .parent{
+      border: 2px solid #6777f0 !important;
+      border-radius: 20px !important
+    }
   </style>
+  
 </head>
 @yield('css')
 @livewireStyles
@@ -78,6 +89,7 @@
   <script src="{{ asset("") }}student/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
   <script src="{{ asset("") }}student/plugins/datatables-buttons/js/buttons.print.min.js"></script>
   <script src="{{ asset("") }}student/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+
 
   <script>
     $(function () {

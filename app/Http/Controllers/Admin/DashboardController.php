@@ -2,17 +2,61 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Faculty;
+use App\Models\Payment;
+use App\Models\Student;
+use App\Models\Department;
+use App\Models\Application;
 use App\Models\SiteSetting;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
-    public function index(){
+    public function index()
+    {
 
-    
-        return view('admin.dashboard');
+        $studentCount = Student::count();
+        $departmentCount = Department::count();
+        $facultyCount = Faculty::count();
+        $activeApplication = Application::count();
+        $applicationsByDepartment = Application::select('department_id', DB::raw('count(*) as total'))
+            ->groupBy('department_id')
+            ->get();
+
+        // Calculate percentage for number of student that applied to each department
+        $departmentData = $applicationsByDepartment->map(function ($item) use ($activeApplication) {
+            $item->percentage = $activeApplication > 0 ? ($item->total / $activeApplication) * 100 : 0;
+            return $item;
+        });
+
+        $applicationsByFaculty = Application::join('departments', 'applications.department_id', '=', 'departments.id')
+            ->select('departments.faculty_id', DB::raw('count(*) as total'))
+            ->groupBy('departments.faculty_id')
+            ->get();
+
+        // Fetch faculty names and calculate percentages
+        $facultyData = $applicationsByFaculty->map(function ($item) use ($activeApplication) {
+            $faculty = Faculty::find($item->faculty_id); // Assuming you have a Faculty model
+            $item->faculty_name = $faculty->name; // Assuming there's a 'name' column in faculties
+            $item->percentage = $activeApplication > 0 ? ($item->total / $activeApplication) * 100 : 0;
+            return $item;
+        });
+
+        // dd($departmentData);
+
+
+        // dd($paymentTransactions);
+        return view('admin.dashboard', compact(
+            'studentCount',
+            'activeApplication',
+            'departmentCount',
+            'facultyCount',
+            'departmentData',
+            'facultyData'
+        ));
     }
 
     public function logout(Request $request)
@@ -27,11 +71,13 @@ class DashboardController extends Controller
     }
 
 
-    public function siteSettings(){
+    public function siteSettings()
+    {
         return view('admin.siteSetting.index');
     }
 
-    public function siteSettingStore(Request $request){
+    public function siteSettingStore(Request $request)
+    {
         $request->validate([
             'site_title' => 'nullable|string',
             'site_color' => 'nullable|string',
@@ -81,6 +127,5 @@ class DashboardController extends Controller
         ];
 
         return redirect()->back()->with($notification);
-
     }
 }
