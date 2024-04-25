@@ -45,6 +45,18 @@ class DashboardController extends Controller
             return $item;
         });
 
+
+        // display view for payment options used per transaction
+        $totalPayments = Payment::count();
+        $paymentsByMethod = Payment::select('payment_method', DB::raw('count(*) as total'))
+            ->groupBy('payment_method')
+            ->get();
+
+        // Calculate percentage
+        $paymentData = $paymentsByMethod->map(function ($item) use ($totalPayments) {
+            $item->percentage = $totalPayments > 0 ? ($item->total / $totalPayments) * 100 : 0;
+            return $item;
+        });
         // dd($departmentData);
 
 
@@ -55,7 +67,9 @@ class DashboardController extends Controller
             'departmentCount',
             'facultyCount',
             'departmentData',
-            'facultyData'
+            'facultyData',
+            'paymentData', 
+            'totalPayments'
         ));
     }
 

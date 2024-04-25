@@ -111,8 +111,30 @@
                             <div class="mb-4">
                                 <div class="text-small float-right font-weight-bold text-muted">{{ $data->total }}</div>
                                 <div class="font-weight-bold mb-1">{{ $data->faculty_name }}</div>
-                                <div class="bg-info" class="progress" data-height="3">
-                                    <div class="progress-bar" role="progressbar" data-width="{{ $data->percentage }}%"
+                                <div class="progress" data-height="3">
+                                    <div class="progress-bar bg-warning" role="progressbar" data-width="{{ $data->percentage }}%"
+                                        aria-valuenow="{{ $data->percentage }}" aria-valuemin="0" aria-valuemax="100">
+                                    </div>
+                                </div>
+                            </div>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6 col-md-6 col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4>Payment Methods Usage</h4>
+                        </div>
+                        <div class="card-body">
+                            @foreach($paymentData as $data)
+                            <div class="mb-4">
+                                <div class="text-small float-right font-weight-bold text-muted">{{ $data->total }}</div>
+                                <div class="font-weight-bold mb-1">{{ $data->payment_method }}</div>
+                                <div class="progress" data-height="3">
+                                    <div class="progress-bar bg-success" role="progressbar" data-width="{{ $data->percentage }}%"
                                         aria-valuenow="{{ $data->percentage }}" aria-valuemin="0" aria-valuemax="100">
                                     </div>
                                 </div>
