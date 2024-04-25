@@ -12,7 +12,19 @@ class Admin extends Model
     protected $guarded = [];
     protected $table = 'admins';
 
-    public function user(){
+    public function user()
+    {
         return $this->belongsTo(User::class);
+    }
+
+    public function getFullNameAttribute()
+    {
+        $fullName = $this->first_name . ' ' . $this->last_name;
+
+        if ($this->other_names) {
+            $fullName .= ' ' . $this->other_names;
+        }
+
+        return $fullName;
     }
 }

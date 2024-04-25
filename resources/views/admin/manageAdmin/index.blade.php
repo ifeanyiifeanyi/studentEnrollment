@@ -1,13 +1,9 @@
 @extends('admin.layouts.adminLayout')
 
-@section('title', 'Student Management')
+@section('title', 'Admin Manager')
 
 @section('css')
-<style>
-    table tr {
-        border-bottom: 2px solid #ccc
-    }
-</style>
+
 @endsection
 
 @section('admin')
@@ -36,6 +32,9 @@
                                         <option value="delete">Delete Permanently</option>
                                     </select>
                                 </div>
+                                <div class="float-left">
+                                    <a href="{{ route('admin.manage.create') }}" class="btn btn-primary">Create Admin</a>
+                                </div>
 
                                 <div class="table-responsive">
                                     <table class="table table-striped" id="table-1">
@@ -51,89 +50,54 @@
                                                     </div>
                                                 </th>
                                                 <th>sn</th>
-                                                <th>Student Name</th>
-                                                <th>Department</th>
+                                                <th>Admin Name</th>
+                                                <th>Email</th>
+                                                <th>Phone</th>
                                                 <th>photo</th>
-                                                <th>Application Date</th>
-                                                <th>Status</th>
                                                 <th>Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @forelse ($students as $student)
+                                            @forelse ($admins as $admin)
                                             {{-- @dd($student->id) --}}
                                             <tr>
                                                 <td>
                                                     <div class="custom-checkbox custom-control">
-                                                        <input type="checkbox" name="selected_students[]"
-                                                            value="{{ $student->id }}" data-checkboxes="mygroup"
-                                                            class="custom-control-input"
-                                                            id="checkbox-{{ $student->id }}">
-                                                        <label for="checkbox-{{ $student->id }}"
+                                                        <input type="checkbox" name="selected_admins[]"
+                                                            value="{{ $admin->id }}" data-checkboxes="mygroup"
+                                                            class="custom-control-input" id="checkbox-{{ $admin->id }}">
+                                                        <label for="checkbox-{{ $admin->id }}"
                                                             class="custom-control-label">&nbsp;</label>
                                                     </div>
                                                 </td>
                                                 <td>{{ $loop->iteration }}</td>
                                                 <td>
-                                                    {{ Str::title($student->full_name) }}
-                                                    <p><code>{{ $student->student->application_unique_number }}</code>
-                                                    </p>
-                                                    <a title="View Student Details"
-                                                        href="{{ route('admin.show.student', $student->nameSlug) }}"><i
+                                                    {{ Str::title($admin->full_name) }}
+                                                    <br>
+                                                    <a title="View Student Details" href=""><i
                                                             class="fas fa-binoculars"></i>
                                                     </a>
                                                     <div class="bullet"></div>
-                                                    <a title="Edit Student Basic Details" href="{{ route('admin.edit.student', $student->nameSlug) }}">
+                                                    <a title="Edit Student Basic Details" href="">
                                                         <i class="fas fa-edit"></i>
                                                     </a>
                                                     <div class="bullet"></div>
-                                                    <a title="Delete Student Account" data-toggle="modal" data-target="#exampleModal"
-                                                        data-student-slug="{{ $student->nameSlug }}" href="#"
+                                                    <a title="Delete Student Account" data-toggle="modal"
+                                                        data-target="#exampleModal"
+                                                        data-student-slug="{{ $admin->nameSlug }}" href="#"
                                                         class="text-danger"><i class="fas fa-trash"></i></a>
 
                                                 </td>
-                                                <td class="align-middle">
-                                                    @if ($student->applications->isNotEmpty())
-                                                    @foreach ($student->applications as $application)
-                                                    <p>{{ $application->department_name ?? 'N/A' }}</p>
-                                                    @endforeach
-                                                    @else
-                                                    <p>N/A</p>
-                                                    @endif
-                                                </td>
+                                                <td>{{ $admin->email }}</td>
+                                                <td>{{ $admin->admin->phone }}</td>
                                                 <td>
                                                     <img alt="image"
-                                                        src="{{ empty($student->student->passport_photo) ? asset('admin/assets/img/avatar/avatar-5.png') : Storage::url($student->student->passport_photo) }}"
+                                                        src="{{ empty($admin->admin->photo) ? asset('admin/assets/img/avatar/avatar-5.png') : Storage::url($admin->admin->photo) }}"
                                                         class="img-responsive -img-thumbnail" width="90"
-                                                        data-toggle="title" title="{{ $student->last_name }}">
-                                                </td>
-                                                <td>
-                                                    @if ($student->applications->isNotEmpty())
-                                                    @foreach ($student->applications as $application)
-                                                    <p>
-                                                        {{ \Carbon\Carbon::parse($application->created_at)->format('jS F
-                                                        Y') }}
-                                                    </p>
-                                                    @endforeach
-
-                                                    @else
-
-                                                    null
-                                                    @endif
-                                                </td>
-                                                <td>
-                                                    @if ($student->applications->isNotEmpty())
-                                                    @if ($student->applications->contains('payment_id', '!=', null))
-                                                    <span class="badge bg-success text-light">Applied</span>
-                                                    @else
-                                                    <span class="badge bg-secondary text-light">Unknown</span>
-                                                    @endif
-                                                    @else
-                                                    <span class="badge bg-danger text-light">Not Applied</span>
-                                                    @endif
+                                                        data-toggle="title" title="{{ $admin->last_name }}">
                                                 </td>
                                                 <td><a href="#" data-toggle="modal" data-target="#exampleModal"
-                                                        data-student-slug="{{ $student->nameSlug }}"
+                                                        data-student-slug="{{ $admin->nameSlug }}"
                                                         class="btn btn-danger"><i class="fas fa-trash"></i></a></td>
                                             </tr>
                                             @empty
@@ -147,13 +111,12 @@
                     </div>
                 </div>
                 <div class="d-flex justify-content-center">
-                    {{ $students->links() }}
+                    {{-- {{ $admins->links() }} --}}
                 </div>
             </div>
         </div>
     </section>
 </div>
-
 <div class="modal fade" tabindex="-1" role="dialog" id="exampleModal">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -173,9 +136,6 @@
         </div>
     </div>
 </div>
-
-
-
 @endsection
 
 
@@ -187,19 +147,6 @@
        var studentSlug = button.data('student-slug');
        var modal = $(this);
        modal.find('#deleteSingleStudent').attr('href', '/admin/delete-student/' + studentSlug);
-    });
-</script>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const masterCheckbox = document.getElementById('checkbox-all');
-        const checkboxes = document.querySelectorAll('input[name="selected_students[]"]');
-    
-        masterCheckbox.addEventListener('change', function () {
-            checkboxes.forEach(checkbox => {
-                checkbox.checked = this.checked;
-            });
-        });
     });
 </script>
 

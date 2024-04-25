@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\AdminProfileController;
 use League\CommonMark\Extension\SmartPunct\DashParser;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\ExamManagerController;
+use App\Http\Controllers\Admin\ManageAdminController;
 use App\Http\Controllers\Admin\PaymentMethodController;
 use App\Http\Controllers\Admin\StudentManagementController;
 use App\Http\Controllers\Student\ApplicationProcessController;
@@ -121,9 +122,11 @@ Route::prefix('admin')->middleware(['auth', 'verified', 'role:admin'])->group(fu
 
         // manage payments paid by students
         Route::get('student-application-payment', 'studentApplicationPayment')->name('admin.studentApplication.payment');
+    });
 
-        
-
+    Route::controller(ManageAdminController::class)->group(function(){
+        Route::get('manage-admin', 'index')->name('admin.manage.admin');
+        Route::get('manage-admin/create', 'create')->name('admin.manage.create');
     });
 
 
