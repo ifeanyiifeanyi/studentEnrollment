@@ -19,7 +19,8 @@
                 <div class="col-md-7 mx-auto">
                     <div class="card text-left">
                         <div class="card-body">
-                            <form method="POST" action="{{ route('admin.manage.store') }}" class="form" enctype="multipart/form-data">
+                            <form method="POST" action="{{ route('admin.manage.store') }}" class="form"
+                                enctype="multipart/form-data">
                                 @csrf
                                 <div class="row">
                                     <div class="col-md-6">
@@ -94,20 +95,38 @@
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label for="address">Address</label>
-                                            <input type="text" name="address" id="address" class="form-control @error('address') border-danger @enderror" value="{{ old('address') }}">
+                                            <input type="text" name="address" id="address"
+                                                class="form-control @error('address') border-danger @enderror"
+                                                value="{{ old('address') }}">
                                             @error('address')
-                                                <small class="text-danger">{{ $message }}</small>
+                                            <small class="text-danger">{{ $message }}</small>
                                             @enderror
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-md-12">
+                                    <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="phone">Phone</label>
-                                            <input type="tel" name="phone" id="phone" class="form-control @error('phone') border-danger @enderror" value="{{ old('phone') }}">
+                                            <input type="tel" name="phone" id="phone"
+                                                class="form-control @error('phone') border-danger @enderror"
+                                                value="{{ old('phone') }}">
                                             @error('phone')
-                                                <small class="text-danger">{{ $message }}</small>
+                                            <small class="text-danger">{{ $message }}</small>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="role">Select Admin Role</label>
+                                            <select name="role" id="role"
+                                                class="form-control @error('role') border-danger @enderror">
+                                                <option value="" selected>Select Role</option>
+                                                <option value="admin">ADMIN</option>
+                                                <option value="admin">SUPER</option>
+                                            </select>
+                                            @error('role')
+                                            <small class="text-danger">{{ $message }}</small>
                                             @enderror
                                         </div>
                                     </div>
@@ -116,16 +135,18 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="password">Password</label>
-                                            <input type="password" name="password" id="password" class="form-control @error('password') border-danger @enderror">
+                                            <input type="password" name="password" id="password"
+                                                class="form-control @error('password') border-danger @enderror">
                                             @error('password')
-                                                <small class="text-danger">{{ $message }}</small>
+                                            <small class="text-danger">{{ $message }}</small>
                                             @enderror
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="password_confirmation">password_confirmation</label>
-                                            <input type="password" name="password_confirmation" id="password_confirmation" class="form-control" >
+                                            <input type="password" name="password_confirmation"
+                                                id="password_confirmation" class="form-control">
                                         </div>
                                     </div>
                                 </div>

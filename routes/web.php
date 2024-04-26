@@ -130,6 +130,8 @@ Route::prefix('admin')->middleware(['auth', 'verified', 'role:admin'])->group(fu
         Route::post('manage-admin/store', 'store')->name('admin.manage.store');
         Route::get('manage-admin/edit/{slug}', 'edit')->name('admin.manage.edit');
         Route::patch('manage-admin/update/{slug}', 'update')->name('admin.manage.update');
+        Route::get('manage-admin/details/{user:nameSlug}', 'show')->name('admin.manage.show');
+        Route::get('delete-user/{user:nameSlug}', 'delete')->name('admin.manage.delete');
     });
 
 

@@ -103,12 +103,26 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-md-12">
+                                    <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="phone">Phone</label>
                                             <input type="tel" name="phone" id="phone" class="form-control @error('phone') border-danger @enderror" value="{{ old('phone', $admin->admin->phone) }}">
                                             @error('phone')
                                                 <small class="text-danger">{{ $message }}</small>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="role">Select Admin Role</label>
+                                            <select name="role" id="role"
+                                                class="form-control @error('role') border-danger @enderror">
+                                                <option value="" selected>Select Role</option>
+                                                <option {{ $admin->role == 'admin' ? 'selected' : '' }} value="admin">ADMIN</option>
+                                                <option {{ $admin->role == 'admin' ? 'selected' : '' }} value="admin">SUPER</option>
+                                            </select>
+                                            @error('role')
+                                            <small class="text-danger">{{ $message }}</small>
                                             @enderror
                                         </div>
                                     </div>

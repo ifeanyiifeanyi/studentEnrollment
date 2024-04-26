@@ -51,9 +51,11 @@
                                                 </th>
                                                 <th>sn</th>
                                                 <th>Admin Name</th>
+                                                <th>Role</th>
                                                 <th>Email</th>
                                                 <th>Phone</th>
                                                 <th>photo</th>
+                                                <th>Last Login</th>
                                                 <th>Action</th>
                                             </tr>
                                         </thead>
@@ -74,7 +76,7 @@
                                                 <td>
                                                     {{ Str::title($admin->full_name) }}
                                                     <br>
-                                                    <a title="View Student Details" href=""><i
+                                                    <a title="View Student Details" href="{{ route('admin.manage.show', $admin->nameSlug) }}"><i
                                                             class="fas fa-binoculars"></i>
                                                     </a>
                                                     <div class="bullet"></div>
@@ -84,9 +86,12 @@
                                                     <div class="bullet"></div>
                                                     <a title="Delete Student Account" data-toggle="modal"
                                                         data-target="#exampleModal"
-                                                        data-student-slug="{{ $admin->nameSlug }}" href="#"
+                                                        data-user-slug="{{ $admin->nameSlug }}" href="#"
                                                         class="text-danger"><i class="fas fa-trash"></i></a>
 
+                                                </td>
+                                                <td>
+                                                    <p class="text-muted">{{ Str::title($admin->role) }}</p>
                                                 </td>
                                                 <td>{{ $admin->email }}</td>
                                                 <td>{{ $admin->admin->phone ?? 'as' }}</td>
@@ -94,8 +99,9 @@
                                                     <img alt="image" src="{{ empty($admin->admin->photo) ? asset('admin/assets/img/avatar/avatar-5.png') : asset($admin->admin->photo) }}" class="img-responsive -img-thumbnail" width="90"
                                                         data-toggle="title" title="{{ $admin->last_name }}">
                                                 </td>
+                                                <td>{{$admin->last_login_at?->diffForHumans() ?? 'N/A'}}</td>
                                                 <td><a href="#" data-toggle="modal" data-target="#exampleModal"
-                                                        data-student-slug="{{ $admin->nameSlug }}"
+                                                        data-user-slug="{{ $admin->nameSlug }}"
                                                         class="btn btn-danger"><i class="fas fa-trash"></i></a></td>
                                             </tr>
                                             @empty
@@ -129,7 +135,7 @@
             </div>
             <div class="modal-footer bg-whitesmoke br">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <a href="#" class="btn btn-danger" id="deleteSingleStudent">Delete</a>
+                <a href="#" class="btn btn-danger" id="deleteSingleUser">Delete</a>
             </div>
         </div>
     </div>
@@ -142,9 +148,9 @@
 <script>
     $('#exampleModal').on('show.bs.modal', function (event) {
        var button = $(event.relatedTarget);
-       var studentSlug = button.data('student-slug');
+       var studentSlug = button.data('user-slug');
        var modal = $(this);
-       modal.find('#deleteSingleStudent').attr('href', '/admin/delete-student/' + studentSlug);
+       modal.find('#deleteSingleUser').attr('href', '/admin/delete-user/' + studentSlug);
     });
 </script>
 
