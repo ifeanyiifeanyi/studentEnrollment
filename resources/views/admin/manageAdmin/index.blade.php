@@ -78,7 +78,7 @@
                                                             class="fas fa-binoculars"></i>
                                                     </a>
                                                     <div class="bullet"></div>
-                                                    <a title="Edit Student Basic Details" href="">
+                                                    <a title="Edit Student Basic Details" href="{{ route('admin.manage.edit', $admin->nameSlug) }}">
                                                         <i class="fas fa-edit"></i>
                                                     </a>
                                                     <div class="bullet"></div>
@@ -89,11 +89,9 @@
 
                                                 </td>
                                                 <td>{{ $admin->email }}</td>
-                                                <td>{{ $admin->admin->phone }}</td>
+                                                <td>{{ $admin->admin->phone ?? 'as' }}</td>
                                                 <td>
-                                                    <img alt="image"
-                                                        src="{{ empty($admin->admin->photo) ? asset('admin/assets/img/avatar/avatar-5.png') : Storage::url($admin->admin->photo) }}"
-                                                        class="img-responsive -img-thumbnail" width="90"
+                                                    <img alt="image" src="{{ empty($admin->admin->photo) ? asset('admin/assets/img/avatar/avatar-5.png') : asset($admin->admin->photo) }}" class="img-responsive -img-thumbnail" width="90"
                                                         data-toggle="title" title="{{ $admin->last_name }}">
                                                 </td>
                                                 <td><a href="#" data-toggle="modal" data-target="#exampleModal"

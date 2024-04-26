@@ -1,6 +1,6 @@
 @extends('admin.layouts.adminLayout')
 
-@section('title', 'Create New Admin Manager')
+@section('title', 'Edit Admin Manager')
 
 @section('css')
 
@@ -19,15 +19,16 @@
                 <div class="col-md-7 mx-auto">
                     <div class="card text-left">
                         <div class="card-body">
-                            <form method="POST" action="{{ route('admin.manage.store') }}" class="form" enctype="multipart/form-data">
+                            <form method="POST" action="{{ route('admin.manage.update', $admin->nameSlug) }}" class="form" enctype="multipart/form-data">
                                 @csrf
+                                @method('PATCH')
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="first_name">First Name</label>
                                             <input type="text" name="first_name" id="first_name"
                                                 class="form-control @error('first_name') border-danger @enderror"
-                                                value="{{ old('first_name') }}">
+                                                value="{{ old('first_name', $admin->first_name) }}">
                                             @error('first_name')
                                             <small class="text-danger">{{ $message }}</small>
                                             @enderror
@@ -38,7 +39,7 @@
                                             <label for="last_name">Last Name</label>
                                             <input type="text" name="last_name" id="last_name"
                                                 class="form-control @error('last_name') border-danger @enderror"
-                                                value="{{ old('last_name') }}">
+                                                value="{{ old('last_name', $admin->last_name) }}">
                                             @error('last_name')
                                             <small class="text-danger">{{ $message }}</small>
                                             @enderror
@@ -51,7 +52,7 @@
                                             <label for="other_names">Other Names</label>
                                             <input type="text" name="other_names" id="other_names"
                                                 class="form-control @error('other_names') border-danger @enderror"
-                                                value="{{ old('other_names') }}">
+                                                value="{{ old('other_names', $admin->other_names) }}">
                                             @error('other_names')
                                             <small class="text-danger">{{ $message }}</small>
                                             @enderror
@@ -62,7 +63,7 @@
                                             <label for="email">Email</label>
                                             <input type="email" name="email" id="email"
                                                 class="form-control @error('email') border-danger @enderror"
-                                                value="{{ old('email') }}">
+                                                value="{{ old('email', $admin->email) }}">
                                             @error('email')
                                             <small class="text-danger">{{ $message }}</small>
                                             @enderror
@@ -84,7 +85,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="">
-                                                <img src="" alt="" class="img-fluid">
+                                                <img src="{{ empty($admin->admin->photo) ? 'not' : asset($admin->admin->photo) }}" alt="" class="img-fluid">
                                             </label>
 
                                         </div>
@@ -94,7 +95,7 @@
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label for="address">Address</label>
-                                            <input type="text" name="address" id="address" class="form-control @error('address') border-danger @enderror" value="{{ old('address') }}">
+                                            <input type="text" name="address" id="address" class="form-control @error('address') border-danger @enderror" value="{{ old('address', $admin->admin->address) }}">
                                             @error('address')
                                                 <small class="text-danger">{{ $message }}</small>
                                             @enderror
@@ -105,31 +106,14 @@
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label for="phone">Phone</label>
-                                            <input type="tel" name="phone" id="phone" class="form-control @error('phone') border-danger @enderror" value="{{ old('phone') }}">
+                                            <input type="tel" name="phone" id="phone" class="form-control @error('phone') border-danger @enderror" value="{{ old('phone', $admin->admin->phone) }}">
                                             @error('phone')
                                                 <small class="text-danger">{{ $message }}</small>
                                             @enderror
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="password">Password</label>
-                                            <input type="password" name="password" id="password" class="form-control @error('password') border-danger @enderror">
-                                            @error('password')
-                                                <small class="text-danger">{{ $message }}</small>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="password_confirmation">password_confirmation</label>
-                                            <input type="password" name="password_confirmation" id="password_confirmation" class="form-control" >
-                                        </div>
-                                    </div>
-                                </div>
-                                <input type="submit" value="Submit" class="btn btn-primary">
+                                <input type="submit" value="Update" class="btn btn-primary">
                             </form>
                         </div>
                     </div>

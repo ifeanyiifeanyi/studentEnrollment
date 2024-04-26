@@ -127,6 +127,9 @@ Route::prefix('admin')->middleware(['auth', 'verified', 'role:admin'])->group(fu
     Route::controller(ManageAdminController::class)->group(function(){
         Route::get('manage-admin', 'index')->name('admin.manage.admin');
         Route::get('manage-admin/create', 'create')->name('admin.manage.create');
+        Route::post('manage-admin/store', 'store')->name('admin.manage.store');
+        Route::get('manage-admin/edit/{slug}', 'edit')->name('admin.manage.edit');
+        Route::patch('manage-admin/update/{slug}', 'update')->name('admin.manage.update');
     });
 
 
