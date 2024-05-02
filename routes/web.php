@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Student\BarcodeViewController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
@@ -31,7 +32,10 @@ use App\Http\Controllers\Student\StudentProfileController;
 Route::get('/', function () {
     return view('auth.login');
 });
+Route::controller(BarcodeViewController::class)->group(function(){
+    Route::get('student/details/{nameSlug}', 'showDetails')->name('student.details.show');
 
+});
 Route::get('/payment', function () {
     return view('student.application.index'); 
 })->name('payment.view');
@@ -147,6 +151,8 @@ Route::prefix('student')->middleware(['auth', 'verified', 'role:student'])->grou
 
         Route::get('faculty-user/{slug}', 'facultyDetail')->name('student.faculty.show');
         Route::get('department-user/{id}', 'departmentDetail')->name('student.department.show');
+        
+
     });
 
     Route::controller(StudentProfileController::class)->middleware('check.payment.status')->group(function(){
@@ -169,6 +175,8 @@ Route::prefix('student')->middleware(['auth', 'verified', 'role:student'])->grou
         Route::get('/payment/success', 'showSuccess')->name('student.payment.success');
 
     });
+
+
 
 
 

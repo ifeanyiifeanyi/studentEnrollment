@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class StudentDashboardController extends Controller
 {
@@ -15,11 +16,17 @@ class StudentDashboardController extends Controller
         $user = auth()->user();
         $application = $user->applications->first();
 
+       // Generate URL to the student details page
+        $barcodeUrl = route('student.details.show', ['nameSlug' => $user->nameSlug]);
+        // dd($user->nameSlug);
+
+    
+
         $faculties = Faculty::has('departments')
         ->with('departments')
         ->simplePaginate(15);
 
-        return view('student.dashboard', compact('faculties', 'application', 'user'));
+        return view('student.dashboard', compact('faculties', 'application', 'user', 'barcodeUrl'));
     }
     /**
      * Display a listing of the resource.

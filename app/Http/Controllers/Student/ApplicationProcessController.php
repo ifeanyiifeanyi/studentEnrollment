@@ -16,6 +16,7 @@ use App\Http\Controllers\Controller;
 
 use Illuminate\Support\Facades\Mail;
 use Yabacon\Paystack\PaystackClient;
+use Illuminate\Support\Facades\Storage;
 use KingFlamez\Rave\Facades\Rave as Flutterwave;
 use Unicodeveloper\Flutterwave\Facades\Flutterwave as UnicodeveloperFlutterwave;
 
@@ -293,15 +294,19 @@ class ApplicationProcessController extends Controller
     public function showSuccess()
     {
         $user = auth()->user();
-        $application = $user->applications->first(); // Example, adjust based on your application logic
+        $application = $user->applications->first(); 
         $payment = $application ? $application->payment : null;
+        
+        // Generate URL to the student details page
+        $barcodeUrl = route('student.details.show', ['nameSlug' => $user->nameSlug]);
+
 
         if (!$payment || !$user || $application) {
             return redirect()->route('payment.view.finalStep', ['userSlug' => $user->nameSlug])
                 ->withErrors('An error occurred while processing the payment. Please try again.');
         }
 
-        return view('student.payment.success', compact('user', 'application', 'payment'));
+        return view('student.payment.success', compact('user', 'application', 'payment', 'barcodeUrl'));
     }
 
 

@@ -50,7 +50,7 @@
       </li>
 
       <li
-        class="dropdown">
+        class="dropdown {{ (request()->routeIs('admin.manage.admin') ) ? 'parent' : '' }}">
         <a href="#" class="nav-link has-dropdown"><i class="fas fa-cogs "></i><span>Admin Management</span></a>
         <ul class="dropdown-menu">
           <li><a class="nav-link {{ (request()->routeIs('admin.manage.admin')) ? 'active' : '' }}"

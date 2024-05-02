@@ -57,6 +57,7 @@
 </style>
 @endsection
 
+
 @section('student')
 <section class="content">
     <div class="row">

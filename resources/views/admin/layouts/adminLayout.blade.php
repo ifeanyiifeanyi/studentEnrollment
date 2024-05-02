@@ -31,13 +31,13 @@
   <link rel="stylesheet"
     href="{{ asset("") }}admin/assets/modules/datatables/Select-1.2.4/css/select.bootstrap4.min.css">
 
-  <meta name="description" content="{{ $siteSetting->site_description }}">
+  <meta name="description" content="{{ $siteSetting->site_description ?? '' }}">
 
   <!-- Template CSS -->
   <link rel="stylesheet" href="{{ asset("") }}admin/assets/css/style.css">
   <link rel="stylesheet" href="{{ asset("") }}admin/assets/css/components.css">
 
-  <link rel="icon" href="{{ asset($siteSetting->site_favicon) }}" type="image/x-icon">
+  <link rel="icon" href="{{ asset($siteSetting->site_favicon ?? '') }}" type="image/x-icon">
   <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css">
   <style>
     #example1_paginate{

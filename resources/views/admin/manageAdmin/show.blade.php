@@ -41,7 +41,7 @@
                                     </tr>
                                     <tr>
                                         <th>Last Login</th>
-                                        <td>{{ $user->last_login_at?->diffForHumans() ?? 'N/A' }}</td>
+                                        <td>{{ $user->previous_login_at?->diffForHumans() ?? 'N/A' }}</td>
                                     </tr>
                                 </table>
                             </div>

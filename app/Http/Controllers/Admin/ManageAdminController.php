@@ -29,7 +29,6 @@ class ManageAdminController extends Controller
             'other_names' => 'required|string',
             'last_name' => 'required|string',
             'phone' => 'required|string',
-            'role' => 'required|string',
             'address' => 'required|string',
             'email' => 'required|email|unique:users',
             'password' => 'required|string|confirmed',
@@ -42,7 +41,7 @@ class ManageAdminController extends Controller
             'last_name' => $request->last_name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'role' => $request->role,
+            'role' => 'admin',
             'nameSlug' => $request->first_name . '' . $request->last_name,
             'email_verified_at' => now(),
         ]);
@@ -78,7 +77,6 @@ class ManageAdminController extends Controller
         $request->validate([
             'first_name' => 'required|string',
             'other_names' => 'required|string',
-            'role' => 'required|string',
             'last_name' => 'required|string',
             'phone' => 'required|string',
             'address' => 'required|string',
@@ -93,6 +91,7 @@ class ManageAdminController extends Controller
             'other_names' => $request->other_names,
             'last_name' => $request->last_name,
             'email' => $request->email,
+            'role' => 'admin',
         ]);
 
 

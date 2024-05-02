@@ -99,7 +99,7 @@
                                                     <img alt="image" src="{{ empty($admin->admin->photo) ? asset('admin/assets/img/avatar/avatar-5.png') : asset($admin->admin->photo) }}" class="img-responsive -img-thumbnail" width="90"
                                                         data-toggle="title" title="{{ $admin->last_name }}">
                                                 </td>
-                                                <td>{{$admin->last_login_at?->diffForHumans() ?? 'N/A'}}</td>
+                                                <td>{{$admin->previous_login_at?->diffForHumans() ?? 'N/A'}}</td>
                                                 <td><a href="#" data-toggle="modal" data-target="#exampleModal"
                                                         data-user-slug="{{ $admin->nameSlug }}"
                                                         class="btn btn-danger"><i class="fas fa-trash"></i></a></td>
